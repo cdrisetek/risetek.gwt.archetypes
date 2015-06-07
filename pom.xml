@@ -8,7 +8,7 @@
     <version>9</version>
   </parent>
 
-  <groupId>net.ltgt.gwt.archetypes</groupId>
+  <groupId>com.risetek.archetypes</groupId>
   <artifactId>gwt-maven-archetypes</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
