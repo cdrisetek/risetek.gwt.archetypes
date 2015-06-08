@@ -7,6 +7,13 @@ How to use
 ----------
 
 ### Generate a project
+	mvn archetype:generate \
+	   -DarchetypeCatalog=local \
+	   -DarchetypeGroupId=com.risetek.archetypes \
+	   -DarchetypeArtifactId=modular-webapp \
+	   -DarchetypeVersion=1.0-SNAPSHOT	\
+	   -DartifactId=funny		\
+	   -Dversion=1.0-SNAPSHOT
 
     mvn archetype:generate \
        -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots/ \
@@ -29,12 +36,6 @@ hack on / contribute to the archetypes, you can clone and install the project lo
 You'll then use the `mvn archetype:generate` command from above, except for the
 `-DarchetypeCatalog` argument which you'll remove, as you now want to use your local
 catalog.
-
-Note that tests are sensitive to line endings, so if you're on Windows make sure
-your clone has Windows (CRLF) end of lines. In case it's not enough, you can simply
-delete the `src/test` folder thus bypassing tests (provided the tests pass on the
-continuous integration platform, it's not a big _risk_).
-
 
 ### Start the development mode
 
