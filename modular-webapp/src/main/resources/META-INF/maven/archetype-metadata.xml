@@ -14,7 +14,7 @@
       <defaultValue>App</defaultValue>
     </requiredProperty>
     <requiredProperty key="module-short-name">
-      <defaultValue>${module.toLowerCase()}</defaultValue>
+      <defaultValue>app</defaultValue>
     </requiredProperty>
   </requiredProperties>
   <modules>

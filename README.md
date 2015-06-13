@@ -15,6 +15,12 @@ How to use
 	   -DartifactId=funny		\
 	   -Dversion=1.0-SNAPSHOT
 
+在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
+在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
+
+1. In one terminal window: `mvn gwt:codeserver -pl *-client -am`
+2. In another terminal window: `cd *-server && mvn jetty:run -Denv=dev`
+
     mvn archetype:generate \
        -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots/ \
        -DarchetypeGroupId=net.ltgt.gwt.archetypes \
