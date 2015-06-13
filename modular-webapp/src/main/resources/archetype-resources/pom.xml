@@ -39,7 +39,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.risetek.gwt.maven</groupId>
+        <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
         <inherited>false</inherited>
         <configuration>
@@ -63,7 +63,7 @@
           <version>9.2.3.v20140905</version>
         </plugin>
         <plugin>
-          <groupId>com.risetek.gwt.maven</groupId>
+          <groupId>net.ltgt.gwt.maven</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.0-beta-2</version>
           <extensions>true</extensions>

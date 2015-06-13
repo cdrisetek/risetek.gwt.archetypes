@@ -46,7 +46,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.risetek.gwt.maven</groupId>
+        <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
         <configuration>
           <moduleName>${package}.${module}</moduleName>
