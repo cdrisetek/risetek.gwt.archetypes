@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.${rootArtifactId}.shared;
 
 import java.io.Serializable;
 

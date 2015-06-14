@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.${rootArtifactId}.shared;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
