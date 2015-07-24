@@ -1,23 +1,24 @@
 gwt-maven-archetypes
 ====================
+### 下载并构造本maven包到本地repo中
+    git clone https://github.com/tbroyer/risetek.archetypes.git
+    cd risetek.archetypes && mvn clean install
 
-This project contains Maven archetypes for modular GWT projects.
-
-How to use
-----------
-
-### Generate a project
+### 构造项目
 	mvn archetype:generate \
 	   -DarchetypeCatalog=local \
 	   -DarchetypeGroupId=com.risetek.archetypes \
 	   -DarchetypeArtifactId=modular-webapp \
 	   -DarchetypeVersion=1.0-SNAPSHOT	\
 	   -DartifactId=funny		\
-	   -Dversion=1.0-SNAPSHOT
+	   -Dversion=1.0-SNAPSHOT	\
+	   -DinteractiveMode=false
 
-在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
-在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
+### 在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
 
+### 在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
+
+### 调试
 1. In one terminal window: `mvn gwt:codeserver -pl *-client -am`
 2. In another terminal window: `cd *-server && mvn jetty:run -Denv=dev`
 
