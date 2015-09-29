@@ -1,7 +1,7 @@
 gwt-maven-archetypes
 ====================
 ### 下载并构造本maven包到本地repo中
-    git clone https://github.com/tbroyer/risetek.archetypes.git
+    git clone https://github.com/kerongbaby/risetek.archetypes.git
     cd risetek.archetypes && mvn clean install
 
 ### 构造项目
