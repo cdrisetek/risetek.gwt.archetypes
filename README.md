@@ -1,3 +1,6 @@
+### This is from: https://github.com/tbroyer/gwt-maven-archetypes
+====================
+
 gwt-maven-archetypes
 ====================
 ### 下载并构造本maven包到本地repo中
@@ -14,9 +17,10 @@ gwt-maven-archetypes
 	   -Dversion=1.0-SNAPSHOT	\
 	   -DinteractiveMode=false
 
-### 在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
-
-### 在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
+### 项目构造
+* 首先需要在项目目录下执行:mvn clean install，为下一步的依赖性提供依赖包
+* 在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
+* 在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
 
 ### 调试
 1. In one terminal window: `mvn gwt:codeserver -pl *-client -am`
