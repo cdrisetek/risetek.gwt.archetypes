@@ -17,7 +17,7 @@
     <gwtVersion>2.7.0</gwtVersion>
     <mavenVersion>3.0</mavenVersion>
     <jdkVersion>1.7</jdkVersion>
-    <jettyVersion>9.2.3.v20140905</jettyVersion>
+    <jettyVersion>9.2.13.v20150730</jettyVersion>
   </properties>
 
   <dependencyManagement>

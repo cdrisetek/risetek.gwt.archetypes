@@ -26,6 +26,9 @@ gwt-maven-archetypes
 1. In one terminal window: `mvn gwt:codeserver -pl *-client -am`
 2. In another terminal window: `cd *-server && mvn jetty:run -Denv=dev`
 
+
+==================================
+#### 以下是原始文档
     mvn archetype:generate \
        -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots/ \
        -DarchetypeGroupId=net.ltgt.gwt.archetypes \
