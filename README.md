@@ -31,8 +31,9 @@ risetek.archetypes
 * 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
 
 ### 调试
-* 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl *-client -am`
-* 在另一个终端（窗口）中运行: `cd *-server && mvn jetty:run -Denv=dev`
+* 新建的项目需要完成mvn install过程，否则-shared库，特别是需要注入（inject）的代码可能不存在，造成运行失败
+* 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
+* 在另一个终端（窗口）中运行: `cd server && mvn jetty:run -Denv=dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
 
 ==================================

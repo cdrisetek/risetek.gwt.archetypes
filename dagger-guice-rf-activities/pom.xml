@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.risetek.archetypes</groupId>
+    <artifactId>gwt-maven-archetypes</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>dagger-guice-rf-activities</artifactId>
+  <version>HEAD-SNAPSHOT</version>
+  <packaging>maven-archetype</packaging>
+
+  <name>GWT Modular Dagger/Guice/RequestFactory/Activities WebApp Archetype</name>
+  <description>GWT application with user authentication, using Dagger and Places/Activities on client side, Guice on server side, RequestFactory for communication.</description>
+</project>
