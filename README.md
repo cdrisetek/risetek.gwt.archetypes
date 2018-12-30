@@ -1,4 +1,5 @@
 ### This is from: https://github.com/tbroyer/gwt-maven-archetypes
+ 在此表达对原作者的敬意，构造本项目的目的只是希望有一个自己需要的组合。
 ====================
 
 gwt-maven-archetypes
@@ -8,8 +9,12 @@ gwt-maven-archetypes
     cd risetek.archetypes && mvn clean install
 
 ### 构造项目
-	mvn archetype:generate -DarchetypeGroupId=com.risetek.archetypes -DarchetypeVersion=HEAD-SNAPSHOT \
-	   -DarchetypeArtifactId=modular-webapp
+	mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes -DarchetypeVersion=HEAD-SNAPSHOT \
+	 -DgroupId=com.risetek -DarchetypeArtifactId=modular-webapp
+
+###说明
+* 一定要完成mvn clean install过程，否则本地不存在archetypeGroupId，而且网络上也不存在。
+* -DarchetypeCatalog=local参数限制在本地搜寻archetypeGroupId，因此不会把时间浪费在不存在的网络资源搜寻上。
 
 ### 项目构造
 * 首先需要在项目目录下执行:mvn clean install，为下一步的依赖性提供依赖包
@@ -17,9 +22,9 @@ gwt-maven-archetypes
 * 在eclipse下import-> Existing Projects into Workspace，可以同时将三个项目纳入eclipse集成开发环境中。
 
 ### 调试
-1. In one terminal window: `mvn gwt:codeserver -pl *-client -am`
-2. In another terminal window: `cd *-server && mvn jetty:run -Denv=dev`
-
+1. 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl *-client -am`
+2. 在另一个终端（窗口）中运行: `cd *-server && mvn jetty:run -Denv=dev`
+3. Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
 
 ==================================
 #### 以下是原始文档
@@ -69,18 +74,3 @@ profile, active by default.)
 
 To activate the `env-dev` profile you can provide the `-Denv=dev` system property, or
 use `-Penv-dev`.
-
-Compatibility
--------------
-
-To use variable interpolation in parameters during `mvn archetype:generate`,
-you need at least version 2.2 of the maven-archetype-plugin. Archetypes use
-`${module.toLowerCase()}` as the default value for the `module-short-name`
-parameter, so if you don't use version 2.2 or above of the
-maven-archetype-plugin, make sure you provide a value and do not use the
-default one for that parameter. You can also make sure you use version 2.2 of
-the plugin by using `mvn
-org.apache.maven.plugins:maven-archetype-plugin:2.2:generate` instead of `mvn
-archetype:generate`. It should be noted that variable interpolation also does
-not work in M2Eclipse's wizard, despite using recent versions of Maven thus
-(probably) a recent-enough version of the maven-archetype-plugin.
