@@ -1,4 +1,5 @@
-package ${package}.${rootArtifactId}.shared;
+package ${package};
+
 /**
  * <p>
  * FieldVerifier validates that the name the user enters is valid.

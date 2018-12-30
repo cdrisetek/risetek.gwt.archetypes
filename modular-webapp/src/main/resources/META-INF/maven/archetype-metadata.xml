@@ -4,17 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
   name="reference">
   <requiredProperties>
-    <requiredProperty key="groupId">
-      <defaultValue>com.risetek</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="package">
-      <defaultValue>com.risetek</defaultValue>
-    </requiredProperty>
     <requiredProperty key="module">
       <defaultValue>App</defaultValue>
     </requiredProperty>
     <requiredProperty key="module-short-name">
-      <defaultValue>app</defaultValue>
+      <defaultValue>${module.toLowerCase()}</defaultValue>
     </requiredProperty>
   </requiredProperties>
   <modules>
@@ -68,6 +62,12 @@
         </fileSet>
         <fileSet filtered="true" encoding="UTF-8">
           <directory>src/main/tomcatconf</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+          <directory>src/main/jettyconf</directory>
           <includes>
             <include>**/*.xml</include>
           </includes>

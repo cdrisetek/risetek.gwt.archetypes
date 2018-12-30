@@ -1,9 +1,6 @@
-package ${package}.${rootArtifactId}.server;
+package ${package};
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import ${package}.${rootArtifactId}.shared.FieldVerifier;
-import ${package}.${rootArtifactId}.shared.GreetingResponse;
-import ${package}.${rootArtifactId}.shared.GreetingService;
 
 /**
  * The server side implementation of the RPC service.

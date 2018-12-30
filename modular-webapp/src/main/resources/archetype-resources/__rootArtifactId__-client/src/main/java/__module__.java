@@ -1,4 +1,4 @@
-package ${package}.${rootArtifactId}.client;
+package ${package};
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -16,10 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import ${package}.${rootArtifactId}.shared.FieldVerifier;
-import ${package}.${rootArtifactId}.shared.GreetingResponse;
-import ${package}.${rootArtifactId}.shared.GreetingService;
-import ${package}.${rootArtifactId}.shared.GreetingServiceAsync;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

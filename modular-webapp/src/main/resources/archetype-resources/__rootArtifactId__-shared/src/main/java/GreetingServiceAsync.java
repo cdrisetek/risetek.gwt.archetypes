@@ -1,4 +1,4 @@
-package ${package}.${rootArtifactId}.shared;
+package ${package};
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

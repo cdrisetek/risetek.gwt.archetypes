@@ -8,15 +8,10 @@
   <version>${version}</version>
   <packaging>pom</packaging>
 
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <gwtVersion>2.7.0</gwtVersion>
-    <mavenVersion>3.0</mavenVersion>
-    <jdkVersion>1.7</jdkVersion>
+    <gwtVersion>2.8.2</gwtVersion>
+    <jdkVersion>1.8</jdkVersion>
     <jettyVersion>9.2.13.v20150730</jettyVersion>
   </properties>
 
@@ -32,8 +27,7 @@
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
-        <version>3.0.1</version>
-        <scope>provided</scope>
+        <version>3.1.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -53,7 +47,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.8.0</version>
           <configuration>
             <source>${jdkVersion}</source>
             <target>${jdkVersion}</target>
@@ -67,16 +61,16 @@
         <plugin>
           <groupId>net.ltgt.gwt.maven</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>1.0-rc-2</version>
+          <version>1.0-rc-10</version>
           <extensions>true</extensions>
           <configuration>
-            <sourceLevel>1.7</sourceLevel>
+            <sourceLevel>1.8</sourceLevel>
             <failOnError>true</failOnError>
           </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
+          <version>3.0.1</version>
           <executions>
             <execution>
               <id>attach-sources</id>
@@ -86,11 +80,12 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.tomcat.maven</groupId>
-          <artifactId>tomcat6-maven-plugin</artifactId>
-          <version>2.2</version>
+          <configuration>
+            <!-- Workaround for https://issues.apache.org/jira/browse/MSOURCES-95 -->
+            <includes>
+              <include>**/**</include>
+            </includes>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>

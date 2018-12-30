@@ -6,7 +6,7 @@
 	<!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>${package}.${rootArtifactId}.server.GreetingServiceImpl</servlet-class>
+    <servlet-class>${package}.GreetingServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>

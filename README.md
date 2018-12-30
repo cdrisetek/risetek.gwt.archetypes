@@ -8,14 +8,8 @@ gwt-maven-archetypes
     cd risetek.archetypes && mvn clean install
 
 ### 构造项目
-	mvn archetype:generate \
-	   -DarchetypeCatalog=local \
-	   -DarchetypeGroupId=com.risetek.archetypes \
-	   -DarchetypeArtifactId=modular-webapp \
-	   -DarchetypeVersion=1.0-SNAPSHOT	\
-	   -DartifactId=funny		\
-	   -Dversion=1.0-SNAPSHOT	\
-	   -DinteractiveMode=false
+	mvn archetype:generate -DarchetypeGroupId=com.risetek.archetypes -DarchetypeVersion=HEAD-SNAPSHOT \
+	   -DarchetypeArtifactId=modular-webapp
 
 ### 项目构造
 * 首先需要在项目目录下执行:mvn clean install，为下一步的依赖性提供依赖包
