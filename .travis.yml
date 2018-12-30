@@ -1,9 +1,0 @@
-language: java
-
-install: mvn -U install clean --fail-never --quiet -DskipTests
-
-script: mvn -U verify --fail-at-end
-
-after_success:
-  - ci/deploy-snapshot.sh
-
