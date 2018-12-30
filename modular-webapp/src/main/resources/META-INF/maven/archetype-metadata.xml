@@ -12,7 +12,7 @@
     </requiredProperty>
   </requiredProperties>
   <modules>
-    <module id="${rootArtifactId}.client" dir="client" name="${rootArtifactId}-client">
+    <module id="${rootArtifactId}-client" dir="client" name="${rootArtifactId}-client">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
@@ -28,7 +28,7 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="${rootArtifactId}.shared" dir="shared" name="${rootArtifactId}-shared">
+    <module id="${rootArtifactId}-shared" dir="shared" name="${rootArtifactId}-shared">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
@@ -38,7 +38,7 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="${rootArtifactId}.server" dir="server" name="${rootArtifactId}-server">
+    <module id="${rootArtifactId}-server" dir="server" name="${rootArtifactId}-server">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
