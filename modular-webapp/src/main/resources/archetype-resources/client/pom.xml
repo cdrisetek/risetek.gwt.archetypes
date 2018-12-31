@@ -17,11 +17,6 @@
       <groupId>${dollar}{project.groupId}</groupId>
       <artifactId>${rootArtifactId}-shared</artifactId>
       <version>${dollar}{project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${dollar}{project.groupId}</groupId>
-      <artifactId>${rootArtifactId}-shared</artifactId>
-      <version>${dollar}{project.version}</version>
       <classifier>sources</classifier>
     </dependency>
     <dependency>
