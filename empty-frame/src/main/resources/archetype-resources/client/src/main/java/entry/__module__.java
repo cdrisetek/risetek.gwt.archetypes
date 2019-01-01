@@ -10,8 +10,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTML;
 import ${package}.generator.IBuilderStamp;
-import ${package}.${module}Component;
-import ${package}.Dagger${module}Component;
+import ${package}.entry.Dagger${module}Component;
 import ${package}.MainActivityMapper;
 
 public class ${module} implements EntryPoint {

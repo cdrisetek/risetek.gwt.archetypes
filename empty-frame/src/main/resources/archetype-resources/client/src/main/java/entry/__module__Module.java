@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -12,6 +12,14 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.requestfactory.shared.RequestTransport;
 import ${package}.home.HomePlace;
+import ${package}.${module}PlaceHistoryMapper;
+import ${package}.AuthAwareRequestTransport;
+import ${package}.AppFactory;
+import ${package}.CurrentUser;
+import ${package}.IsAdmin;
+import ${package}.LogoutUrl;
+import ${package}.User;
+
 
 import dagger.Binds;
 import dagger.Module;

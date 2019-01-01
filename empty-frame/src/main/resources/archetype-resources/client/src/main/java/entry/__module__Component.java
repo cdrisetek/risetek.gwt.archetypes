@@ -1,8 +1,8 @@
-package ${package};
+package ${package}.entry;
 
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.web.bindery.event.shared.EventBus;
-
+import ${package}.MainActivityMapper;
 import dagger.Component;
 
 import javax.inject.Singleton;
