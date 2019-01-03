@@ -91,6 +91,9 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${dollar}{jetty.version}</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>net.ltgt.gwt.maven</groupId>
