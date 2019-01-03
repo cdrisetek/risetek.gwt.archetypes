@@ -1,6 +1,7 @@
 package ${package}.home;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import ${package}.FieldVerifier;
@@ -27,5 +28,10 @@ public class HomeActivity extends AbstractActivity implements HomeView.Presenter
 	public void start(AcceptsOneWidget panel, com.google.gwt.event.shared.EventBus eventBus) {
 		view.setPresenter(this);
 		panel.setWidget(view);
+	}
+
+	@Override
+	public void gotoPlace(Place palce) {
+		placeController.goTo(palce);
 	}
 }
