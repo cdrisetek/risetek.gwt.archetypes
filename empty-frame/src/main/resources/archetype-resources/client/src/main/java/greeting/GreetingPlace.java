@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class GreetingPlace extends Place {
 
-	@Prefix("greeting")
+	@Prefix("Greeting")
 	public static class Tokenizer implements PlaceTokenizer<GreetingPlace> {
 
 		@Override

@@ -23,7 +23,6 @@ risetek.archetypes
 	 -Dmodule=demo
 
 ### 说明
-* 一定要完成mvn clean install过程，否则本地不存在archetypeGroupId，而且网络上也不存在。
 * -DarchetypeCatalog=local参数限制在本地搜寻archetypeGroupId，因此不会把时间浪费在不存在的网络资源搜寻上。
 
 ### 项目构造
@@ -31,9 +30,8 @@ risetek.archetypes
 * 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
 
 ### 调试
-* 新建的项目需要完成mvn install过程，否则-shared库，特别是需要注入（inject）的代码可能不存在，造成运行失败
 * 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
-* 在另一个终端（窗口）中运行: `cd server && mvn jetty:run -Denv=dev`
+* 在另一个终端（窗口）中运行: `mvn jetty:run -pl server -am -Denv=dev` 或者：`mvn jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
 
 ==================================

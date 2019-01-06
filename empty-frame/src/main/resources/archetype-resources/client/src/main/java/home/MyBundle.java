@@ -15,6 +15,6 @@ public interface MyBundle extends ClientBundle {
 		public String go();
 	}
 	
-	@Source("home.css")
+	@Source("home.gss")
 	Style style();
 }

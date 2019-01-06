@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import ${package}.greeting.GreetingPlace;
+import ${package}.serverstatus.ServerStatusPlace;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -44,11 +45,10 @@ public class HomeViewImpl implements HomeView {
 		homeViewPanel.add(fp);
 		
 		
-        fp.add(new Blueboard("Use of CSS"));
-        fp.add(new Blueboard("Use of GSS"));
-        fp.add(new Blueboard("Use of Place", new GreetingPlace("who")));
+        fp.add(new Blueboard("Use of CSS & GSS"));
+        fp.add(new Blueboard("Use of Place", new GreetingPlace("whois")));
         fp.add(new Blueboard("Use of Dagger"));
-        fp.add(new Blueboard("Use of requestFactory"));
+        fp.add(new Blueboard("Use of requestFactory", new ServerStatusPlace()));
         fp.add(new Blueboard("UI for Login/Logout"));
         fp.add(new Blueboard("Menu Design"));
 	}
