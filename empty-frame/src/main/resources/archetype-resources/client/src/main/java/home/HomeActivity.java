@@ -4,8 +4,6 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import ${package}.FieldVerifier;
-import ${package}.greeting.GreetingPlace;
 import javax.inject.Inject;
 
 public class HomeActivity extends AbstractActivity implements HomeView.Presenter {
