@@ -6,6 +6,7 @@ public interface ServerStatusView extends IsWidget {
 
 	public interface Presenter {
 		public void gotoHome();
+		public void updateStatus();
 	}
 
 	void setPresenter(Presenter presenter);

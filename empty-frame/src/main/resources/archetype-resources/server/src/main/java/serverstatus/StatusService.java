@@ -28,12 +28,33 @@ public class StatusService {
 		StatusResponse response;
 		
 		response = new StatusResponse();
-		response.setTitle("ServerInfo");
+		response.setTitle("OS");
+		response.setMessage(System.getProperty("os.name") + ":"
+				+ System.getProperty("os.version"));
+		responseList.add(response);
+
+		response = new StatusResponse();
+		response.setTitle("Java version");
+		response.setMessage(System.getProperty("java.version"));
+		responseList.add(response);
+		
+		response = new StatusResponse();
+		response.setTitle("Java memory");
+		response.setMessage("Totoal: "+ Runtime.getRuntime().totalMemory() + " Free:" + Runtime.getRuntime().freeMemory());
+		responseList.add(response);
+		
+		response = new StatusResponse();
+		response.setTitle("Processors");
+		response.setMessage("Totoal: "+ Runtime.getRuntime().availableProcessors());
+		responseList.add(response);
+		
+		response = new StatusResponse();
+		response.setTitle("Server Info");
 		response.setMessage(ctx.get().getServerInfo());
 		responseList.add(response);
 		
 		response = new StatusResponse();
-		response.setTitle("User-Agent");
+		response.setTitle("User Agent");
 		response.setMessage(req.get().getHeader("User-Agent"));
 		responseList.add(response);
 		

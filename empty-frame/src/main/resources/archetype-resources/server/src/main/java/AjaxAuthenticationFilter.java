@@ -33,7 +33,7 @@ public class AjaxAuthenticationFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-
+/*
 		if (request.getUserPrincipal() == null) {
 			// TODO: per spec, HTTP requires a WWW-Authenticate header on 401 (Unauthorized) responses
 			// Should it use http://tools.ietf.org/html/draft-broyer-http-cookie-auth ?
@@ -41,7 +41,7 @@ public class AjaxAuthenticationFilter implements Filter {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
-
+*/
 		filterChain.doFilter(servletRequest, servletResponse);
 	}
 

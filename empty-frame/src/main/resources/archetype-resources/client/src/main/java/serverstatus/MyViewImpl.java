@@ -26,6 +26,7 @@ public class MyViewImpl implements ServerStatusView {
 	@Inject
 	MyViewImpl() {
 		style.ensureInjected();
+		goHome.addClickHandler(c-> presenter.gotoHome());
 		
 		panel = new SimplePanel();
 		panel.getElement().setPropertyString("align", "center");
@@ -33,17 +34,13 @@ public class MyViewImpl implements ServerStatusView {
 		
 		flowPanel = new FlowPanel();
 		panel.add(flowPanel);
-		
 		flowPanel.setStyleName(style.cards());
-		flowPanel.add(goHome);
-		
-		flowPanel.add(new Card("OS", "Linux"));
-		flowPanel.add(new Card("Java", "18_19"));
-		flowPanel.add(new Card("Memory", "1243213KB"));
-		flowPanel.add(new Card("CPU", "AMD64 4-core"));
-		flowPanel.add(new Card("OS", "Linux"));
-		
-		goHome.addClickHandler(c->{presenter.gotoHome();});
+
+		flowPanel.addAttachHandler(c->{
+			flowPanel.clear();
+			flowPanel.add(goHome);
+			presenter.updateStatus();
+		});
 	}
 
 	@Override

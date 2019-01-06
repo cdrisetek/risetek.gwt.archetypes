@@ -30,22 +30,24 @@ public class ServerStatusActivity extends AbstractActivity implements ServerStat
 	public void start(AcceptsOneWidget panel, com.google.gwt.event.shared.EventBus eventBus) {
 		view.setPresenter(this);
 		panel.setWidget(view);
-
-		factory.serverstatus().statusServer().fire(
-			new Receiver<List<ResponseProxy>>() {
-				public void onFailure(ServerFailure failure) {
-					GWT.log("failed");
-				}
-
-				@Override
-				public void onSuccess(List<ResponseProxy> response) {
-					for(ResponseProxy resp:response)
-						view.appendStatus(resp.getTitle(), resp.getMessage());
-				}
-			});
-	
 	}
 
+	@Override
+	public void updateStatus() {
+		factory.serverstatus().statusServer().fire(
+				new Receiver<List<ResponseProxy>>() {
+					public void onFailure(ServerFailure failure) {
+						GWT.log("failed");
+					}
+
+					@Override
+					public void onSuccess(List<ResponseProxy> response) {
+						for(ResponseProxy resp:response)
+							view.appendStatus(resp.getTitle(), resp.getMessage());
+					}
+				});
+	}
+	
 	@Override
 	public void gotoHome() {
 		placeController.goTo(new HomePlace());
