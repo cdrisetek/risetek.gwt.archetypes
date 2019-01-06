@@ -12,6 +12,10 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <webappDirectory>${dollar}{project.build.directory}/${dollar}{project.build.finalName}</webappDirectory>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${dollar}{project.groupId}</groupId>
@@ -55,6 +59,8 @@
   </dependencies>
 
   <build>
+	<!-- Generate compiled stuff in the folder used for developing mode -->
+	<outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -88,6 +94,7 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <configuration>
+            <skip>false</skip>
             <scanIntervalSeconds>1</scanIntervalSeconds>
             <webApp>
               <extraClasspath>${dollar}{basedir}/../${rootArtifactId}-shared/target/classes/</extraClasspath>
@@ -166,11 +173,11 @@
               <groupId>org.eclipse.jetty</groupId>
               <artifactId>jetty-maven-plugin</artifactId>
               <configuration>
-                <skip>false</skip>
                 <webApp>
+                  <descriptor>${dollar}{basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
                   <resourceBases>
                     <resourceBase>${dollar}{basedir}/src/main/webapp</resourceBase>
-                    <resourceBase>${dollar}{basedir}/target/${dollar}{project.artifactId}-${dollar}{project.version}</resourceBase>
+                    <resourceBase>${dollar}{webappDirectory}</resourceBase>
                   </resourceBases>
                 </webApp>
               </configuration>

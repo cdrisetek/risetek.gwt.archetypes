@@ -23,6 +23,7 @@ risetek.archetypes
 	 -Dmodule=demo
 
 ### 说明
+* 如果server代码修改后，jetty没有重新开始（restart）,请检查Eclispe的设置，Project->Build Automatically应该为选中。
 * -DarchetypeCatalog=local参数限制在本地搜寻archetypeGroupId，因此不会把时间浪费在不存在的网络资源搜寻上。
 
 ### 项目构造
@@ -30,6 +31,8 @@ risetek.archetypes
 * 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
 
 ### 调试
+* 在一个终端（窗口）中运行: `mvn gwt:codeserver`
+* 在另一个终端（窗口）中运行: `mvn jetty:run -P env-dev`
 * 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
 * 在另一个终端（窗口）中运行: `mvn jetty:run -pl server -am -Denv=dev` 或者：`mvn jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
