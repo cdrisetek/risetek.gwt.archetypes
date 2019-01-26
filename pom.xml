@@ -12,6 +12,7 @@
     <module>modular-webapp</module>
     <module>empty-webapp</module>
     <module>empty-frame</module>
+    <module>empty-frame-shiro</module>
     <module>dagger-guice-rf-activities</module>
   </modules>
 

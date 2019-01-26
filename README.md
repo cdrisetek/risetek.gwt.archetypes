@@ -22,6 +22,13 @@ risetek.archetypes
 	 -DarchetypeArtifactId=modular-webapp \
 	 -Dmodule=demo
 
+### archtypes
+* modular-webapp:
+* empty-webapp: GWT基本界面，以及RPC实现的Greeting服务
+* empty-frame: requestFactory
+* empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
+
+
 ### 说明
 * 如果server代码修改后，jetty没有重新开始（restart）,请检查Eclispe的设置，Project->Build Automatically应该为选中。
 * -DarchetypeCatalog=local参数限制在本地搜寻archetypeGroupId，因此不会把时间浪费在不存在的网络资源搜寻上。
@@ -36,6 +43,26 @@ risetek.archetypes
 * 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
 * 在另一个终端（窗口）中运行: `mvn jetty:run -pl server -am -Denv=dev` 或者：`mvn jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
+
+### 增添新的Place
+* 实现一个Place的扩展
+* ${module}PlaceHistortMapper需要更新，在@WithTokenizers中引入新增的Place对应的class
+* MainActivityMapper需要增加处理该Place活动的代码
+
+### 增添新的requestFactory服务
+### server
+* 实现Response对应的数据结构（Entity）
+* 实现返回Response的服务
+
+#### shared
+* ${module}Factory中增加对应的服务上下文: RequestContext.
+* ResponseProxy对应于服务端（server）代码中的Entity
+* 实现RequestContext的extends，里面包含服务名，并返回Request<T>，<T>与ResponseProxy相关
+
+### 几个特殊文件的作用
+* (client) AuthAwareRequestTransport.java
+* (server) AjaxAuthenticationFilter.java
+* User.java CurrentUser.java & ServerUser.java
 
 ==================================
 
