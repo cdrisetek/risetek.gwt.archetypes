@@ -1,0 +1,39 @@
+html, body {
+    height:100%;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    min-height:100%;
+}
+
+.loginWidgetContainer {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.loginWidgetContainer, .loginWidgetContainer:before, .loginWidgetContainer:after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@media (min-width: 601px) {
+.loginWidgetContainer:before, .loginWidgetContainer:after {
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    content: '';
+    display: block;
+    height: 24px;
+} }
+
+@media (min-width: 601px) {
+.loginWidgetContainer:before {
+    min-height: 30px;
+} }

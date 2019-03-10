@@ -1,0 +1,93 @@
+@external currentcolor div span applet object iframe;
+
+body {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+div, span, applet, object, iframe {
+    border: 0;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+*, :before, :after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.pan_shell_top_container {
+}
+
+.panShellMainContainer {
+	width:			100%;
+	height:			100%;
+	position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow:auto;
+}
+
+.layoutColumn {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.layoutRow {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.layout, .layoutColumn, .layoutRow {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;    
+}
+
+.flex_none {
+    -webkit-box-flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.p6nVulcanLayoutMain {
+    height: 100%;
+    min-width: 900px;
+}
+
+@media screen and (max-width: 960px) {
+    .p6nVulcanLayoutMain {
+        min-width: 100%;
+    }
+}

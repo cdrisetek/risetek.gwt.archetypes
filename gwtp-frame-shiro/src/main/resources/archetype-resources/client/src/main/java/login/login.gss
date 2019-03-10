@@ -1,0 +1,182 @@
+@def INTERACTIVE_WIDHT            330px;
+@def INTERACTIVE_HEIGHT           40px;
+@def LOGIN_INPUTBOX_WIDTH         280px;
+@def LOGIN_INPUTBOX_ICON_WIDTH    50px;
+@def LOGIN_BG_PADDING             30px;
+@def BOX_RADIUS                   3px;
+@def COLOR_TONE                   #1a73e8;
+
+.loginWidget {
+    display:            block;
+    margin:             0 auto;
+}
+
+.loginButton {
+	border:				1px solid COLOR_TONE;
+	border-radius:		3px;
+	color:				#fff;
+	background:			COLOR_TONE;
+	font-size:			20px;
+	font-weight:		bold;
+	text-shadow:		0 -1px 0 #3399DD;
+	margin:				0px;
+	padding:			0px;
+	width:				100%;
+	cursor:				pointer;
+	line-height:        sub(INTERACTIVE_HEIGHT, 2px);
+}
+
+.box_input_area {
+	float:				left;
+	border: 			0px;
+	outline:			none;
+	height:				100%;
+	font-size: 			20px;
+	color: 				COLOR_TONE;
+	background-color:	#f4f6f8;
+	width:				sub(INTERACTIVE_WIDHT, LOGIN_INPUTBOX_ICON_WIDTH, BOX_RADIUS);
+}
+
+.background {
+	display: block;
+	width: add(
+	          LOGIN_BG_PADDING,   /* padding left */
+	          LOGIN_BG_PADDING,   /* padding right */
+              INTERACTIVE_WIDHT
+              );
+	background-color: #fcfcfc;
+	border:           1px COLOR_TONE solid;
+	padding:          0px;
+	margin:           0px;
+	border-radius:    5px;
+}
+
+.topTitle {
+	line-height:	40px;
+	font-size:		24px;
+	color:			COLOR_TONE;
+	font-weight:	bold;
+	font-family:	arial;
+	width:			100%;
+	text-align:     center;
+	margin:         20px 0px 0px 0px;
+}
+
+.box_outer_border {
+	border:			1px solid #c4c4c4;
+}
+
+.box_outer_border_highlight {
+	border:			1px solid #39d;
+}
+
+.box_outer {
+	position:		relative;
+	background-color:#f4f6f8;
+	display:		inline-flex;
+	margin:			0px;
+	height:			INTERACTIVE_HEIGHT;
+    width:          INTERACTIVE_WIDHT;
+	border-radius:	BOX_RADIUS;
+}
+
+.box_icon {
+	float:			left;
+	display:		inline;
+	width:			LOGIN_INPUTBOX_ICON_WIDTH;
+	height:			100%;
+	padding-right:  10px 0px;
+	text-align:		center;
+}
+
+.box_icon_img {
+	margin:			2px 0px;
+}
+
+.box_input {
+	float:			left;
+	display:		inline;
+	margin:			0px;
+	height:			100%;
+	width:			LOGIN_INPUTBOX_WIDTH;
+}
+
+.box_input input {
+    padding: 0px;
+}
+
+.box_tips {
+	position:		absolute;
+	right:			0px;
+	line-height:	sub(INTERACTIVE_HEIGHT, 2px);
+	color: 			#FFFFFF;
+	background-color:		#da1717;
+	margin:			0px;
+	padding:		0px 10px;
+	font-size:		16px;
+	border-radius:	BOX_RADIUS;
+	cursor:         none;
+	visibility:     hidden;
+}
+
+.box_tips_visible {
+	visibility:     visible;
+}
+
+.box_tips:before {
+    position:       absolute;
+    left:           -19px;
+    display:        block;
+    height:         38px;
+    width:          18px;
+    content: url("data:image/svg+xml;utf8, \
+                 <svg xmlns='http://www.w3.org/2000/svg' width='18px' height='38px' fill='%23da1717'> \
+                 <path d='m18,35l-18,-16l18,-16h32z' /></svg>");
+}
+
+.interval {
+	height:			25px;
+}
+
+.line {
+    height:         0px;
+    border-bottom:  1px COLOR_TONE solid;
+	width:			INTERACTIVE_WIDHT;
+	margin:         0px auto;
+}
+
+.interactiveContainer {
+   padding:         30px 0px 0px 0px;
+   width:           INTERACTIVE_WIDHT;
+   margin:          0px auto;
+}
+
+.footer {
+   margin:          12px 0px;
+   display:         inline-flex;
+   flex:            1 0 auto;
+   justify-content: flex-end;
+   width:           100%;
+   height:          20px;
+   vertical-align:  middle;
+}
+
+.forget {
+   line-height:    20px;
+   background-color: transparent;
+   border-width: 0;
+   padding: 0;
+   outline: none;
+   cursor: pointer;
+}
+
+.footerItem {
+   margin:          0px 5px 0px 20px;
+   display:         flex;
+   height:          20px;
+   align-items:     end;
+}
+
+.footerItem:hover {
+   color: COLOR_TONE;
+}
