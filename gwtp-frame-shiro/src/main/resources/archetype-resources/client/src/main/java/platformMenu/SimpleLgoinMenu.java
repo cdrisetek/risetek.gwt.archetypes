@@ -3,7 +3,6 @@ package ${package}.platformMenu;
 import javax.inject.Inject;
 
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -16,6 +15,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import ${package}.entry.CurrentUser;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
+import ${package}.utils.Icons;
 
 @Singleton
 public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
@@ -40,7 +40,7 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 
         Panel matIcon = new UserComplexPanel("mat-icon");
         matIcon.setStyleName(style.matIcon());
-        matIcon.getElement().appendChild(makeLoginIcon());
+        matIcon.getElement().appendChild(Icons.loginIcon());
         
         cfcIcon.add(matIcon);
         
@@ -87,7 +87,7 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 		
 		SimplePanel accountIcon = new SimplePanel();
 		accountIcon.setStyleName(style.largeAccountIcon());
-		accountIcon.getElement().appendChild(makeLoginIcon());
+		accountIcon.getElement().appendChild(Icons.loginIcon());
 
 		imgPanel.add(accountIcon);
 		accountChooserDetail.add(imgPanel);
@@ -121,28 +121,6 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 		return "\u767b\u5f55\u7528\u6237";
 	}
 
-    private static native Element makeLoginIcon()
-    /*-{
-        var ns = "http://www.w3.org/2000/svg";
-        var e = document.createElementNS(ns, "svg");
-    	e.setAttribute("fill-rule", "evenodd");
-    	e.setAttribute("viewBox","0 0 512 512");
-    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
-    	e.setAttribute("focusable","false");
-    	
-        var p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "m345.6,305c-28.7,0 -42.5,16 -89.6,16c-47.1,0 -60.8,-16 -89.6,-16"
-                          + "c-74.2,0 -134.4,60.2 -134.4,134.4l0,25.6c0,26.5 21.5,48 48,48"
-                          + "l352,0c26.5,0 48,-21.5 48,-48l0,-25.6c0,-74.2 -60.2,-134.4 -134.4,-134.4z"
-                          + "m86.4,160l-352,0l0,-25.6c0,-47.6 38.8,-86.4 86.4,-86.4c14.6,0 38.3,16 89.6,16"
-                          + "c51.7,0 74.9,-16 89.6,-16c47.6,0 86.4,38.8 86.4,86.4l0,25.6zm-176,-176"
-                          + "c79.5,0 144,-64.5 144,-144s-64.5,-144 -144,-144s-144,64.5 -144,144"
-                          + "s64.5,144 144,144zm0,-240c52.9,0 96,43.1 96,96s-43.1,96 -96,96"
-                          + "s-96,-43.1 -96,-96s43.1,-96 96,-96z");
-        e.appendChild(p);
-        return e;
-    }-*/;
-    
 	@Override
 	public void onUserStatusChange() {
 		if(user.isLogin())

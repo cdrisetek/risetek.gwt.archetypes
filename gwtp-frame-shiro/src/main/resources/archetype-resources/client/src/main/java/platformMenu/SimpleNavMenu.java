@@ -3,13 +3,13 @@ package ${package}.platformMenu;
 import javax.inject.Singleton;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.risetek.generator.IBuilderStamp;
+import ${package}.generator.IBuilderStamp;
+import ${package}.utils.Icons;
 
 @Singleton
 public class SimpleNavMenu extends AbstractPlatformBarMenu {
@@ -48,7 +48,6 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 		
 		navBarContainer = new FlowPanel();
 		navBarContainer.setStyleName(style.navBarContainer());
-//		navBarContainer.add(SimpleNavMenuItem.makeAboutMenuItem(c->{uiHandler.gotoPlace(c);}));
 		navBarContainer.add(new SimpleNavMenuItem("more 2", null, null, c->{uiHandler.gotoPlace(c);}));
 		navBarContainer.add(SimpleNavMenuItem.makeServerMenuItem(c->{uiHandler.gotoPlace(c);}));
 		navBarContainer.add(SimpleNavMenuItem.makeConvertMenuItem(c->{uiHandler.gotoPlace(c);}));
@@ -75,29 +74,14 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 
         Panel matIcon = new UserComplexPanel("mat-icon");
         matIcon.setStyleName(style.matIcon());
-        matIcon.getElement().appendChild(makeMatIcon());
+        matIcon.getElement().appendChild(Icons.matIcon());
         
         cfcIcon.add(matIcon);
         
-        Button button = mkButton("导航菜单", cfcIcon.getElement());
+        Button button = mkButton("\u5bfc\u822a\u83dc\u5355", cfcIcon.getElement());
         button.setStyleName(style.barButton());
         button.setStyleName(style.matIconButton(), true);
         placeholderButton.add(button);
     	return placeholderButton;
 	}
-
-    private static native Element makeMatIcon()
-    /*-{
-        var ns = "http://www.w3.org/2000/svg";
-        var e = document.createElementNS(ns, "svg");
-    	e.setAttribute("fill-rule", "evenodd");
-    	e.setAttribute("viewBox","0 0 24 24");
-    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
-    	e.setAttribute("focusable","false");
-    	
-        var p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z");
-        e.appendChild(p);
-        return e;
-    }-*/;
 }
