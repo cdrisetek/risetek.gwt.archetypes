@@ -12,10 +12,12 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
+import ${package}.NameTokens;
 import ${package}.entry.CurrentUser;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
 import ${package}.utils.Icons;
+import ${package}.utils.TagWrapBuilder;
 
 @Singleton
 public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
@@ -31,24 +33,22 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 	
 	@Override
 	public Panel getIcon() {
-		Panel placeholderButton = new UserComplexPanel("cfc-placeholder-button");
-        placeholderButton.setStyleName(style.pccConsoleNavButton());
-        
-        Panel cfcIcon = new UserComplexPanel("cfc-icon");
-        cfcIcon.setStyleName(style.cfcIcon(), true);
-        cfcIcon.setStyleName(style.ngStartInserted(), true);
+        Panel matIcon = new TagWrapBuilder(Icons.loginIcon(), style.matIcon())
+		        .addStyleName(style.matIcon())
+		        .build();
 
-        Panel matIcon = new UserComplexPanel("mat-icon");
-        matIcon.setStyleName(style.matIcon());
-        matIcon.getElement().appendChild(Icons.loginIcon());
-        
-        cfcIcon.add(matIcon);
+        Panel cfcIcon = new TagWrapBuilder(matIcon, style.cfcIcon())
+		        .addStyleName(style.cfcIcon())
+		        .addStyleName(style.ngStartInserted())
+		        .build();
         
         Button button = mkButton("\u6253\u5f00\u5e10\u53f7\u9009\u9879", cfcIcon.getElement());
         button.setStyleName(style.barButton());
         button.setStyleName(style.matIconButton(), true);
-        placeholderButton.add(button);
-    	return placeholderButton;
+        
+    	return new TagWrapBuilder(button, style.pccConsoleNavButton())
+    			   .addStyleName(style.pccConsoleNavButton())
+    			   .build();
 	}
 	
 	@Override
@@ -99,12 +99,19 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 		accountchooserButton.setStyleName(style.cfcAccountchooserButtons(), true);
 		accountchooserButton.setStyleName(style.cfcProfileRow(), true);
 
-		Button b = new Button("\u9000\u51fa\u8d26\u53f7");
+		Button b = new Button("\u8d26\u53f7\u4fe1\u606f");
+		b.setStyleName(style.cfcProfilebutton());
+		
+		b.addClickHandler(c->{uiHandler.removeMenuPanel(); uiHandler.gotoPlace(NameTokens.security);});
+		accountchooserButton.add(b);
+		accountChooserMenu.add(accountchooserButton);
+
+
+		b = new Button("\u9000\u51fa\u8d26\u53f7");
 		b.setStyleName(style.cfcProfilebutton());
 		
 		b.addClickHandler(c->{uiHandler.removeMenuPanel(); user.Logout();});
 		accountchooserButton.add(b);
-		accountChooserMenu.add(accountchooserButton);
 
 		container.add(accountChooserMenu);
 		

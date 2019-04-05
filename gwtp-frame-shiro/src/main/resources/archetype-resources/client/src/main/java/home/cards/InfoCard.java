@@ -16,7 +16,7 @@ public class InfoCard<Ui extends UiHandlers> extends ViewWithUiHandlers<Ui>{
 
 	private static final StyleBundle.Style style = StyleBundle.resources.style();
 
-	protected final Label label = new Label();
+	protected final Label headLabel = new Label();
 	private final FlowPanel cardBodyGroup = new FlowPanel();
 	protected final SimplePanel iconPanel = new SimplePanel();
 	private final FlowPanel loaderContent = new FlowPanel();
@@ -57,8 +57,8 @@ public class InfoCard<Ui extends UiHandlers> extends ViewWithUiHandlers<Ui>{
 		FlowPanel headContent = new FlowPanel();
 		cardHeader.add(headContent);
 		headContent.addStyleName(style.headContent());
-		headContent.add(label);
-		label.setStyleName(style.headText());
+		headContent.add(headLabel);
+		headLabel.setStyleName(style.headText());
 		
 		// Card content
 		SimplePanel cardLoad = new SimplePanel();

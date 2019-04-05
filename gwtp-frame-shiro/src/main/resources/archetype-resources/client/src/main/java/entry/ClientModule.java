@@ -12,6 +12,7 @@ import ${package}.login.LoginModule;
 import ${package}.platformMenu.PlatformMenuModule;
 import ${package}.root.RootModule;
 import ${package}.convert.ConvertModule;
+import ${package}.security.SecurityModule;
 
 
 public class ClientModule extends AbstractPresenterModule {
@@ -31,7 +32,8 @@ public class ClientModule extends AbstractPresenterModule {
     	install(new HomeModule());
     	install(new LoginModule());
     	install(new ConvertModule());
-    	
+    	install(new SecurityModule());
+    	bind(MyBootstrapper.class).asEagerSingleton();
         bind(CurrentUser.class).asEagerSingleton();
         bind(LoggedInGatekeeper.class);
     }

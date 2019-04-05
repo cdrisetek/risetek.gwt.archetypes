@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import ${package}.platformMenu.StyleBundle.Style;
+import ${package}.utils.TagWrapBuilder;
 
 public abstract class AbstractPlatformBarMenu extends Button implements HasUiHandlers<MyUiHandlers> {
     public final Style style = StyleBundle.resources.style();
@@ -68,11 +69,14 @@ public abstract class AbstractPlatformBarMenu extends Button implements HasUiHan
         	overlay.setAttribute("style", "pointer-events: auto; top: 48px; right: 12px;");
     	else
     		overlay.setAttribute("style", "pointer-events: auto; top: 48px; left: " + xpostion + "px;");
-    	
-    	Panel tooltip = new UserComplexPanel("cfc-tooltip-overlay");
-    	tooltip.setStyleName(style.cfcTooltipOverlaySimple());
+
+    	Panel tooltip =  new TagWrapBuilder("cfcTooltipOverlay")
+    			             .addStyleName(style.cfcTooltipOverlaySimple())
+    			             .build();
+
     	tooltip.getElement().setAttribute("role", "tooltip");
     	tooltip.getElement().setInnerText(getTip());
+
     	overlay.appendChild(tooltip.getElement());
     	position.getElement().appendChild(overlay);
     	return position;

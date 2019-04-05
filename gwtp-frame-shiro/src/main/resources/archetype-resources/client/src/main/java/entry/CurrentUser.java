@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -27,8 +26,6 @@ public class CurrentUser implements AuthorityChangedHandler {
 		this.dispatcher = dispatcher;
 		this.eventBus = eventBus;
 		eventBus.addHandler(AuthorityChangedEvent.getType(), this);
-		// load authority information from server.
-		onAuthorityChanged();
 	}
 	
 	public void Login(String username, String password, boolean rememberme, Consumer<Throwable> loginFailure) {
@@ -76,6 +73,12 @@ public class CurrentUser implements AuthorityChangedHandler {
 	}
 
 	public boolean isLogin() {
-		return authority.isLogin();
+		return null != authority && authority.isLogin();
+	}
+	
+	public void changePassword(String newPassword) {
+	}
+
+	public void changeEmail(String newEmail) {
 	}
 }

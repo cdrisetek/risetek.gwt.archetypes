@@ -1,0 +1,432 @@
+@def COLOR_TONE                   #1a73e8;
+
+.containerStyle {
+	width:			100%;
+	height:			100%;
+	position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+}
+
+.infoLists {
+    width:          100%;
+    margin:         0px auto;
+}
+
+.headTitle0 {
+    width: 100%;
+}
+
+.headTitle1 {
+    height: 56px;
+    -webkit-transition: height .2s ease-in-out;
+    transition: height .2s ease-in-out;
+    background-color: white;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    width: 100%;
+}
+
+.headTitleContent {
+    -webkit-box-align: center;
+    box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin: auto;
+    max-width: 100%;
+    min-width: 0;
+    width: 690px;
+}
+
+.headTitleBack {
+    -webkit-user-select: none;
+    -webkit-transition: background .3s;
+    transition: background .3s;
+    border: 0;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 0;
+}
+
+.headTitleBack:hover {
+    background-color: rgba(0,0,0,.2);
+}
+
+.headTitleText {
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 2.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    color: #202124;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    -webkit-transition-property: font-size;
+    transition-property: font-size;
+    vertical-align: middle;
+}
+
+.centerIcon {
+    margin:   12px;
+}
+
+.wrapBackIcon {
+    height:    24px;
+    width:     24px;
+    line-height: 24px;
+}
+
+.headTitleSeparator {
+   border-top: 1px solid #dadce0;
+   bottom: -10px;
+    height: 10px;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+}
+
+.mainFlow {
+    margin: auto;
+    max-width: 660px;
+}
+
+.mainNote {
+    padding: 24px 0;
+    color: rgba(0,0,0,0.65);
+    font: 400 15px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+.vSpace {
+    height: 56px;
+}
+
+.inputFrame {
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto;
+    max-width: 660px;
+    background: #fff;
+    font: 400 15px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+.inputArea {
+    padding: 24px;
+}
+
+.inputCommit {
+    padding-bottom: 24px;
+}
+
+.commitButton {
+    line-height: 20px;
+    min-width: 88px;
+    margin-left: 24px;
+    background: COLOR_TONE;
+    color: #fff;
+    
+    -webkit-transition: box-shadow .28s cubic-bezier(0.4,0.0,0.2,1);
+    transition: box-shadow .28s cubic-bezier(0.4,0.0,0.2,1);
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    
+    
+    -webkit-user-select: none;
+    border: 0;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 0;
+}
+
+.commitButton>*:last-child {
+    margin-right: 24px;
+    
+}
+.commitButton>* {
+    float: left;
+    margin-left: 24px;
+}
+
+.commitButtonDown {
+    -webkit-transition:background .8s;
+    transition:background .8s;
+    -webkit-box-shadow:0 8px 10px 1px rgba(0,0,0,0.14),0 3px 14px 2px rgba(0,0,0,0.12),0 5px 5px -3px rgba(0,0,0,0.2);
+    box-shadow:0 8px 10px 1px rgba(0,0,0,0.14),0 3px 14px 2px rgba(0,0,0,0.12),0 5px 5px -3px rgba(0,0,0,0.2);
+}
+
+.buttonContent {
+    position: relative;
+}
+
+.buttonText {
+    margin:    8px;
+    display:   inline-block;
+}
+
+.inputAreaWiz {
+    max-width: 300px;
+}
+.commitTips {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.commitTipsTitle {
+    margin-bottom: 5px;
+}
+
+.commitTipsTitleContent {
+}
+
+.commitTipsContent {
+    margin-bottom: 5px;
+    color: rgba(0,0,0,0.65);
+}
+
+.passwordInput {
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    height: 24px;
+    line-height: 24px;
+    margin: 0;
+    min-width: 0%;
+    outline: none;
+    padding: 0;
+    z-index: 0;
+}
+
+.passwordInputFocus {
+}
+
+.passwordInputNotEmpty {
+}
+
+.passwordInvalid {
+}
+
+.inputHolder {
+    -webkit-transform-origin: bottom left;
+    transform-origin: bottom left;
+    -webkit-transition: all .3s cubic-bezier(0.4,0,0.2,1);
+    transition: all .3s cubic-bezier(0.4,0,0.2,1);
+    -webkit-transition-property: color,bottom,transform;
+    transition-property: color,bottom,transform;
+    color: rgba(0,0,0,0.38);
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    pointer-events: none;
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    width: 100%;
+}
+
+.passwordInput:focus~.inputHolder, .passwordInputNotEmpty .inputHolder {
+    color: COLOR_TONE;
+    transform: scale(.75) translateY(-39px);
+}
+
+.inputLevel0 {
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    outline: none;
+    padding-bottom: 8px;
+    width: 200px;
+}
+
+.inputLevel1 {
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    outline: none;
+    padding-bottom: 4px;
+    position: relative;
+    vertical-align: top;
+    width:    100%;
+}
+
+.inputLevel1>.inputWithEyes {
+    margin-top: 24px;
+}
+.inputWrap {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    min-width: 0%;
+    position: relative;
+}
+
+.inputWrapHeight {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    top: 14px;
+}
+
+.inputWithEyes {
+    height: 40px;
+    position: relative;
+    vertical-align: top;
+}
+
+.inputUnderLine0 {
+    background-color: rgba(0,0,0,0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.inputUnderLine0:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid rgba(0,0,0,0);
+    pointer-events: none;
+}
+
+.inputUnderLine1 {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    background-color: COLOR_TONE;
+    bottom: 0px;
+    height: 2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+@keyframes InputRemoveUnderline {
+    0%{-webkit-transform:scaleX(1);transform:scaleX(1);opacity:1}
+    to{-webkit-transform:scaleX(1);transform:scaleX(1);opacity:0}
+}
+ 
+@-webkit-keyframes InputRemoveUnderline {
+    0%{-webkit-transform:scaleX(1);transform:scaleX(1);opacity:1}
+    to{-webkit-transform:scaleX(1);transform:scaleX(1);opacity:0}
+}
+
+@keyframes InputAddUnderline{
+    0%{-webkit-transform:scaleX(0);transform:scaleX(0)}
+    to{-webkit-transform:scaleX(1);transform:scaleX(1)}}
+
+@-webkit-keyframes InputAddUnderline{
+    0%{-webkit-transform:scaleX(0);transform:scaleX(0)}
+    to{-webkit-transform:scaleX(1);transform:scaleX(1)}
+}
+
+.inputUnderLine1 {
+    -webkit-animation: InputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    animation: InputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.passwordInputFocus .inputUnderLine1 {
+    -webkit-animation: InputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    animation: InputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    transform: scaleX(1);
+}
+
+.passwordInvalid .inputUnderLine0, .passwordInvalid .inputUnderLine1 {
+    background-color: #d50000;
+    height: 2px;
+}
+
+.inputControl {
+}
+
+.inputControl>.inputLevel0 {
+    width: 100%;
+}
+
+.inputControlPad {
+    min-height: 24px;
+}
+
+.buttonEye {
+    line-height: 24px;
+    border-color: transparent;
+    border-width: 0;
+    height: 24px;
+    width: 24px;
+    outline: none;
+    background-color:         transparent;      
+    fill: currentColor;
+    padding:             4px 2px 0px 2px;
+}
+
+.buttonEyeWrap {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 24px;
+    line-height: 24px;
+    position: relative;
+    padding-left: 12px;
+}
+

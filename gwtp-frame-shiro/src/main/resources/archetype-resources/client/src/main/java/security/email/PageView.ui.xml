@@ -1,0 +1,320 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<ui:style gss="true">
+		.pretty {
+		min-height: 100%;
+		width: 100%;
+		height:
+		auto;
+		position: relative;
+
+		background-color: #fff;
+		color:
+		rgba(0,0,0,0.87);
+		font: 400 15px/20px
+		Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+		min-width: 320px;
+		overflow: visible;
+
+		-webkit-font-smoothing:
+		antialiased;
+		margin: 0;
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
+		}
+
+		.title {
+		width: 100%;
+		}
+
+		.title1 {
+		height: 56px;
+		-webkit-transition:
+		height .2s ease-in-out;
+		transition: height .2s
+		ease-in-out;
+		background-color: white;
+		display: -webkit-box;
+		display:
+		-moz-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		position:
+		fixed;
+		width: 100%;
+		}
+
+		.title2 {
+		-webkit-box-align:
+		center;
+		box-align: center;
+		-webkit-align-items: center;
+		align-items:
+		center;
+		display: -webkit-box;
+		display: -moz-box;
+		display: -webkit-flex;
+		display:
+		-ms-flexbox;
+		display: flex;
+		margin: auto;
+		max-width: 100%;
+		min-width: 0;
+		width: 690px;
+		}
+
+		.titleButton1 {
+		-webkit-user-select: none;
+		-webkit-transition: background .3s;
+		transition: background .3s;
+		border:
+		0;
+		-webkit-border-radius: 50%;
+		border-radius: 50%;
+		cursor: pointer;
+		display: inline-block;
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		height:
+		48px;
+		outline: none;
+		overflow: hidden;
+		position: relative;
+		text-align:
+		center;
+		-webkit-tap-highlight-color: transparent;
+		width: 48px;
+		z-index:
+		0;
+		}
+		.titleButton1:hover {
+		background-color: rgba(0,0,0,.2);
+		}
+		.titleButton2 {
+		color: rgba(0,0,0,0.54);
+		fill: rgba(0,0,0,0.54);
+		margin:
+		12px;
+		}
+
+		.titleButton3 {
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		height: 24px;
+		width: 24px;
+		line-height: 24px;
+		}
+
+		.titleText {
+		font-family: 'Google Sans',Roboto,Arial,sans-serif;
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 2rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-wrap: normal;
+		color:
+		#202124;
+		-webkit-box-flex: 1;
+		box-flex: 1;
+		-webkit-flex-grow: 1;
+		flex-grow: 1;
+		margin: 0;
+		padding: 0;
+		-webkit-transition: all .2s
+		ease-in-out;
+		transition: all .2s ease-in-out;
+		-webkit-transition-property:
+		font-size;
+		transition-property: font-size;
+		vertical-align: middle;
+		}
+
+		.hline {
+        border-top: 1px solid #dadce0;
+		bottom: -10px;
+		height: 10px;
+		overflow:
+		hidden;
+		position:
+		absolute;
+		width: 100%;
+		}
+
+		.hline1 {
+		height: 10px;
+		position:
+		absolute;
+		top:
+		-10px;
+		-webkit-transition: box-shadow .25s;
+		transition:
+		box-shadow .25s;
+		width: 100%;
+		}
+
+		.titleSpace {
+		height: 56px;
+		}
+
+		.main {
+		margin: auto;
+		max-width: 660px;
+		}
+
+		.mainDescript {
+		padding: 24px 0;
+		}
+
+		.container {
+		border:
+		1px solid #dadce0;
+		border-radius: 8px;
+		overflow:
+		hidden;
+		margin: 0 auto;
+		max-width: 660px;
+		background: #fff;
+		}
+
+		.container1 {
+		padding: 24px;
+		}
+
+		.container2 {
+		display: -webkit-box;
+		display: -moz-box;
+		display:
+		-ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align:
+		center;
+		box-align: center;
+		-webkit-align-items:
+		center;
+		align-items:
+		center;
+		}
+
+		.context {
+		-webkit-box-flex: 1;
+		box-flex: 1;
+		-webkit-flex-grow:
+		1;
+		flex-grow: 1;
+		-webkit-flex-shrink: 1;
+		flex-shrink:
+		1;
+		font-size: 17px;
+		min-width: 0;
+		}
+
+		.context1 {
+		overflow-wrap: break-word;
+		}
+
+		.context2 {
+		overflow-wrap: break-word;
+		}
+
+		.contextButton1 {
+		-webkit-user-select: none;
+		-webkit-transition: background .3s;
+		transition: background .3s;
+		border:
+		0;
+		-webkit-border-radius: 50%;
+		border-radius: 50%;
+		cursor: pointer;
+		display: inline-block;
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		height:
+		48px;
+		outline: none;
+		overflow: hidden;
+		position: relative;
+		text-align:
+		center;
+		-webkit-tap-highlight-color: transparent;
+		width: 48px;
+		z-index:
+		0;
+		}
+		
+		.contextButton1:hover {
+		background-color: rgba(0,0,0,.2);		
+		}
+		.contextButton2 {
+		color: rgba(0,0,0,0.54);
+		fill: rgba(0,0,0,0.54);
+		margin: 12px;
+		}
+		.contextButton3 {
+		-webkit-box-flex: 0;
+		box-flex: 0;
+		-webkit-flex-grow: 0;
+		flex-grow: 0;
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		}
+	</ui:style>
+
+	<g:HTMLPanel styleName='{style.pretty}'>
+		<div class='{style.title}'>
+			<div class='{style.title1}'>
+				<div class='{style.title2}'>
+					<div class='{style.titleButton1}'>
+						<div class='{style.titleButton2}'>
+							<g:HTMLPanel styleName='{style.titleButton3}' ui:field='backButton'>
+								<svg fill-rule="evenodd" viewBox="0 0 24 24"
+									preserveAspectRatio="xMidYMid meet" focusable="false">
+									<path
+										d="m12,4l1.41,1.41l-5.58,5.59l12.17,0l0,2l-12.17,0l5.58,5.59l-1.41,1.41l-8,-8l8,-8z"></path>
+								</svg>
+							</g:HTMLPanel>
+						</div>
+					</div>
+					<h1 class='{style.titleText}'>邮箱地址</h1>
+				</div>
+				<div class='{style.hline}'>
+				</div>
+			</div>
+			<div class='{style.titleSpace}'></div>
+		</div>
+		<div role='main'>
+			<c-wiz>
+				<div class='{style.main}'>
+					<div class='{style.mainDescript}'>当我们检测到您的帐号中存在异常活动或者当您不慎无法访问自己的帐号时，我们会使用辅助邮箱与您联系。
+					</div>
+				</div>
+				<div class='{style.container}'>
+					<div class='{style.container1}'>
+						<div class='{style.container2}'>
+							<div class='{style.context}'>
+								<span class='{style.context1}'>
+									<span class='{style.context2}'>wangyuchun@outlook.com</span>
+								</span>
+							</div>
+							<div role='button' class='{style.contextButton1}'>
+								<div class='{style.contextButton2}'>
+								<div class='{style.contextButton3}'>
+								<g:HTMLPanel>
+								<svg aria-hidden="true" focusable="false" viewBox="0 0 576 512">
+								<path fill="currentColor" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z" class="">
+								</path></svg>
+								</g:HTMLPanel>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c-wiz>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

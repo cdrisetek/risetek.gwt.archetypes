@@ -54,7 +54,7 @@ public class LogInOutActionHandler implements
 
 		info.setLogin(currentUser.isAuthenticated());
 		info.setUsername((String)currentUser.getPrincipal());
-		Set<String> roles = userManagement.allRoles.stream().filter(role -> currentUser.hasRole(role))
+		Set<String> roles = RbacConstant.roles.stream().filter(role -> currentUser.hasRole(role))
 				.collect(Collectors.toCollection(HashSet::new));
 		info.setRoles(roles);
 	

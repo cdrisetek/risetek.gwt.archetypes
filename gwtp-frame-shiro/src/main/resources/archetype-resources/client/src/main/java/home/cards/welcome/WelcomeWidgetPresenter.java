@@ -41,7 +41,7 @@ public class WelcomeWidgetPresenter extends PresenterWidget<WelcomeWidgetPresent
 		updateLoginInfoCard();
     }
 
-    void updateLoginInfoCard() {
+    private void updateLoginInfoCard() {
 		List<InfoItem> items = new Vector<>();
 		InfoItem item = new InfoItem();
 		item.infoText = "\u767b\u5f55\u72b6\u6001";

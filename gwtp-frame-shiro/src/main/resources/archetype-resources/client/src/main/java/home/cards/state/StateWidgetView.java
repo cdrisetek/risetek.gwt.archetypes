@@ -9,7 +9,7 @@ public class StateWidgetView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public StateWidgetView() {
-		label.setText("服务状态");
+		headLabel.setText("服务状态");
 		iconPanel.getElement().appendChild(Icons.serverIcon());
 		initWidget(getPanel());
 	}

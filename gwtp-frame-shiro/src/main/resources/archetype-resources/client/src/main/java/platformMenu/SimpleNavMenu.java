@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import ${package}.generator.IBuilderStamp;
 import ${package}.utils.Icons;
+import ${package}.utils.TagWrapBuilder;
 
 @Singleton
 public class SimpleNavMenu extends AbstractPlatformBarMenu {
@@ -65,23 +66,20 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 
 	@Override
 	public Panel getIcon() {
-		Panel placeholderButton = new UserComplexPanel("cfc-placeholder-button");
-        placeholderButton.setStyleName(style.pccConsoleNavButton());
-        
-        Panel cfcIcon = new UserComplexPanel("cfc-icon");
-        cfcIcon.setStyleName(style.cfcIcon(), true);
-        cfcIcon.setStyleName(style.ngStartInserted(), true);
-
-        Panel matIcon = new UserComplexPanel("mat-icon");
-        matIcon.setStyleName(style.matIcon());
-        matIcon.getElement().appendChild(Icons.matIcon());
-        
-        cfcIcon.add(matIcon);
-        
+		Panel matIcon = new TagWrapBuilder(Icons.matIcon(), style.matIcon())
+				            .addStyleName(style.matIcon())
+				            .build();
+		Panel cfcIcon = new TagWrapBuilder(matIcon, style.cfcIcon())
+				            .addStyleName(style.cfcIcon())
+				            .addStyleName(style.ngStartInserted())
+				            .build();
+		
         Button button = mkButton("\u5bfc\u822a\u83dc\u5355", cfcIcon.getElement());
         button.setStyleName(style.barButton());
         button.setStyleName(style.matIconButton(), true);
-        placeholderButton.add(button);
-    	return placeholderButton;
+    	
+    	return new TagWrapBuilder(button, style.pccConsoleNavButton())
+    			   .addStyleName(style.pccConsoleNavButton())
+    			   .build();
 	}
 }

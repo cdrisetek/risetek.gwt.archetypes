@@ -38,7 +38,7 @@ public class StateWidgetPresenter extends PresenterWidget<StateWidgetPresenter.M
 		updateStateInfoCard();
     }
 
-	void updateStateInfoCard() {
+	private void updateStateInfoCard() {
 		dispatcher.execute(new StateAction(), new AsyncCallback<GetResults<StateEntity>>() {
 
 			@Override

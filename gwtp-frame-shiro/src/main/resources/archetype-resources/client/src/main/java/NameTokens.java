@@ -9,4 +9,7 @@ public class NameTokens {
     public static final String login = "!Login";
     public static final String convert = "!Convert";
     public static final String help = "!Help";
+    public static final String security = "!Security";
+    public static final String updatePassword = "!UPassword";
+    public static final String updateEmail = "!UEmail";
 }

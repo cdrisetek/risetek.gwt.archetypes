@@ -251,14 +251,14 @@
     max-height: 100%;
 }
 
-cfc-tooltip-overlay.cfcTooltipOverlaySimple {
+cfcTooltipOverlay.cfcTooltipOverlaySimple {
     color: #fff;
     background: #757575;
     max-width: 320px;
     padding: 4px 8px;
 }
 
-cfc-tooltip-overlay {
+cfcTooltipOverlay {
     color: rgba(0,0,0,.66);
     font-family: "roboto";
     font-size: 12px;
@@ -389,7 +389,7 @@ cfc-tooltip-overlay {
 
 .navMenubottomContainer {
     margin:           2px;
-    height:           30px;
+    height:           35px;
     background-color: rgba(26, 115, 232, 0.9);
     color:            #fbfb20;
     text-align:       center;
@@ -399,7 +399,7 @@ cfc-tooltip-overlay {
 .copyright {
     height:      100%;
     font-size:   12px;
-    line-height:   30px;
+    line-height:   35px;
 }
 
 .menuItemTitle {

@@ -21,6 +21,9 @@
 
   <!-- Specify the app entry point class.                         -->
   <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+  
+  <set-configuration-property name="gwtp.bootstrapper" value="${package}.entry.MyBootstrapper" />
+
   <add-linker name="xsiframe"/>
   <set-configuration-property name="devModeRedirectEnabled" value="true"/>
 

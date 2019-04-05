@@ -1,20 +1,16 @@
 package ${package}.shiro;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.inject.Singleton;
+import ${package}.RbacConstant;
 
 @Singleton
 public class UserManagement {
-	public final List<String> allRoles = Stream.of("admin", "maintenance", "operator", "visitor", "developer").collect(Collectors.toCollection(ArrayList::new));
 
 	/*
 	 * Roles:
@@ -27,6 +23,12 @@ public class UserManagement {
 		String email;
 		String password;
 		Set<String> roles = new HashSet<String>();
+		
+		public UserInformation grant(String role) {
+			if(RbacConstant.isValidRole(role))
+				roles.add(role);
+			return this;
+		}
 	}
 
 	private final Map<String, UserInformation> users = new HashMap<>();
@@ -34,17 +36,13 @@ public class UserManagement {
 	public UserManagement() {
 		UserInformation userInfo = new UserInformation();
 		userInfo.password = "gamelan";
-		userInfo.roles.add("admin");
-		userInfo.roles.add("developer");
-		userInfo.roles.add("maintenance");
-		userInfo.roles.add("operator");
-		userInfo.roles.add("visitor");
+		userInfo.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor");
 		users.put("wangyc@risetek.com", userInfo);
 		
 		
 		userInfo = new UserInformation();
 		userInfo.password = "gamelan";
-		userInfo.roles.add("visitor");
+		userInfo.grant("visitor");
 		users.put("wangyc", userInfo);		
 	}
 	
@@ -70,5 +68,30 @@ public class UserManagement {
 		if(null != user)
 			return user.roles;
 		return null;
+	}
+	
+	public void updatePassword(String username, String newpassword) {
+		UserInformation user = users.get(username);
+		if(null == user)
+			return;
+		user.password = newpassword;
+	}
+	
+	public void updateEmail(String username, String newemail) {
+		UserInformation user = users.get(username);
+		if(null == user)
+			return;
+		user.email = newemail;
+	}
+	
+	public void updateSecurity(String username, Map<String, String> security) {
+		for(Entry<String, String> entry:security.entrySet()) {
+			if("password".equals(entry.getKey()))
+				updatePassword(username, entry.getValue());
+			else if("email".equals(entry.getKey()))
+				updateEmail(username, entry.getValue());
+			else
+				System.out.println("security: " + entry.getKey() + " not handler");
+		}
 	}
 }

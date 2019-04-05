@@ -18,6 +18,20 @@ public class Icons {
         return e;
     }-*/;
 
+    public static native Element arrowLeftIcon()
+    /*-{
+        var ns = "http://www.w3.org/2000/svg";
+        var e = document.createElementNS(ns, "svg");
+    	e.setAttribute("fill-rule", "evenodd");
+    	e.setAttribute("viewBox","0 0 24 24");
+    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
+    	e.setAttribute("focusable","false");
+    	
+        var p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "m12,4l1.41,1.41l-5.58,5.59l12.17,0l0,2l-12.17,0l5.58,5.59l-1.41,1.41l-8,-8l8,-8z");
+        e.appendChild(p);
+        return e;
+    }-*/;
 	
     public static native Element loginIcon()
     /*-{
@@ -266,6 +280,73 @@ public class Icons {
 		p = document.createElementNS(ns, "path");
         p.setAttribute("d", "M5 15.505V21h5v-7h2V7.077z");
         e.appendChild(p);
+        return e;
+    }-*/;
+
+    public static native Element eyeSlashIcon()
+    /*-{
+        var ns = "http://www.w3.org/2000/svg";
+        var e = document.createElementNS(ns, "svg");
+    	e.setAttribute("fill-rule", "evenodd");
+    	e.setAttribute("viewBox","0 0 24 24");
+    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
+    	e.setAttribute("focusable","false");
+		var p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M10.58,7.25l1.56,1.56c1.38,0.07,2.47,1.17,2.54,2.54"
+                          + "l1.56,1.56C16.4,12.47,16.5,12,16.5,11.5"
+                          + "C16.5,9.02,14.48,7,12,7 C11.5,7,11.03,7.1,10.58,7.25z");
+        e.appendChild(p);
+
+		p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M12,6c3.79,0,7.17,2.13,8.82,5.5c-0.64,1.32-1.56,2.44-2.66,3.33"
+                          + "l1.42,1.42c1.51-1.26,2.7-2.89,3.43-4.74 "
+                          + "C21.27,7.11,17,4,12,4c-1.4,0-2.73,0.25-3.98,0.7"
+                          + "L9.63,6.3C10.4,6.12,11.19,6,12,6z");
+        e.appendChild(p);
+
+		p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M16.43,15.93l-1.25-1.25l-1.27-1.27l-3.82-3.82L8.82,8.32"
+                          + "L7.57,7.07L6.09,5.59L3.31,2.81L1.89,4.22l2.53,2.53 "
+                          + "C2.92,8.02,1.73,9.64,1,11.5C2.73,15.89,7,19,12,19"
+                          + "c1.4,0,2.73-0.25,3.98-0.7l4.3,4.3l1.41-1.41l-3.78-3.78"
+                          + "L16.43,15.93z M11.86,14.19c-1.38-0.07-2.47-1.17-2.54-2.54"
+                          + "L11.86,14.19z M12,17c-3.79,0-7.17-2.13-8.82-5.5"
+                          + "c0.64-1.32,1.56-2.44,2.66-3.33 l1.91,1.91"
+                          + "C7.6,10.53,7.5,11,7.5,11.5"
+                          + "c0,2.48,2.02,4.5,4.5,4.5c0.5,0,0.97-0.1,1.42-0.25"
+                          + "l0.95,0.95C13.6,16.88,12.81,17,12,17z");
+        e.appendChild(p);
+
+        return e;
+    }-*/;
+
+    public static native Element eyeIcon()
+    /*-{
+        var ns = "http://www.w3.org/2000/svg";
+        var e = document.createElementNS(ns, "svg");
+    	e.setAttribute("fill-rule", "evenodd");
+    	e.setAttribute("viewBox","0 0 24 24");
+    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
+    	e.setAttribute("focusable","false");
+		var p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M12,7c-2.48,0-4.5,2.02-4.5,4.5S9.52,16,12,16"
+                          + "s4.5-2.02,4.5-4.5S14.48,7,12,7z M12,14.2"
+                          + "c-1.49,0-2.7-1.21-2.7-2.7 c0-1.49,1.21-2.7,2.7-2.7"
+                          + "s2.7,1.21,2.7,2.7C14.7,12.99,13.49,14.2,12,14.2z");
+        e.appendChild(p);
+
+   		p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M12,4C7,4,2.73,7.11,1,11.5C2.73,15.89,7,19,12,19"
+                          + "s9.27-3.11,11-7.5C21.27,7.11,17,4,12,4z M12,17 "
+                          + "c-3.79,0-7.17-2.13-8.82-5.5C4.83,8.13,8.21,6,12,6"
+                          + "s7.17,2.13,8.82,5.5C19.17,14.87,15.79,17,12,17z");
+        e.appendChild(p);
+
+   		p = document.createElementNS(ns, "path");
+        p.setAttribute("d", "M0,0h24v24H0V0z");
+		p.setAttribute("fill", "none");
+        e.appendChild(p);
+
         return e;
     }-*/;
 }
