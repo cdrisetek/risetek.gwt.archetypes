@@ -44,6 +44,13 @@ risetek.archetypes
 * 在另一个终端（窗口）中运行: `mvn jetty:run -pl server -am -Denv=dev` 或者：`mvn jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8080`，而不是gwt:codeserver的地址
 
+### 调试脚本
+	#!/bin/bash
+	set -e
+	mvn clean package
+	git-bash.exe -c "mvn jetty:run -pl server -am -Penv-dev" &
+	git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
+
 ### 增添新的Place
 * 实现一个Place的扩展
 * ${module}PlaceHistortMapper需要更新，在@WithTokenizers中引入新增的Place对应的class
