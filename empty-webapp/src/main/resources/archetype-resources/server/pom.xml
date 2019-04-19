@@ -12,6 +12,10 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <webappDirectory>${dollar}{project.build.directory}/${dollar}{project.build.finalName}</webappDirectory>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${dollar}{project.groupId}</groupId>
@@ -30,12 +34,15 @@
   </dependencies>
 
   <build>
+	<!-- Generate compiled stuff in the folder used for developing mode -->
+	<outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <configuration>
+            <skip>false</skip>
             <scanIntervalSeconds>1</scanIntervalSeconds>
             <webApp>
               <extraClasspath>${dollar}{basedir}/../${rootArtifactId}-shared/target/classes/</extraClasspath>
@@ -50,6 +57,32 @@
             <addWarDependenciesInClassloader>false</addWarDependenciesInClassloader>
             <path>/</path>
             <uriEncoding>UTF-8</uriEncoding>
+          </configuration>
+        </plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <versionRange>[1.2,)</versionRange>
+                    <goals>
+                      <goal>exec</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
           </configuration>
         </plugin>
       </plugins>
@@ -89,9 +122,10 @@
               <artifactId>jetty-maven-plugin</artifactId>
               <configuration>
                 <webApp>
+                  <descriptor>${dollar}{basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
                   <resourceBases>
                     <resourceBase>${dollar}{basedir}/src/main/webapp</resourceBase>
-                    <resourceBase>${dollar}{basedir}/../target/gwt/launcherDir/</resourceBase>
+                    <resourceBase>${dollar}{webappDirectory}</resourceBase>
                   </resourceBases>
                 </webApp>
               </configuration>
