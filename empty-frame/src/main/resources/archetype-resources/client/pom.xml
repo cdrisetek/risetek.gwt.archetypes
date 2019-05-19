@@ -17,6 +17,7 @@
       <groupId>${dollar}{project.groupId}</groupId>
       <artifactId>${rootArtifactId}-shared</artifactId>
       <version>${dollar}{project.version}</version>
+      <type>gwt-lib</type>
     </dependency>
     <dependency>
       <groupId>${dollar}{project.groupId}</groupId>

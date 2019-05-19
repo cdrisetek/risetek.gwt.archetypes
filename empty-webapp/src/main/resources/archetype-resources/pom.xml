@@ -21,14 +21,14 @@
       <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt</artifactId>
-        <version>${gwt.version}</version>
+        <version>${dollar}{gwt.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
        <groupId>com.google.gwt.inject</groupId>
        <artifactId>gin</artifactId>
-       <version>${gin.version}</version>
+       <version>${dollar}{gin.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>
@@ -55,14 +55,14 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
           <configuration>
-            <source>${jdk.version}</source>
-            <target>${jdk.version}</target>
+            <source>${dollar}{jdk.version}</source>
+            <target>${dollar}{jdk.version}</target>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>${jetty.version}</version>
+          <version>${dollar}{jetty.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
