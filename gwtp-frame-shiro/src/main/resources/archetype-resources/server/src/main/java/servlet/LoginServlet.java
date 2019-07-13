@@ -13,6 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendRedirect(req.getRequestURI().toString().replaceFirst("/login", "/#!Login"));
+		resp.sendRedirect(req.getRequestURI().toString().replaceFirst("/login", "/#/login"));
 	}
 }

@@ -13,6 +13,7 @@ import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.NameTokens;
 import ${package}.root.RootPresenter;
+import ${package}.home.cards.simple.SimpleWidgetPresenter;
 import ${package}.home.cards.state.StateWidgetPresenter;
 import ${package}.home.cards.welcome.WelcomeWidgetPresenter;
 
@@ -36,11 +37,13 @@ public class PagePresenter extends
 	public PagePresenter(final EventBus eventBus, final MyView view,
 			final WelcomeWidgetPresenter welcomeWidgetPresenter,
 			final StateWidgetPresenter stateWidgetPresenter,
+			final SimpleWidgetPresenter simpleWidgetPresenter,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
 
 		addToSlot(SLOT_CARD0, welcomeWidgetPresenter);
+		addToSlot(SLOT_CARD1, simpleWidgetPresenter);
 		addToSlot(SLOT_CARD2, stateWidgetPresenter);
 	}
 }

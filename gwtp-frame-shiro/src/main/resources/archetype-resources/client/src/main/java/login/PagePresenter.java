@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -30,16 +30,14 @@ public class PagePresenter extends
 	private final CurrentUser user;
     private final PlaceManager placeManager;
 	
-    @ProxyCodeSplit
+    @ProxyStandard
 	@NameToken(NameTokens.login)
     @NoGatekeeper
-	public interface MyProxy extends ProxyPlace<PagePresenter> {
-	}
+	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, PlaceManager placeManager, CurrentUser user) {
-		//super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		super(eventBus, view, proxy, RevealType.Root);
 		getView().setUiHandlers(this);
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
@@ -52,16 +50,12 @@ public class PagePresenter extends
 		user.Login(username, password, rememberme, c->getView().setStatus(status_loginfailed));
 	}
 	
-	private void gotoDefaultPlace() {
-		placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.home).build());
-	}
-
 	@Override
     protected void onReveal() {
 		if(!user.isLogin())
 			return;
 		GWT.log("force to home for user had login.");
-		gotoDefaultPlace();
+		placeManager.revealDefaultPlace();
     }
 	
 	@Override
@@ -69,9 +63,25 @@ public class PagePresenter extends
 		GWT.log("user status changed by login presenter");
 		if(user.isLogin()) {
 			GWT.log("user had login");
-			gotoDefaultPlace();
+			placeManager.revealDefaultPlace();
 		}
 		else
 			GWT.log("user is logout");
+	}
+
+	@Override
+	public void newAccount() {
+		PlaceRequest placeRequest = new PlaceRequest.Builder()
+				                        .with("continue", NameTokens.login)
+				                        .nameToken(NameTokens.newAcct).build();
+		placeManager.revealPlace(placeRequest);
+	}
+
+	@Override
+	public void resetPassword() {
+		PlaceRequest placeRequest = new PlaceRequest.Builder()
+                .with("continue", NameTokens.login)
+                .nameToken(NameTokens.resetPassword).build();
+		placeManager.revealPlace(placeRequest);
 	}
 }

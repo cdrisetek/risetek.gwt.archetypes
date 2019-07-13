@@ -12,7 +12,7 @@ public class PlatformMenuModule extends AbstractPresenterModule {
         		ViewImpl.class,
                 PagePresenter.MyProxy.class);
         
-        bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("LoginMenu")).to(SimpleLgoinMenu.class).in(Singleton.class);
+        bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("LoginMenu")).to(SimpleLoginMenu.class).in(Singleton.class);
         bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("NavgatorMenu")).to(SimpleNavMenu.class).in(Singleton.class);
         // bind(NavMenu.class).in(Singleton.class);
     }

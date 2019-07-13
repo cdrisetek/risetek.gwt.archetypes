@@ -20,12 +20,12 @@ import ${package}.utils.Icons;
 import ${package}.utils.TagWrapBuilder;
 
 @Singleton
-public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
+public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
 
 	private final CurrentUser user;
 	
 	@Inject
-	public SimpleLgoinMenu(CurrentUser user, EventBus eventBus) {
+	public SimpleLoginMenu(CurrentUser user, EventBus eventBus) {
 		this.user = user;
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
 	}
@@ -33,7 +33,7 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 	
 	@Override
 	public Panel getIcon() {
-        Panel matIcon = new TagWrapBuilder(Icons.loginIcon(), style.matIcon())
+        Panel matIcon = new TagWrapBuilder(new Icons.Login(), style.matIcon())
 		        .addStyleName(style.matIcon())
 		        .build();
 
@@ -87,13 +87,13 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 		
 		SimplePanel accountIcon = new SimplePanel();
 		accountIcon.setStyleName(style.largeAccountIcon());
-		accountIcon.getElement().appendChild(Icons.loginIcon());
+		accountIcon.add(new Icons.Login());
 
 		imgPanel.add(accountIcon);
 		accountChooserDetail.add(imgPanel);
 		
 		accountChooserMenu.add(accountChooserDetail);
-		accountChooserDetail.add(new Label(user.getAuthorityInfo().getUsername()));
+		accountChooserDetail.add(new Label((String)user.getAuthorityInfo().getPrincipal()));
 
 		FlowPanel accountchooserButton = new FlowPanel();
 		accountchooserButton.setStyleName(style.cfcAccountchooserButtons(), true);
@@ -123,7 +123,7 @@ public class SimpleLgoinMenu extends AbstractPlatformBarMenu implements UserRole
 	public String getTip() {
 
 		if(user.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + user.getAuthorityInfo().getUsername();
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + (String)user.getAuthorityInfo().getPrincipal();
 
 		return "\u767b\u5f55\u7528\u6237";
 	}

@@ -30,11 +30,11 @@
 	float:				left;
 	border: 			0px;
 	outline:			none;
-	height:				100%;
+	height:				sub(INTERACTIVE_HEIGHT, 2px);
 	font-size: 			20px;
 	color: 				COLOR_TONE;
 	background-color:	#f4f6f8;
-	width:				sub(INTERACTIVE_WIDHT, LOGIN_INPUTBOX_ICON_WIDTH, BOX_RADIUS);
+	width:				sub(INTERACTIVE_WIDHT, LOGIN_INPUTBOX_ICON_WIDTH, BOX_RADIUS, 1px);
 }
 
 .background {
@@ -75,7 +75,7 @@
 	background-color:#f4f6f8;
 	display:		inline-flex;
 	margin:			0px;
-	height:			INTERACTIVE_HEIGHT;
+	height:			add(INTERACTIVE_HEIGHT, 2px);
     width:          INTERACTIVE_WIDHT;
 	border-radius:	BOX_RADIUS;
 }
@@ -85,18 +85,18 @@
 	display:		inline;
 	width:			LOGIN_INPUTBOX_ICON_WIDTH;
 	height:			100%;
-	padding-right:  10px 0px;
+	padding:        0px 10px;
 	text-align:		center;
 }
 
 .box_icon_img {
-	margin:			2px 0px;
+	margin:			4px 0px;
 }
 
 .box_input {
 	float:			left;
 	display:		inline;
-	margin:			0px;
+	margin:			1px;
 	height:			100%;
 	width:			LOGIN_INPUTBOX_WIDTH;
 }

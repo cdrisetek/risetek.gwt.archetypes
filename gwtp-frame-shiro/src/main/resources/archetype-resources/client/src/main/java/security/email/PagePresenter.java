@@ -1,5 +1,6 @@
 package ${package}.security.email;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -44,12 +45,22 @@ public class PagePresenter extends
 
 	@Override
 	public void changeEmail(String newPassword) {
-		user.changeEmail(newPassword);
+		user.changeEmail(newPassword,
+				c->{
+					GWT.log("change email:" +c);
+					goContinue();
+					}
+				);
 	}
 
 	@Override
-	public void goBack() {
-		String backto = placeManager.getCurrentPlaceRequest().getParameter("back", NameTokens.home);
+	public String getOriginEmail() {
+		return user.getAttribute("email");
+	}
+
+	@Override
+	public void goContinue() {
+		String backto = placeManager.getCurrentPlaceRequest().getParameter("continue", NameTokens.home);
 		PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(backto).build();
 		placeManager.revealPlace(placeRequest);
 	}

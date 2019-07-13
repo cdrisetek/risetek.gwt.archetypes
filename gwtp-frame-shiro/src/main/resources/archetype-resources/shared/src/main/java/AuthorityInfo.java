@@ -1,5 +1,6 @@
 package ${package};
 
+import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -29,15 +30,15 @@ public class AuthorityInfo implements IsSerializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getEmail() {
-		return email;
+	public Map<String, String> getAttribute() {
+		return attribute;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAttribute(Map<String, String> attribute) {
+		this.attribute = attribute;
 	}
 	private Set<String> roles;
+	private Map<String, String> attribute;
 	private String realm;
 	private boolean isLogin;
 	private String username;
-	private String email;
 }

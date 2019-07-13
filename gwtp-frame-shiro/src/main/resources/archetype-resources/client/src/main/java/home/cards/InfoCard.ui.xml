@@ -1,0 +1,29 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<ui:style gss="true" src="style.gss" type="com.risetek.home.cards.InfoCard.MyStyle" />
+
+	<g:HTMLPanel styleName="{style.startInserted}">
+			<div class="{style.startInserted} {style.infoCard}">
+				<div class="{style.infoCardStyling} {style.startInserted}">
+					<div class="{style.infoCardTopRight} {style.startInserted}"/>
+					<div class="{style.infoCardHeader}">
+						<div class="{style.infoCardItemLeftGutter}">
+							<div class="{style.matIcon}" ui:field="iconPanel"/>
+						</div>
+						<div class="{style.headContent}">
+							<div class="{style.headText}" ui:field="headLabel"/>
+						</div>
+					</div>
+					<div class="{style.cfcLoader}">
+						<g:FlowPanel
+							styleName="{style.loaderContent} {style.startInserted}"
+							ui:field="loaderContent">
+							<g:FlowPanel styleName="{style.cardBodyGroup}"
+								ui:field="cardBodyGroup" />
+						</g:FlowPanel>
+					</div>
+				</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

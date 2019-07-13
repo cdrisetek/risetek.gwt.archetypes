@@ -211,7 +211,7 @@
 }
 
 .commitTipsTitle {
-    margin-bottom: 5px;
+    margin: 15px 0px 5px 0px;
 }
 
 .commitTipsTitleContent {
@@ -278,7 +278,6 @@
     -webkit-tap-highlight-color: transparent;
     display: inline-block;
     outline: none;
-    padding-bottom: 8px;
     width: 200px;
 }
 
@@ -406,7 +405,14 @@
 }
 
 .inputControlPad {
-    min-height: 24px;
+/*    min-height: 24px; */
+    color: #d50000;
+    webkit-tap-highlight-color: transparent;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    font: 400 13px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    min-height: 16px;
+/*    padding-top: 8px; */
 }
 
 .buttonEye {

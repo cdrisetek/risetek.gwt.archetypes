@@ -2,11 +2,16 @@ package ${package}.home.cards;
 
 import java.util.List;
 
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.gwtplatform.mvp.client.UiHandlers;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -14,64 +19,32 @@ import ${package}.utils.Icons;
 
 public class InfoCard<Ui extends UiHandlers> extends ViewWithUiHandlers<Ui>{
 
-	private static final StyleBundle.Style style = StyleBundle.resources.style();
+	interface MyUiBinder extends UiBinder<HTMLPanel, InfoCard<?>> {}
+	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	protected final Label headLabel = new Label();
-	private final FlowPanel cardBodyGroup = new FlowPanel();
-	protected final SimplePanel iconPanel = new SimplePanel();
-	private final FlowPanel loaderContent = new FlowPanel();
-	private final SimplePanel cardPanel = new SimplePanel();
-
-	public Panel getPanel() {
-		return cardPanel;
-	}
-
-	public InfoCard() {
-		cardPanel.setStyleName(style.startInserted());
-		SimplePanel infoCard = new SimplePanel();
-		cardPanel.add(infoCard);
-		infoCard.addStyleName(style.startInserted());
-		infoCard.addStyleName(style.infoCard());
-		FlowPanel infoCardStyling = new FlowPanel();
-		infoCard.add(infoCardStyling);
-		infoCardStyling.addStyleName(style.infoCardStyling());
-		infoCardStyling.addStyleName(style.startInserted());
-		
-		// Top Right
-		SimplePanel topRight = new SimplePanel();
-		infoCardStyling.add(topRight);
-		topRight.addStyleName(style.infoCardTopRight());
-		topRight.addStyleName(style.startInserted());
-		
-		// Card Header
-		FlowPanel cardHeader = new FlowPanel();
-		infoCardStyling.add(cardHeader);
-		cardHeader.addStyleName(style.infoCardHeader());
-		SimplePanel gutter = new SimplePanel();
-		gutter.addStyleName(style.infoCardItemLeftGutter());
-		cardHeader.add(gutter);
-		//   HeaderIcon
-		gutter.add(iconPanel);
-		iconPanel.addStyleName(style.matIcon());
-		
-		FlowPanel headContent = new FlowPanel();
-		cardHeader.add(headContent);
-		headContent.addStyleName(style.headContent());
-		headContent.add(headLabel);
-		headLabel.setStyleName(style.headText());
-		
-		// Card content
-		SimplePanel cardLoad = new SimplePanel();
-		infoCardStyling.add(cardLoad);
-		cardLoad.addStyleName(style.cfcLoader());
-		cardLoad.add(loaderContent);
-		loaderContent.addStyleName(style.loaderContent());
-		loaderContent.addStyleName(style.startInserted());
-		
-		loaderContent.add(cardBodyGroup);
-		cardBodyGroup.addStyleName(style.cardBodyGroup());
+	interface MyStyle extends CssResource {
+		String infoCardItem();
+		String startInserted();
+		String infoCardItemLeftGutter();
+		String infoCardItemContentLeft();
+		String InfoCardItemContent();
+		String matIcon();
+		String cardRedirect();
+		String infoTextLine();
+		String cardInfoText();
+		String cardInfoTextSecondary();
 	}
 	
+	@UiField MyStyle style;
+	@UiField public DivElement headLabel;
+	@UiField FlowPanel cardBodyGroup;
+	@UiField public DivElement iconPanel;
+	@UiField FlowPanel loaderContent;
+
+	public InfoCard() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
+
 	public InfoCard<Ui> updateInfoItems(List<InfoItem> items) {
 		cardBodyGroup.clear();
 
@@ -135,7 +108,7 @@ public class InfoCard<Ui extends UiHandlers> extends ViewWithUiHandlers<Ui>{
 			Element icon = DOM.createDiv();
 			icon.setClassName(style.matIcon());
 			span.appendChild(icon);
-			icon.appendChild(Icons.arrowIcon());
+			icon.appendChild(new Icons.ArrowRight().getElement());
 
 			anchor.appendChild(span);
 			span.setClassName(style.infoCardItemLeftGutter());

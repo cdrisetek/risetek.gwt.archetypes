@@ -7,13 +7,23 @@ import ${package}.login.LoginWidget.LoginSubmitHandle;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
 
-	private final LoginWidget loginWidget = new LoginWidget(true, new LoginSubmitHandle(){
+	private final LoginWidget loginWidget = new LoginWidget(true, true, new LoginSubmitHandle(){
 
 		@Override
 		public void onSubmit(String username, String password, boolean rememberme) {
 			getUiHandlers().Login(username, password, rememberme);
+		}
+
+		@Override
+		public void onNewAccount() {
+			getUiHandlers().newAccount();
+		}
+
+		@Override
+		public void onResetPassword() {
+			getUiHandlers().resetPassword();
 		}});
-    
+
 	private final StyleLogin.Style style = StyleLogin.resources.style();
 	
     @Inject

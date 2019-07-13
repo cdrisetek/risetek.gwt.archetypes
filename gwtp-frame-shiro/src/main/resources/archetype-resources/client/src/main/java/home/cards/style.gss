@@ -68,13 +68,6 @@
     flex-basis: 296px;
     }
 
-.infoCardColumn .infoCard {
-    max-width: inherit;
-    min-width: inherit;
-    flex-basis: inherit;
-    width: 100%;
-    }
-
 .infoCard {
     display: flex;
     flex-direction: column;
@@ -83,10 +76,7 @@
     position: relative;
     flex-grow: 1;
     flex-shrink: 1;
-    width: 460px;
-    max-width: 460px;
-    min-width: 296px;
-    flex-basis: 296px;
+    width: 100%;
     transition-property: box-shadow;
     transition-duration: .25s;
     transition-timing-function: linear;

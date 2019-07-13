@@ -44,12 +44,15 @@ public class PagePresenter extends
 
 	@Override
 	public void changePassword(String newPassword) {
-		user.changePassword(newPassword);
+		user.changePassword(newPassword, c->{
+			if(c.equals("success"))
+				goContinue();
+		});
 	}
 
 	@Override
-	public void goBack() {
-		String backto = placeManager.getCurrentPlaceRequest().getParameter("back", NameTokens.home);
+	public void goContinue() {
+		String backto = placeManager.getCurrentPlaceRequest().getParameter("continue", NameTokens.home);
 		PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(backto).build();
 		placeManager.revealPlace(placeRequest);
 	}

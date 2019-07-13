@@ -3,6 +3,7 @@ package ${package}.entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.gwt.core.client.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Bootstrapper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -33,6 +34,6 @@ public class MyBootstrapper implements Bootstrapper {
     @Override
     public void onBootstrap() {
     	// TODO: ErrorPlace
-    	user.Login(null, null, false, c->{placeManager.revealCurrentPlace();});
+    	user.sync(c->placeManager.revealCurrentPlace(), failure->GWT.log("sync account failure"));
     }
 }

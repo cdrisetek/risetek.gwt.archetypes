@@ -3,12 +3,17 @@ package ${package}.security;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.inject.Inject;
@@ -19,32 +24,36 @@ import ${package}.utils.TagWrapBuilder;
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		PagePresenter.MyView {
 
-	private final StyleBundle.Style style = StyleBundle.resources.style();
-	private final FlowPanel listPanel;
+	interface MyStyle extends CssResource {
+		String anchorStyle();
+		String anchorStyleInside();
+		String anchorKeyValue();
+		String anchorArrow();
+		String anchorKey();
+		String anchorKeyH();
+		String anchorValue();
+		String anchorValueH();
+		String infoPice();
+		String article();
+		String articleBody();
+		String articleTitle();
+		String articleTitleHeader();
+		String separator();
+		String separatorBorder();
+	}
+	
+	interface MyUiBinder extends UiBinder<HTMLPanel, PageView> {}
+	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	
+	@UiField MyStyle style;
+	@UiField Panel listPanel;
 	
 	@Inject
 	public PageView() {
-		style.ensureInjected();
-		SimplePanel container = new SimplePanel();
-		container.setStyleName(style.containerStyle());
-		initWidget(container);
-		listPanel = new FlowPanel();
-		listPanel.addStyleName(style.infoLists());
-		container.add(listPanel);
-		Element header = Document.get().createElement("header");
-		header.addClassName(style.header());
-		Element e = Document.get().createHElement(1);
-		e.addClassName(style.headerTitle());
-		e.setInnerHTML("账户信息");
-		header.appendChild(e);
-		e = Document.get().createDivElement();
-		e.addClassName(style.headerDescript());
-		e.setInnerHTML("您在服务中使用的基本信息");
-		header.appendChild(e);
-		listPanel.getElement().appendChild(header);
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	private Panel anchorPanel(String key, String value) {
+	private Panel anchorPanel(String key, Map<String, String> value) {
 		style.ensureInjected();
 		SimplePanel panel = new SimplePanel();
 		panel.addStyleName(style.anchorStyle());
@@ -55,8 +64,11 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		FlowPanel flow = new FlowPanel();
 		inside.add(flow);
 		flow.addStyleName(style.anchorKeyValue());
-		Panel p = new TagWrapBuilder(Icons.arrowIcon(), "figure").addStyleName(style.anchorArrow()).build();
-		inside.add(p);
+		
+		if(value.get("link") != null) {
+			Panel p = new TagWrapBuilder(new Icons.ArrowRight(), "figure").addStyleName(style.anchorArrow()).build();
+			inside.add(p);
+		}
 
 		DivElement keyDiv = Document.get().createDivElement();
 		keyDiv.addClassName(style.anchorKey());
@@ -70,7 +82,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		flow.getElement().appendChild(e);
 		Element v = Document.get().createDivElement();
 		v.addClassName(style.anchorValueH());
-		v.setInnerHTML(value);
+		v.setInnerHTML(value.get("value"));
 		e.appendChild(v);
 		
 		FlowPanel infoItemPanel = new FlowPanel();
@@ -86,14 +98,14 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		infoItemPanel.addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				getUiHandlers().update(key);
+				getUiHandlers().update(value.get("link"));
 			}
 
 		}, ClickEvent.getType());
 		return infoItemPanel;
 	}
 	
-	private Panel infoPanel(String infoTitle, Map<String, String> info) {
+	private Panel infoPanel(String infoTitle, Map<String, Map<String, String>> info) {
 		style.ensureInjected();
 		SimplePanel panel = new SimplePanel();
 		panel.addStyleName(style.article());
@@ -108,23 +120,21 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		e.setInnerHTML(infoTitle);
 		articleTitle.getElement().appendChild(e);
 		
-		for(Entry<String, String> entry:info.entrySet())
+		for(Entry<String, Map<String, String>> entry:info.entrySet())
 			articleBody.add(anchorPanel(entry.getKey(), entry.getValue()));
 
 		return panel;
 	}
 	
-	private Panel personInfo() {
-		return infoPanel("个人资料", getUiHandlers().getSecurityInformation());
-	}
-
-	private Panel contactInfo() {
-		return infoPanel("联系信息", getUiHandlers().getContactInformation());
+	@Override
+	public void onAttach() {
+		showInformation();
 	}
 	
 	@Override
 	public void showInformation() {
-		listPanel.add(personInfo());
-		listPanel.add(contactInfo());
+		listPanel.clear();
+		listPanel.add(infoPanel("个人资料", getUiHandlers().getSecurityInformation()));
+		listPanel.add(infoPanel("联系信息", getUiHandlers().getContactInformation()));
 	}
 }

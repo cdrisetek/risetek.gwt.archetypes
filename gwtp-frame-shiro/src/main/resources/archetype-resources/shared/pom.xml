@@ -25,6 +25,10 @@
       <artifactId>gwtp-dispatch-rpc-server-guice</artifactId>
 	</dependency>
     <dependency>
+      <groupId>com.gwtplatform</groupId>
+      <artifactId>gwtp-processors</artifactId>
+	</dependency>
+    <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
       <scope>provided</scope>

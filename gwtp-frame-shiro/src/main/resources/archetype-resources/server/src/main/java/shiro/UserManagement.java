@@ -20,13 +20,18 @@ public class UserManagement {
 	 * maintenance
 	 */
 	public class UserInformation {
-		String email;
+		public String email;
 		String password;
-		Set<String> roles = new HashSet<String>();
+		private Set<String> roles = new HashSet<String>();
 		
 		public UserInformation grant(String role) {
 			if(RbacConstant.isValidRole(role))
 				roles.add(role);
+			return this;
+		}
+
+		public UserInformation email(String email) {
+			this.email = email;
 			return this;
 		}
 	}
@@ -36,13 +41,13 @@ public class UserManagement {
 	public UserManagement() {
 		UserInformation userInfo = new UserInformation();
 		userInfo.password = "gamelan";
-		userInfo.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor");
+		userInfo.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor").email("wangyc@risetek.com");
 		users.put("wangyc@risetek.com", userInfo);
 		
 		
 		userInfo = new UserInformation();
 		userInfo.password = "gamelan";
-		userInfo.grant("visitor");
+		userInfo.grant("visitor").email("wangyc@risetek.com");
 		users.put("wangyc", userInfo);		
 	}
 	
@@ -70,6 +75,8 @@ public class UserManagement {
 		return null;
 	}
 	
+	// TODO: password email etc. should be managed as key-value attributes.
+	
 	public void updatePassword(String username, String newpassword) {
 		UserInformation user = users.get(username);
 		if(null == user)
@@ -90,8 +97,6 @@ public class UserManagement {
 				updatePassword(username, entry.getValue());
 			else if("email".equals(entry.getKey()))
 				updateEmail(username, entry.getValue());
-			else
-				System.out.println("security: " + entry.getKey() + " not handler");
 		}
 	}
 }

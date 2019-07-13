@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<ui:style gss="true" src="style.gss"
+		type='com.risetek.home.cards.InfoCardContainer.MyStyle' />
+		
+		<g:HTMLPanel styleName="{style.panelBody} {style.panelBodyScrollable}">
+		<div class="{style.panelBodyScrollContent} {style.startInserted}">
+			<g:HTMLPanel styleName="{style.infoCardContainer} {style.infoCardContainerCenter} {style.infoCardContainerCenterNoWrap} {style.startInserted}"
+				ui:field="container" />
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

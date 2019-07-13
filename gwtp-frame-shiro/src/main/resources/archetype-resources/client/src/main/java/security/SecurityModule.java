@@ -2,7 +2,9 @@ package ${package}.security;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import ${package}.security.email.UpdateEmailModule;
+import ${package}.security.newacct.NewAcctModule;
 import ${package}.security.password.UpdatePasswordModule;
+import ${package}.security.resetpassword.ResetPasswordModule;
 
 public class SecurityModule extends AbstractPresenterModule {
     @Override
@@ -12,5 +14,7 @@ public class SecurityModule extends AbstractPresenterModule {
         
     	install(new UpdatePasswordModule());
     	install(new UpdateEmailModule());
+    	install(new NewAcctModule());
+    	install(new ResetPasswordModule());
     }
 }

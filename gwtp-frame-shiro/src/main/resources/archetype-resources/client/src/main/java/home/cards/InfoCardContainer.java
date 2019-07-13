@@ -1,12 +1,33 @@
 package ${package}.home.cards;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public class InfoCardContainer {
-	private static final StyleBundle.Style style = StyleBundle.resources.style();
+	interface MyStyle extends CssResource {
+		public String infoCardContainer();
+		public String infoCardContainerCenter();
+		public String infoCardContainerCenterNoWrap();
+		public String startInserted();
+		public String panelBody();
+		public String panelBodyScrollable();
+		public String panelBodyScrollContent();
+		public String infoCardColumn();
+		public String infoCardColumnWidth1();
+	}
+
+	interface MyUiBinder extends UiBinder<HTMLPanel, InfoCardContainer> {}
+	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
+	@UiField static MyStyle style;
+	@UiField HTMLPanel container;
+
 	private final FlowPanel[] column = new FlowPanel[3];
 	
 	private Panel parent;
@@ -15,24 +36,8 @@ public class InfoCardContainer {
 		return this;
 	}
 	public InfoCardContainer build() {
+		parent.add(uiBinder.createAndBindUi(this));
 		style.ensureInjected();
-		FlowPanel container = new FlowPanel();
-		container.addStyleName(style.infoCardContainer());
-		container.addStyleName(style.infoCardContainerCenter());
-		container.addStyleName(style.infoCardContainerCenterNoWrap());
-		container.addStyleName(style.startInserted());
-		
-		SimplePanel panelBody = new SimplePanel();
-		panelBody.addStyleName(style.panelBody());
-		panelBody.addStyleName(style.panelBodyScrollable());
-		
-		FlowPanel scrollContent = new FlowPanel();
-		panelBody.add(scrollContent);
-		scrollContent.addStyleName(style.panelBodyScrollContent());
-		scrollContent.addStyleName(style.startInserted());
-		scrollContent.add(container);
-		parent.add(panelBody);
-		
 		column[0] = new InfoCardContainer.ColumnBuilder();
 		container.add(column[0]);
 		column[1] = new InfoCardContainer.ColumnBuilder();

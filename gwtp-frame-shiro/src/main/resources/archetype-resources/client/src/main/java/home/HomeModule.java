@@ -1,10 +1,12 @@
 package ${package}.home;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import com.risetek.home.cards.state.StateWidgetPresenter;
-import com.risetek.home.cards.state.StateWidgetView;
-import com.risetek.home.cards.welcome.WelcomeWidgetPresenter;
-import com.risetek.home.cards.welcome.WelcomeWidgetView;
+import ${package}.home.cards.simple.SimpleWidgetPresenter;
+import ${package}.home.cards.simple.SimpleWidgetView;
+import ${package}.home.cards.state.StateWidgetPresenter;
+import ${package}.home.cards.state.StateWidgetView;
+import ${package}.home.cards.welcome.WelcomeWidgetPresenter;
+import ${package}.home.cards.welcome.WelcomeWidgetView;
 
 public class HomeModule extends AbstractPresenterModule {
     @Override
@@ -17,5 +19,9 @@ public class HomeModule extends AbstractPresenterModule {
 
     	bindSingletonPresenterWidget(StateWidgetPresenter.class,
     			StateWidgetPresenter.MyView.class, StateWidgetView.class);
+
+    	bindSingletonPresenterWidget(SimpleWidgetPresenter.class,
+    			SimpleWidgetPresenter.MyView.class, SimpleWidgetView.class);
+
     }
 }

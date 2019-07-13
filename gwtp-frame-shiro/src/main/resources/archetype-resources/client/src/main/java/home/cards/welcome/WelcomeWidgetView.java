@@ -9,8 +9,7 @@ public class WelcomeWidgetView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public WelcomeWidgetView() {
-		headLabel.setText("欢迎使用");
-		iconPanel.getElement().appendChild(Icons.loginIcon());
-		initWidget(getPanel());
+		headLabel.setInnerHTML("欢迎使用");
+		iconPanel.appendChild(new Icons.Login().getElement());
 	}
 }

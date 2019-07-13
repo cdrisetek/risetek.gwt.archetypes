@@ -1,15 +1,15 @@
 package ${package}.security;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -27,7 +27,7 @@ public class PagePresenter extends
 		public void showInformation();
 	}
 
-	@ProxyStandard
+	@ProxyCodeSplit
 	@NameToken(NameTokens.security)
 	@UseGatekeeper(LoggedInGatekeeper.class)
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
@@ -43,42 +43,42 @@ public class PagePresenter extends
 		this.user = user;
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
-		getView().showInformation();
 	}
 
 	@Override
-	public HashMap<String, String> getSecurityInformation() {
-		HashMap<String, String> infomation = new HashMap<>();
-		infomation.put("名称", user.getAuthorityInfo().getUsername());
-		infomation.put("密码", "******");
+	public HashMap<String, Map<String, String>> getSecurityInformation() {
+		HashMap<String, String> infoMap = new HashMap<>();
+		infoMap.put("value", (String)user.getAuthorityInfo().getPrincipal());
+		HashMap<String, Map<String, String>> infomation = new HashMap<>();
+		infomation.put("名称", infoMap);
+
+		infoMap = new HashMap<>();
+		infoMap.put("value", "******");
+		infoMap.put("link", NameTokens.updatePassword);
+		infomation.put("密码", infoMap);
 		return infomation;
 	}
 
 	@Override
-	public HashMap<String, String> getContactInformation() {
-		HashMap<String, String> infomation = new HashMap<>();
-		infomation.put("电子邮件", user.getAuthorityInfo().getEmail());
+	public HashMap<String, Map<String, String>> getContactInformation() {
+		HashMap<String, String> infoMap = new HashMap<>();
+		infoMap.put("value", user.getAttribute("email"));
+		infoMap.put("link", NameTokens.updateEmail);
+
+		HashMap<String, Map<String, String>> infomation = new HashMap<>();
+		infomation.put("电子邮件", infoMap);
 		return infomation;
 	}
 
 	@Override
 	public void update(String name) {
-		if("名称".equals(name))
-			GWT.log("update account name");
-		else if("密码".equals(name)) {
-			PlaceRequest placeRequest = new PlaceRequest.Builder()
-					                        .nameToken(NameTokens.updatePassword)
-					                        .with("back", NameTokens.security)
-					                        .build();
-			placeManager.revealPlace(placeRequest);
-		} else if("电子邮件".equals(name)) {
-			GWT.log("update email");
-			PlaceRequest placeRequest = new PlaceRequest.Builder()
-					                        .nameToken(NameTokens.updateEmail)
-					                        .with("email", "value")
-					                        .with("back", NameTokens.security)
-					                        .build();
-			placeManager.revealPlace(placeRequest);
-		}
+		if(null == name)
+			return;
+
+		PlaceRequest placeRequest = new PlaceRequest.Builder()
+                .nameToken(name)
+                .with("continue", NameTokens.security)
+                .build();
+		placeManager.revealPlace(placeRequest);
 	}
 }
