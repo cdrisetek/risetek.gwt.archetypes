@@ -1,79 +1,91 @@
 risetek.archetypes
 ====================
 * This is from: https://github.com/tbroyer/gwt-maven-archetypes
-* ÔÚ´Ë±í´ï¶ÔÔ­×÷ÕßµÄ¾´Òâ£¬¹¹Ôì±¾ÏîÄ¿µÄÄ¿µÄÖ»ÊÇÏ£ÍûÓĞÒ»¸ö×Ô¼ºĞèÒªµÄ×éºÏ
+* åœ¨æ­¤è¡¨è¾¾å¯¹åŸä½œè€…çš„æ•¬æ„ï¼Œæ„é€ æœ¬é¡¹ç›®çš„ç›®çš„åªæ˜¯å¸Œæœ›æœ‰ä¸€ä¸ªè‡ªå·±éœ€è¦çš„ç»„åˆ
 
-### ÏÂÔØ²¢¹¹Ôì±¾maven°üµ½±¾µØrepoÖĞ
+### ä¸‹è½½å¹¶æ„é€ æœ¬mavenåŒ…åˆ°æœ¬åœ°repoä¸­
 * git clone https://github.com/kerongbaby/risetek.archetypes.git
 * cd risetek.archetypes && mvn clean install
 
-### ¹¹ÔìÏîÄ¿£¬È±Ê¡moduleÃû³ÆÎªApp
-	mvn archetype:generate -DarchetypeCatalog=local \
-	 -DarchetypeGroupId=com.risetek.archetypes \
-	 -DarchetypeVersion=HEAD-SNAPSHOT \
-	 -DgroupId=com.risetek \
-	 -DarchetypeArtifactId=modular-webapp
+### æ„é€ é¡¹ç›®ï¼Œç¼ºçœmoduleåç§°ä¸ºApp
+```
+mvn archetype:generate -DarchetypeCatalog=local \
+ -DarchetypeGroupId=com.risetek.archetypes \
+ -DarchetypeVersion=HEAD-SNAPSHOT \
+ -DgroupId=com.risetek \
+ -DarchetypeArtifactId=modular-webapp
+```
 
-### ¹¹ÔìÏîÄ¿£¬×Ô¶¨ÒåmoduleÃû³Æ£¬±ÈÈçdemo
-	mvn archetype:generate -DarchetypeCatalog=local \
-	 -DarchetypeGroupId=com.risetek.archetypes \
-	 -DarchetypeVersion=HEAD-SNAPSHOT \
-	 -DgroupId=com.risetek \
-	 -DarchetypeArtifactId=modular-webapp \
-	 -Dmodule=demo
+### æ„é€ é¡¹ç›®ï¼Œè‡ªå®šä¹‰moduleåç§°ï¼Œæ¯”å¦‚demo
+```
+mvn archetype:generate -DarchetypeCatalog=local \
+ -DarchetypeGroupId=com.risetek.archetypes \
+ -DarchetypeVersion=HEAD-SNAPSHOT \
+ -DgroupId=com.risetek \
+ -DarchetypeArtifactId=modular-webapp \
+ -Dmodule=demo
+```
 
 ### archtypes
 * modular-webapp:
-* empty-webapp: GWT»ù±¾½çÃæ£¬ÒÔ¼°RPCÊµÏÖµÄGreeting·şÎñ
+* empty-webapp: GWTåŸºæœ¬ç•Œé¢ï¼Œä»¥åŠRPCå®ç°çš„GreetingæœåŠ¡
 * empty-frame: requestFactory
 * empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
 
 
-### ËµÃ÷
-* Èç¹ûserver´úÂëĞŞ¸Äºó£¬jettyÃ»ÓĞÖØĞÂ¿ªÊ¼£¨restart£©,Çë¼ì²éEclispeµÄÉèÖÃ£¬Project->Build AutomaticallyÓ¦¸ÃÎªÑ¡ÖĞ¡£
-* -DarchetypeCatalog=local²ÎÊıÏŞÖÆÔÚ±¾µØËÑÑ°archetypeGroupId£¬Òò´Ë²»»á°ÑÊ±¼äÀË·ÑÔÚ²»´æÔÚµÄÍøÂç×ÊÔ´ËÑÑ°ÉÏ¡£
+### è¯´æ˜
+* å¦‚æœserverä»£ç ä¿®æ”¹åï¼Œjettyæ²¡æœ‰é‡æ–°å¼€å§‹ï¼ˆrestartï¼‰,è¯·æ£€æŸ¥Eclispeçš„è®¾ç½®ï¼ŒProject->Build Automaticallyåº”è¯¥ä¸ºé€‰ä¸­ã€‚
+* -DarchetypeCatalog=localå‚æ•°é™åˆ¶åœ¨æœ¬åœ°æœå¯»archetypeGroupIdï¼Œå› æ­¤ä¸ä¼šæŠŠæ—¶é—´æµªè´¹åœ¨ä¸å­˜åœ¨çš„ç½‘ç»œèµ„æºæœå¯»ä¸Šã€‚
+* ç”±äºGWTPä½¿ç”¨çš„æ˜¯GINï¼Œå› æ­¤æ²¡æœ‰åœ¨daggerä¸Šä¸‹åŠŸå¤«ã€‚
 
-### ÏîÄ¿¹¹Ôì
-* ÔÚeclipseÏÂimport-> Maven -> Existing Maven Projects£¬¿ÉÒÔÍ¬Ê±½«Èı¸öÏîÄ¿ÄÉÈëeclipse¼¯³É¿ª·¢»·¾³ÖĞ¡£
-* Ò²¿ÉÒÔÔÚÉú³ÉµÄÏîÄ¿Ä¿Â¼ÏÂÖ´ĞĞ£ºmvn eclipse:eclipse¹¹ÔìeclipseÏîÄ¿ÎÄ¼ş.project
+### é¡¹ç›®æ„é€ 
+* åœ¨eclipseä¸‹import-> Maven -> Existing Maven Projectsï¼Œå¯ä»¥åŒæ—¶å°†ä¸‰ä¸ªé¡¹ç›®çº³å…¥eclipseé›†æˆå¼€å‘ç¯å¢ƒä¸­ã€‚
+* ä¹Ÿå¯ä»¥åœ¨ç”Ÿæˆçš„é¡¹ç›®ç›®å½•ä¸‹æ‰§è¡Œï¼šmvn eclipse:eclipseæ„é€ eclipseé¡¹ç›®æ–‡ä»¶.project
 
-### µ÷ÊÔ
-* ÔÚÒ»¸öÖÕ¶Ë£¨´°¿Ú£©ÖĞÔËĞĞ: `mvn gwt:codeserver`
-* ÔÚÁíÒ»¸öÖÕ¶Ë£¨´°¿Ú£©ÖĞÔËĞĞ: `mvn jetty:run -P env-dev`
-* ÔÚÒ»¸öÖÕ¶Ë£¨´°¿Ú£©ÖĞÔËĞĞ: `mvn gwt:codeserver -pl client -am`
-* ÔÚÁíÒ»¸öÖÕ¶Ë£¨´°¿Ú£©ÖĞÔËĞĞ: `mvn jetty:run -pl server -am -Denv=dev` »òÕß£º`mvn jetty:run -pl server -am -P env-dev`
-* Chromeä¯ÀÀÆ÷´ò¿ªjetty·şÎñµÄµØÖ·£¬±ÈÈç£º`http://127.0.0.1:8080`£¬¶ø²»ÊÇgwt:codeserverµÄµØÖ·
+### è°ƒè¯•
+* åœ¨ä¸€ä¸ªç»ˆç«¯ï¼ˆçª—å£ï¼‰ä¸­è¿è¡Œ: `mvn gwt:codeserver -pl client -am`
+* åœ¨å¦ä¸€ä¸ªç»ˆç«¯ï¼ˆçª—å£ï¼‰ä¸­è¿è¡Œ: `mvn -Djetty.port=8081 jetty:run -pl server -am -Denv=dev` æˆ–è€…ï¼š`mvn -Djetty.port=8081 jetty:run -pl server -am -P env-dev`
+* Chromeæµè§ˆå™¨æ‰“å¼€jettyæœåŠ¡çš„åœ°å€ï¼Œæ¯”å¦‚ï¼š`http://127.0.0.1:8081`ï¼Œè€Œä¸æ˜¯gwt:codeserverçš„åœ°å€
 
-### µ÷ÊÔ½Å±¾
-	#!/bin/bash
-	set -e
-	mvn clean package
-	git-bash.exe -c "mvn jetty:run -pl server -am -Penv-dev" &
-	git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
+### è°ƒè¯•è„šæœ¬
+```
+#!/bin/bash
+set -e
+mvn clean package
+git-bash.exe -c "mvn jetty:run -pl server -am -Penv-dev" &
+git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
+```
 
-### ÔöÌíĞÂµÄPlace
-* ÊµÏÖÒ»¸öPlaceµÄÀ©Õ¹
-* ${module}PlaceHistortMapperĞèÒª¸üĞÂ£¬ÔÚ@WithTokenizersÖĞÒıÈëĞÂÔöµÄPlace¶ÔÓ¦µÄclass
-* MainActivityMapperĞèÒªÔö¼Ó´¦Àí¸ÃPlace»î¶¯µÄ´úÂë
+### å¢æ·»æ–°çš„Place
+* å®ç°ä¸€ä¸ªPlaceçš„æ‰©å±•
+* ${module}PlaceHistortMapperéœ€è¦æ›´æ–°ï¼Œåœ¨@WithTokenizersä¸­å¼•å…¥æ–°å¢çš„Placeå¯¹åº”çš„class
+* MainActivityMapperéœ€è¦å¢åŠ å¤„ç†è¯¥Placeæ´»åŠ¨çš„ä»£ç 
 
-### ÔöÌíĞÂµÄrequestFactory·şÎñ
+### å¢æ·»æ–°çš„requestFactoryæœåŠ¡
 ### server
-* ÊµÏÖResponse¶ÔÓ¦µÄÊı¾İ½á¹¹£¨Entity£©
-* ÊµÏÖ·µ»ØResponseµÄ·şÎñ
+* å®ç°Responseå¯¹åº”çš„æ•°æ®ç»“æ„ï¼ˆEntityï¼‰
+* å®ç°è¿”å›Responseçš„æœåŠ¡
 
 #### shared
-* ${module}FactoryÖĞÔö¼Ó¶ÔÓ¦µÄ·şÎñÉÏÏÂÎÄ: RequestContext.
-* ResponseProxy¶ÔÓ¦ÓÚ·şÎñ¶Ë£¨server£©´úÂëÖĞµÄEntity
-* ÊµÏÖRequestContextµÄextends£¬ÀïÃæ°üº¬·şÎñÃû£¬²¢·µ»ØRequest<T>£¬<T>ÓëResponseProxyÏà¹Ø
+* ${module}Factoryä¸­å¢åŠ å¯¹åº”çš„æœåŠ¡ä¸Šä¸‹æ–‡: RequestContext.
+* ResponseProxyå¯¹åº”äºæœåŠ¡ç«¯ï¼ˆserverï¼‰ä»£ç ä¸­çš„Entity
+* å®ç°RequestContextçš„extendsï¼Œé‡Œé¢åŒ…å«æœåŠ¡åï¼Œå¹¶è¿”å›Request<T>ï¼Œ<T>ä¸ResponseProxyç›¸å…³
 
-### ¼¸¸öÌØÊâÎÄ¼şµÄ×÷ÓÃ
+### å‡ ä¸ªç‰¹æ®Šæ–‡ä»¶çš„ä½œç”¨
 * (client) AuthAwareRequestTransport.java
 * (server) AjaxAuthenticationFilter.java
 * User.java CurrentUser.java & ServerUser.java
 
+### gwtp-frame-shiro NOTES
+* clientä¸­çš„module.gwt.xmlæœ‰<set-configuration-property name="gin.ginjector.modules" value="com.risetek.entry.ClientModule"/> æ„å»ºè¿è¡Œæ—¶ï¼ˆGWT compiler è¿è¡Œæ—¶ï¼‰é‡‡ç”¨google ginè¿›è¡Œä¾èµ–æ³¨å…¥ã€‚
+* ClientModuleåœ¨GWT compilerè¿è¡Œæ—¶installå„ç§GinModuleã€‚è¿™äº›è¢«å®‰è£…çš„GinModuleåˆä¼šè¿›è¡Œå…¶è‡ªèº«é¢†åŸŸçš„ä¾èµ–æ³¨å…¥ã€‚
+* é™¤äº†GWTPå¿…è¦çš„GinModuleå¤–ï¼Œå¼€å‘è€…çš„AbstractPresenterModuleä¹Ÿéœ€è¦è¿›è¡Œinstallã€‚è¿™éƒ¨åˆ†å¦‚ä½•å®ç°è‡ªåŠ¨åŒ–çš„å®‰è£…å‘¢ï¼Ÿ
+* bind MyBootstrapperä½¿å¾—GWTPé¡¹ç›®åœ¨æµè§ˆå™¨è½½å…¥ç•Œé¢è¿è¡Œçš„åˆæœŸå¾—ä»¥è¿è¡Œåœ¨æµè§ˆå™¨ä¸­ï¼Œå®ƒä¼šå¯åŠ¨ä¸åå°çš„ç”¨æˆ·æˆæƒä¿¡æ¯åŒæ­¥è¿‡ç¨‹ã€‚
+* CurrentUserä½œä¸ºä¸€ä¸ªSingletonè¢«åŠæ—©å®ä¾‹åŒ–ï¼Œä»¥æä¾›å…¶å®ƒéœ€æ±‚ã€‚
+
 ==================================
 
-#### ÒÔÏÂÊÇÔ­Ê¼ÎÄµµ
+#### ä»¥ä¸‹æ˜¯åŸå§‹æ–‡æ¡£
     mvn archetype:generate \
        -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots/ \
        -DarchetypeGroupId=net.ltgt.gwt.archetypes \
