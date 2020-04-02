@@ -17,7 +17,6 @@
       <groupId>${dollar}{project.groupId}</groupId>
       <artifactId>${rootArtifactId}-shared</artifactId>
       <version>${dollar}{project.version}</version>
-      <type>gwt-lib</type>
     </dependency>
     <dependency>
       <groupId>${dollar}{project.groupId}</groupId>
@@ -34,7 +33,7 @@
       <artifactId>gwt-dev</artifactId>
     </dependency>
     <dependency>
-     <groupId>com.google.gwt.inject</groupId>
+     <groupId>io.github.gwtplus.gin</groupId>
      <artifactId>gin</artifactId>
     </dependency>
     <dependency>
@@ -68,31 +67,6 @@
           <moduleName>${package}.${module}</moduleName>
           <moduleShortName>${module-short-name}</moduleShortName>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-      <plugin>
-       <groupId>org.codehaus.mojo</groupId>
-       <artifactId>build-helper-maven-plugin</artifactId>
-       <executions>
-        <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-             <goal>add-source</goal>
-            </goals>
-            <configuration>
-             <sources>
-              <source>${dollar}{project.build.directory}/generated-sources/annotations/</source>
-             </sources>
-            </configuration>
-        </execution>
-       </executions>
       </plugin>
     </plugins>
   </build>
