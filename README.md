@@ -46,6 +46,7 @@ mvn archetype:generate -DarchetypeCatalog=local \
 * 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
 * 在另一个终端（窗口）中运行: `mvn -Djetty.port=8081 jetty:run -pl server -am -Denv=dev` 或者：`mvn -Djetty.port=8081 jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8081`，而不是gwt:codeserver的地址
+* 需要注意的是，gwt:codeserver存在退出后没有释放java进程的问题。比如关闭了bash窗口，java进程还存在，而且占用了调试端口，这个时候需要在`任务管理器`里找到这个java进程，手动清除，否则下一次运行gwt:codeserver会存在端口占用问题而无法执行。
 
 ### 调试脚本
 ```
@@ -82,6 +83,10 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 * 除了GWTP必要的GinModule外，开发者的AbstractPresenterModule也需要进行install。这部分如何实现自动化的安装呢？
 * bind MyBootstrapper使得GWTP项目在浏览器载入界面运行的初期得以运行在浏览器中，它会启动与后台的用户授权信息同步过程。
 * CurrentUser作为一个Singleton被及早实例化，以提供其它需求。
+
+### gwtp-frame-shiro PresenterModuleMavenProcesser NOTES
+* 设计PresenterModuleMavenProcesser是为了自动化转载用户编写的各种PresenterModule，这使得用户构建的新项目可以通过删除不需要的PresenterModule代码来达到自由组合的需要。
+* 至少有一个用户的PresidentModule 需要 AutoLoadPresenterModule annotation。否则没有机会生成 MavenProcessedPresenterModuleLoader，造成构建失败。 
 
 ==================================
 
