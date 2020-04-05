@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import ${package}.generator.IBuilderStamp;
+import ${package}.bindery.IBuilderStamp;
 import ${package}.utils.Icons;
 import ${package}.utils.TagWrapBuilder;
 

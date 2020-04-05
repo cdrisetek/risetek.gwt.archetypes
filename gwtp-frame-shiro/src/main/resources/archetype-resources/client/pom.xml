@@ -89,7 +89,7 @@
             <phase>compile</phase>
             <configuration>
               <processors>
-                <processor>${package}.bindery.PresenterModuleMavenProcesser</processor>
+                <processor>${package}.bindery.generator.PresenterModuleMavenProcesser</processor>
               </processors>
             </configuration>
           </execution>

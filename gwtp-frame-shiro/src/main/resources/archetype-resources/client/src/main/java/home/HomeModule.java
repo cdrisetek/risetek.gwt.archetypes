@@ -1,7 +1,7 @@
 package ${package}.home;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import ${package}.generator.AutoLoadPresenterModule;
+import ${package}.bindery.AutoLoadPresenterModule;
 import ${package}.home.cards.simple.SimpleWidgetPresenter;
 import ${package}.home.cards.simple.SimpleWidgetView;
 import ${package}.home.cards.state.StateWidgetPresenter;

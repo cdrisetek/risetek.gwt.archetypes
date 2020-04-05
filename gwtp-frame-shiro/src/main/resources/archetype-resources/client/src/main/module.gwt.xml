@@ -13,7 +13,7 @@
 
   <set-configuration-property name="CssResource.enableGss" value="true" />
   <source path="">
-    <exclude name="**/bindery/**" />
+    <exclude name="**/generator/**" />
   </source>
 
   <!-- Other module inherits                                      -->
@@ -30,8 +30,8 @@
   <set-configuration-property name="gin.ginjector.modules" 
                                 value="${package}.entry.MavenProcessedPresenterModuleLoader"/>
 
-  <generate-with class="${package}.bindery.BuilderStampGenerator" >
-	<when-type-assignable class="${package}.generator.IBuilderStamp" />
+  <generate-with class="${package}.bindery.generator.BuilderStampGenerator" >
+	<when-type-assignable class="${package}.bindery.IBuilderStamp" />
   </generate-with>
   <!-- Only support recent browsers -->
   <set-property name="user.agent" value="ie10,gecko1_8,safari" />

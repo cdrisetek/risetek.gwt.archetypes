@@ -1,4 +1,4 @@
-package ${package}.bindery;
+package ${package}.bindery.generator;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -21,7 +21,7 @@ import javax.tools.JavaFileObject;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import ${package}.entry.ClientModule;
-import ${package}.generator.AutoLoadPresenterModule;
+import ${package}.bindery.AutoLoadPresenterModule;
 
 @SupportedSourceVersion(value = SourceVersion.RELEASE_8)
 public class PresenterModuleMavenProcesser extends AbstractProcessor {

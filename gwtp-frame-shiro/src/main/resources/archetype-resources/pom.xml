@@ -97,11 +97,6 @@
        <artifactId>gwtp-processors</artifactId>
        <version>${dollar}{gwtp.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.bsc.maven</groupId>
-        <artifactId>maven-processor-plugin</artifactId>
-        <version>${dollar}{maven-processor.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -158,6 +153,11 @@
               <include>**/**</include>
             </includes>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.bsc.maven</groupId>
+          <artifactId>maven-processor-plugin</artifactId>
+          <version>${dollar}{maven-processor.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

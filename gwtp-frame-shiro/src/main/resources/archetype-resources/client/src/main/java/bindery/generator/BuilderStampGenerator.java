@@ -1,4 +1,4 @@
-package ${package}.bindery;
+package ${package}.bindery.generator;
 
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;

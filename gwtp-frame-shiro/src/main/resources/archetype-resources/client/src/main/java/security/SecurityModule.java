@@ -1,7 +1,7 @@
 package ${package}.security;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import ${package}.generator.AutoLoadPresenterModule;
+import ${package}.bindery.AutoLoadPresenterModule;
 import ${package}.security.email.UpdateEmailModule;
 import ${package}.security.newacct.NewAcctModule;
 import ${package}.security.password.UpdatePasswordModule;

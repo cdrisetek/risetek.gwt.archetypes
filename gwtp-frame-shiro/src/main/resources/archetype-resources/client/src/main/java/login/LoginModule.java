@@ -1,7 +1,7 @@
 package ${package}.login;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import ${package}.generator.AutoLoadPresenterModule;
+import ${package}.bindery.AutoLoadPresenterModule;
 
 @AutoLoadPresenterModule
 public class LoginModule extends AbstractPresenterModule {

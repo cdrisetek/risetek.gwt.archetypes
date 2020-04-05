@@ -1,4 +1,4 @@
-package ${package}.generator;
+package ${package}.bindery;
 
 public interface IBuilderStamp {
 	public String getBuilderStamp();

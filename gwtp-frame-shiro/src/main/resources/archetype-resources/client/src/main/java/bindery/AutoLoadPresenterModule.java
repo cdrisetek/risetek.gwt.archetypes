@@ -1,4 +1,4 @@
-package ${package}.generator;
+package ${package}.bindery;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
