@@ -20,6 +20,7 @@
     <jetty.version>9.2.13.v20150730</jetty.version>
     <maven-compiler.version>3.8.0</maven-compiler.version>
     <maven-source.version>3.0.1</maven-source.version>
+    <maven-processor.version>4.0-beta1</maven-processor.version>
   </properties>
 
   <dependencyManagement>
@@ -95,6 +96,11 @@
        <groupId>com.gwtplatform</groupId>
        <artifactId>gwtp-processors</artifactId>
        <version>${dollar}{gwtp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>${dollar}{maven-processor.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

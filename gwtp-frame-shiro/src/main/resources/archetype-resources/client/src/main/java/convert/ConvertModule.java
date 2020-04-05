@@ -1,7 +1,9 @@
 package ${package}.convert;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
+import ${package}.generator.AutoLoadPresenterModule;
 
+@AutoLoadPresenterModule
 public class ConvertModule extends AbstractPresenterModule {
     @Override
     protected void configure() {

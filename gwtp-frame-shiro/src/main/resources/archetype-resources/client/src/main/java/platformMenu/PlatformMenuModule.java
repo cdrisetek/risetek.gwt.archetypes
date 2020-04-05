@@ -3,7 +3,9 @@ package ${package}.platformMenu;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
+import ${package}.generator.AutoLoadPresenterModule;
 
+@AutoLoadPresenterModule
 public class PlatformMenuModule extends AbstractPresenterModule {
     @Override
     protected void configure() {

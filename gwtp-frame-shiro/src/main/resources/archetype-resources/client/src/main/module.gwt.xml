@@ -28,7 +28,7 @@
   <set-configuration-property name="devModeRedirectEnabled" value="true"/>
 
   <set-configuration-property name="gin.ginjector.modules" 
-                                value="${package}.entry.ClientModule"/>
+                                value="${package}.entry.MavenProcessedPresenterModuleLoader"/>
 
   <generate-with class="${package}.bindery.BuilderStampGenerator" >
 	<when-type-assignable class="${package}.generator.IBuilderStamp" />
