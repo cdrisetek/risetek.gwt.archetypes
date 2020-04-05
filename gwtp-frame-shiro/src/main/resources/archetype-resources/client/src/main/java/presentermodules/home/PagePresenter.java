@@ -1,4 +1,4 @@
-package ${package}.home;
+package ${package}.presentermodules.home;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -13,9 +13,9 @@ import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.NameTokens;
 import ${package}.root.RootPresenter;
-import ${package}.home.cards.simple.SimpleWidgetPresenter;
-import ${package}.home.cards.state.StateWidgetPresenter;
-import ${package}.home.cards.welcome.WelcomeWidgetPresenter;
+import ${package}.presentermodules.home.cards.simple.SimpleWidgetPresenter;
+import ${package}.presentermodules.home.cards.state.StateWidgetPresenter;
+import ${package}.presentermodules.home.cards.welcome.WelcomeWidgetPresenter;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>

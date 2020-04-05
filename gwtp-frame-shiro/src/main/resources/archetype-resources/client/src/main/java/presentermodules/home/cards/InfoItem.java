@@ -1,4 +1,4 @@
-package ${package}.home.cards;
+package ${package}.presentermodules.home.cards;
 
 public class InfoItem {
    	public String infoText;

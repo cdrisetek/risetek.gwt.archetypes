@@ -1,4 +1,4 @@
-package ${package}.home.cards.state;
+package ${package}.presentermodules.home.cards.state;
 
 import java.util.List;
 import java.util.Vector;
@@ -15,8 +15,8 @@ import com.gwtplatform.mvp.client.View;
 import ${package}.GetResults;
 import ${package}.container.StateAction;
 import ${package}.container.StateEntity;
-import ${package}.home.cards.InfoCard;
-import ${package}.home.cards.InfoItem;
+import ${package}.presentermodules.home.cards.InfoCard;
+import ${package}.presentermodules.home.cards.InfoItem;
 
 public class StateWidgetPresenter extends PresenterWidget<StateWidgetPresenter.MyView> implements MyUiHandlers {
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {

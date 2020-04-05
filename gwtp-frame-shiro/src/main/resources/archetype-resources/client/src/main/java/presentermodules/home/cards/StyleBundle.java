@@ -1,4 +1,4 @@
-package ${package}.home.cards;
+package ${package}.presentermodules.home.cards;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

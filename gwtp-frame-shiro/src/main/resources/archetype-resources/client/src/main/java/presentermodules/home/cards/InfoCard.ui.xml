@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-	<ui:style gss="true" src="style.gss" type="${package}.home.cards.InfoCard.MyStyle" />
+	<ui:style gss="true" src="style.gss" type="${package}.presentermodules.home.cards.InfoCard.MyStyle" />
 
 	<g:HTMLPanel styleName="{style.startInserted}">
 			<div class="{style.startInserted} {style.infoCard}">

@@ -1,4 +1,4 @@
-package ${package}.home.cards.state;
+package ${package}.presentermodules.home.cards.simple;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 

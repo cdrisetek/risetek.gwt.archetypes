@@ -1,7 +1,7 @@
-package ${package}.home.cards.welcome;
+package ${package}.presentermodules.home.cards.welcome;
 
 import com.google.inject.Inject;
-import ${package}.home.cards.InfoCard;
+import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.utils.Icons;
 
 public class WelcomeWidgetView extends InfoCard<MyUiHandlers> implements

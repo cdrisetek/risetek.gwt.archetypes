@@ -1,10 +1,10 @@
-package ${package}.home;
+package ${package}.presentermodules.home;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.home.cards.InfoCardContainer;
+import ${package}.presentermodules.home.cards.InfoCardContainer;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		PagePresenter.MyView {

@@ -8,13 +8,14 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 import ${package}.NameTokens;
+import ${package}.root.RootModule;
+/*
 import ${package}.home.HomeModule;
 import ${package}.login.LoginModule;
 import ${package}.platformMenu.PlatformMenuModule;
-import ${package}.root.RootModule;
 import ${package}.convert.ConvertModule;
 import ${package}.security.SecurityModule;
-
+*/
 
 public class ClientModule extends AbstractPresenterModule {
     @Override

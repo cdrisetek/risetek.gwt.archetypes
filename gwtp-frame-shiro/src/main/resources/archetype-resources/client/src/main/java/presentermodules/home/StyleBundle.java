@@ -1,4 +1,4 @@
-package ${package}.home;
+package ${package}.presentermodules.home;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

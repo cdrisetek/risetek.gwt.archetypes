@@ -1,4 +1,4 @@
-package ${package}.home.cards;
+package ${package}.presentermodules.home.cards;
 
 import java.util.List;
 

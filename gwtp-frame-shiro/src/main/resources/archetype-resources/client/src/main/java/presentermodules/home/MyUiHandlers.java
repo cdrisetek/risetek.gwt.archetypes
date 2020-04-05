@@ -1,4 +1,4 @@
-package ${package}.home;
+package ${package}.presentermodules.home;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 

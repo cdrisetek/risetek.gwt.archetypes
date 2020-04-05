@@ -1,4 +1,4 @@
-package ${package}.home.cards.welcome;
+package ${package}.presentermodules.home.cards.welcome;
 
 import java.util.List;
 import java.util.Set;
@@ -12,8 +12,8 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import ${package}.entry.CurrentUser;
 import ${package}.entry.UserRolesChangeEvent;
-import ${package}.home.cards.InfoCard;
-import ${package}.home.cards.InfoItem;
+import ${package}.presentermodules.home.cards.InfoCard;
+import ${package}.presentermodules.home.cards.InfoItem;
 
 public class WelcomeWidgetPresenter extends PresenterWidget<WelcomeWidgetPresenter.MyView> implements MyUiHandlers {
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
