@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<ui:style gss="true" src="style.gss" type="${package}.presentermodules.security.PageView.MyStyle" />
+	
+	<g:HTMLPanel styleName='{style.containerStyle}'>
+		<g:HTMLPanel styleName="{style.infoLists}" ui:field="listPanel">
+			<header class="{style.header}">
+				<h1 class="{style.headerTitle}">账户信息</h1>
+				<div class="{style.headerDescript}">您在服务中使用的基本信息</div>
+			</header>
+		</g:HTMLPanel>>
+	</g:HTMLPanel>
+</ui:UiBinder>

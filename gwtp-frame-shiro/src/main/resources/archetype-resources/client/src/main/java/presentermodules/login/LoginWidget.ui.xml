@@ -1,0 +1,49 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+ 	<ui:style gss="true" src="login.gss" type="${package}.presentermodules.login.LoginWidget.MyStyle" />
+
+	<ui:with field='res' type='${package}.presentermodules.login.StyleBundle'/>
+
+	<g:HTMLPanel styleName='{style.loginWidget}'>
+     <div class='{style.background}'>
+      <div class='{style.topTitle}'>
+       <div ui:field='title'>密码登录</div>
+      </div>
+		<div class='{style.line}'></div>
+		<div class='{style.interactiveContainer}'>
+			<g:HTMLPanel styleName='{style.box_outer} {style.box_outer_border}' ui:field="username_flowpanel">
+				<div class='{style.box_icon}'>
+					<g:Image styleName='{style.box_icon_img}' resource="{res.user_png}"	width="32" height="32"/>
+				</div>
+				<div class='{style.box_input}'>
+					<g:TextBox styleName='{style.box_input_area}' ui:field="username" />
+				</div>
+				<div class='{style.box_tips}' ui:field="usernametip">
+					<div>账号不能为空</div>
+				</div>
+			</g:HTMLPanel>
+			<div class='{style.interval}'></div>
+			<g:HTMLPanel styleName='{style.box_outer} {style.box_outer_border}' ui:field="password_flowpanel">
+				<div class='{style.box_icon}'>
+					<g:Image styleName='{style.box_icon_img}' resource="{res.password_png}"	width="32" height="32"/>
+				</div>
+				<div class='{style.box_input}'>
+					<g:PasswordTextBox styleName='{style.box_input_area}' ui:field="password" />
+				</div>
+				<div class='{style.box_tips}' ui:field="passwordtip">密码不能为空</div>
+			</g:HTMLPanel>
+			<div class='{style.interval}'></div>
+			<g:Button styleName='{style.loginButton}' ui:field="loginButton">登录</g:Button>
+			<div class='{style.footer}'>
+				<g:Button styleName='{style.footerItem} {style.forget}' ui:field="newAccount">注册新用户</g:Button>
+				<span class='{style.footerItem}' ui:field="remembemeSpan">
+					<g:CheckBox value="true" tabIndex="0" ui:field="remembeme" />
+						<label>自动登录</label>
+				</span>
+				<g:Button styleName='{style.footerItem} {style.forget}' ui:field="forget">忘记密码</g:Button>
+			</div>
+		</div>
+     </div>
+	</g:HTMLPanel>
+</ui:UiBinder>
