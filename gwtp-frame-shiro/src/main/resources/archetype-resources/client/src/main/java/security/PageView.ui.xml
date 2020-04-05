@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<ui:style gss="true" src="style.gss" type="com.risetek.security.PageView.MyStyle" />
+	<ui:style gss="true" src="style.gss" type="${package}.security.PageView.MyStyle" />
 	
 	<g:HTMLPanel styleName='{style.containerStyle}'>
 		<g:HTMLPanel styleName="{style.infoLists}" ui:field="listPanel">

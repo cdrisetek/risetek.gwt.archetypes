@@ -2,7 +2,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
 	<ui:style gss="true" src="style.gss"
-		type='com.risetek.home.cards.InfoCardContainer.MyStyle' />
+		type='${package}.home.cards.InfoCardContainer.MyStyle' />
 		
 		<g:HTMLPanel styleName="{style.panelBody} {style.panelBodyScrollable}">
 		<div class="{style.panelBodyScrollContent} {style.startInserted}">

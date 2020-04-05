@@ -13,8 +13,8 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
-import com.risetek.servlet.LoginServlet;
-import com.risetek.shiro.MyShiroWebModule;
+import ${package}.servlet.LoginServlet;
+import ${package}.shiro.MyShiroWebModule;
 
 public class AppServletContextListener extends GuiceServletContextListener {
 	private ServletContext servletContext;

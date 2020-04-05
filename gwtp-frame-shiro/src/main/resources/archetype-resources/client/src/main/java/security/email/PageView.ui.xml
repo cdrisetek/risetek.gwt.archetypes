@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:m='urn:import:com.risetek.security.ui'
-	xmlns:icons="urn:import:com.risetek.utils.Icons">
+	xmlns:m='urn:import:${package}.security.ui'
+	xmlns:icons="urn:import:${package}.utils.Icons">
 
 	<ui:style gss="true">
 	    @def COLOR_TONE                   #1a73e8;

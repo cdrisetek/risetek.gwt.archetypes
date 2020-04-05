@@ -1,4 +1,4 @@
-package com.risetek;
+package ${package};
 
 public class NameTokens {
     public static final String home = "/home";

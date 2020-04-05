@@ -1,9 +1,9 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
- 	<ui:style gss="true" src="login.gss" type="com.risetek.login.LoginWidget.MyStyle" />
+ 	<ui:style gss="true" src="login.gss" type="${package}.login.LoginWidget.MyStyle" />
 
-	<ui:with field='res' type='com.risetek.login.StyleBundle'/>
+	<ui:with field='res' type='${package}.login.StyleBundle'/>
 
 	<g:HTMLPanel styleName='{style.loginWidget}'>
      <div class='{style.background}'>
