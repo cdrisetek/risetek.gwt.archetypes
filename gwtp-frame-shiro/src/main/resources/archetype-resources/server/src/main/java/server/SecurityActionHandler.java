@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.server;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import org.apache.shiro.subject.Subject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.shiro.UserManagement;
-import ${package}.shiro.UserManagement.UserInformation;
+import ${package}.server.shiro.UserManagement;
+import ${package}.server.shiro.UserManagement.UserInformation;
 import ${package}.share.GetResult;
 import ${package}.share.RbacConstant;
 import ${package}.share.SecurityAction;

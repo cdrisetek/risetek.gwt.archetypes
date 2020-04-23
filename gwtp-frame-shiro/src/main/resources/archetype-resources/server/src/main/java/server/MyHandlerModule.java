@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.server;
 
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import ${package}.share.SecurityAction;

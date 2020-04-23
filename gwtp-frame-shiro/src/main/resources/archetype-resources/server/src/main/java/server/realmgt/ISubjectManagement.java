@@ -1,4 +1,4 @@
-package ${package}.realmgt;
+package ${package}.server.realmgt;
 
 import java.util.List;
 import java.util.Set;

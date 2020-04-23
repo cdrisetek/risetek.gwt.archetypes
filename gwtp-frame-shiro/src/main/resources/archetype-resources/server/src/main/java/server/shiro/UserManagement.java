@@ -1,4 +1,4 @@
-package ${package}.shiro;
+package ${package}.server.shiro;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.google.inject.Singleton;
-import ${package}.realmgt.ISubjectManagement;
+import ${package}.server.realmgt.ISubjectManagement;
 import ${package}.share.RbacConstant;
 import ${package}.share.realmgt.PrincipalEntity;
 import ${package}.share.realmgt.SubjectEntity;

@@ -1,4 +1,4 @@
-package ${package}.realmgt;
+package ${package}.server.realmgt;
 
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import ${package}.share.realmgt.SubjectAction;

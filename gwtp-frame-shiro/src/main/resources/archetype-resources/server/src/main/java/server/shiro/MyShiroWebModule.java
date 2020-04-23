@@ -1,4 +1,4 @@
-package ${package}.shiro;
+package ${package}.server.shiro;
 
 import javax.servlet.ServletContext;
 

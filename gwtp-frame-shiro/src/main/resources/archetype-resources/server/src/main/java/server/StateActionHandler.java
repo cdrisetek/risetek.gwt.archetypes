@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.server;
 
 import java.util.List;
 import java.util.Vector;

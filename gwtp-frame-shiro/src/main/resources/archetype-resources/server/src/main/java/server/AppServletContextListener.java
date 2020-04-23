@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.server;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,8 +13,8 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
-import ${package}.servlet.LoginServlet;
-import ${package}.shiro.MyShiroWebModule;
+import ${package}.server.servlet.LoginServlet;
+import ${package}.server.shiro.MyShiroWebModule;
 
 public class AppServletContextListener extends GuiceServletContextListener {
 	private ServletContext servletContext;
@@ -57,8 +57,8 @@ public class AppServletContextListener extends GuiceServletContextListener {
 				},
 				new MyShiroWebModule(servletContext),
 				// TODO: Guice inject please.
-				new ${package}.realmgt.Module(),
-				new ${package}.MyHandlerModule());
+				new ${package}.server.realmgt.Module(),
+				new ${package}.server.MyHandlerModule());
 	}
 }
 
