@@ -13,9 +13,7 @@ import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.NameTokens;
 import ${package}.root.RootPresenter;
-import ${package}.presentermodules.home.cards.simple.SimpleWidgetPresenter;
-import ${package}.presentermodules.home.cards.state.StateWidgetPresenter;
-import ${package}.presentermodules.home.cards.welcome.WelcomeWidgetPresenter;
+import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
@@ -35,15 +33,22 @@ public class PagePresenter extends
 	
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
-			final WelcomeWidgetPresenter welcomeWidgetPresenter,
-			final StateWidgetPresenter stateWidgetPresenter,
-			final SimpleWidgetPresenter simpleWidgetPresenter,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
 
-		addToSlot(SLOT_CARD0, welcomeWidgetPresenter);
-		addToSlot(SLOT_CARD1, simpleWidgetPresenter);
-		addToSlot(SLOT_CARD2, stateWidgetPresenter);
+		fireEvent(new RevealHomeCardEvent((p, o) -> {
+			switch(o % 3) {
+			case 0:
+				addToSlot(SLOT_CARD0, p);
+				break;
+			case 1:
+				addToSlot(SLOT_CARD1, p);
+				break;
+			case 2:
+				addToSlot(SLOT_CARD2, p);
+				break;
+			}
+		}));
 	}
 }

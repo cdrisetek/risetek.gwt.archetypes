@@ -4,11 +4,11 @@ import com.google.inject.Inject;
 import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.utils.Icons;
 
-public class SimpleWidgetView extends InfoCard<MyUiHandlers> implements
-		SimpleWidgetPresenter.MyView {
+public class HomeCardView extends InfoCard<MyUiHandlers> implements
+		HomeCardPresenter.MyView {
 
 	@Inject
-	public SimpleWidgetView() {
+	public HomeCardView() {
 		headLabel.setInnerHTML("应用信息");
 		iconPanel.appendChild(Icons.compassIcon());
 	}

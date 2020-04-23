@@ -4,11 +4,11 @@ import com.google.inject.Inject;
 import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.utils.Icons;
 
-public class StateWidgetView extends InfoCard<MyUiHandlers> implements
-		StateWidgetPresenter.MyView {
+public class HomeCardView extends InfoCard<MyUiHandlers> implements
+		HomeCardPresenter.MyView {
 
 	@Inject
-	public StateWidgetView() {
+	public HomeCardView() {
 		headLabel.setInnerHTML("服务状态");
 		iconPanel.appendChild(Icons.serverIcon());
 	}
