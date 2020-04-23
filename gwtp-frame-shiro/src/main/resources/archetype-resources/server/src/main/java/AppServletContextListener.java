@@ -56,7 +56,9 @@ public class AppServletContextListener extends GuiceServletContextListener {
 					}
 				},
 				new MyShiroWebModule(servletContext),
-				new MyHandlerModule());
+				// TODO: Guice inject please.
+				new ${package}.realmgt.Module(),
+				new ${package}.MyHandlerModule());
 	}
 }
 

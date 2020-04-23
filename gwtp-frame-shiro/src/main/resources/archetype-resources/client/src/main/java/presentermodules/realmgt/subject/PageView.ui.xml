@@ -1,0 +1,136 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'
+ xmlns:r='urn:import:${package}.presentermodules.realmgt.subject'>
+ <ui:style gss="true">
+  @def MAIN_COLOR  #f7f7f7;
+  @def MAX_WIDTH   1280px;
+  @def MIN_WIDTH   960px;
+  @def BUTTON_SIZE 80px;
+  @def COLOR_TONE  #1a73e8;
+  @def ITEM_HEIGHT 70px;
+  @def PANE_WIDTH 600px;
+
+  .container, .tb-container, .tb-dock, .tb-shadow {
+   width:    100%;
+   height:   100%;
+  }
+
+  .container {
+   box-sizing: border-box;
+  }
+
+  .tb-container {
+    padding: 10px;
+    overflow: hidden;
+    background-color:  MAIN_COLOR;
+   width: auto;
+  }
+
+  .tb-shadow {
+    max-width: MAX_WIDTH;
+    min-width: MIN_WIDTH;
+    box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+    border-radius: 2px;
+    margin: auto;
+  }
+
+  .tb-search-container {
+   margin:  auto 20px;
+   width: 50%;
+  } 
+
+  .tb-dock {
+   padding: 5px;
+   font-weight: bold;
+   display: inline-flex;
+   align-items: center;
+   justify-content: space-between;
+  }
+
+  .tb-cicle-button-container {
+   float:	right;
+   margin:  0 5px 0;
+   justify-content: space-between;
+   align-items: center;
+   display: inline-flex;
+   width:   mult(BUTTON_SIZE, 4);
+  }
+
+  .table-container {
+   max-width: MAX_WIDTH;
+   min-width: MIN_WIDTH;
+   margin: 20px auto 0 auto;
+  }
+  
+    .it-container {
+   width: 100%;
+   height: ITEM_HEIGHT;
+  }
+  
+  .dg-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: PANE_WIDTH;
+    height: 540px;
+    padding: 24px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+    border-radius: 2px;
+  }
+  
+ </ui:style>
+ 
+ <g:HTMLPanel styleName="{style.container}">
+  <m:MaterialDialog ui:field="dialog" type="DEFAULT" dismissible="true" inDuration="200" outDuration="200" styleName="{style.dg-container}">
+   <m:MaterialDialogHeader>
+    <m:MaterialTitle title="Default Dialog" description="Create New User" />
+   </m:MaterialDialogHeader>
+   <m:MaterialDialogContent>
+    <m:MaterialTextBox label="账户" ui:field="name" iconType="PERSON" type="TEXT"
+                       fieldType="DEFAULT" errorText="账户不能为空" maxLength="20"
+                       grid="s12" required="true" clearOnKeyUp="true" class="{style.it-container}"/>
+    <m:MaterialTextBox label="邮件" ui:field="email" iconType="EMAIL" type="EMAIL"
+                       maxLength="40" grid="s12" class="{style.it-container}"/>
+    <ma:inputmask.AbstractInputMask label="电话" ui:field="telphone" type="TEL" iconType="CALL"
+                       fieldType="DEFAULT" placeholder="eg: 139-0000-0001"
+                       mask="000-0000-0000" grid="s12" clearOnKeyUp="true" class="{style.it-container}"/>
+   </m:MaterialDialogContent>
+   <m:MaterialDialogFooter>
+    <m:MaterialButton margin="8" text="添加" waves="LIGHT" textColor="WHITE" iconType="CHECK" size="LARGE" iconPosition="LEFT" ui:field="btnCommit"/>
+    <m:MaterialButton margin="8" text="取消" waves="LIGHT" textColor="WHITE" iconType="CLEAR" size="LARGE" iconPosition="LEFT" ui:field="btnCancel"/>
+   </m:MaterialDialogFooter>
+  </m:MaterialDialog>
+
+  <g:DockLayoutPanel unit="PX" styleName="{style.container}">
+   <g:north size="120">
+    <g:HTMLPanel>
+     <div class="{style.tb-container}">
+      <div class="{style.tb-shadow}">
+       <div class="{style.tb-dock}">
+        <m:MaterialButton margin="8" text="新添用户" waves="LIGHT" textColor="WHITE" iconType="GROUP_ADD" size="LARGE" iconPosition="LEFT" ui:field="btnCreate"/>
+        <div class="{style.tb-search-container}">
+        <m:MaterialNavBar ui:field="navBarSearch" width="100%" visible="true">
+         <m:MaterialSearch ui:field="searchinput" placeholder="搜索过滤" iconColor="BLACK"  active="true" shadow="1"/>
+        </m:MaterialNavBar>
+        </div>
+        <div class="{style.tb-cicle-button-container}">
+         <m:MaterialButton margin="8" type="FLOATING" waves="LIGHT" size="LARGE" iconType="FIRST_PAGE" ui:field="btnFirstPage" enabled="false"/>
+         <m:MaterialButton margin="8" type="FLOATING" waves="LIGHT" size="LARGE" iconType="NAVIGATE_BEFORE" ui:field="btnBack" enabled="false"/>
+         <m:MaterialButton margin="8" type="FLOATING" waves="LIGHT" size="LARGE" iconType="NAVIGATE_NEXT" ui:field="btnNext" enabled="false"/>
+         <m:MaterialButton margin="8" type="FLOATING" waves="LIGHT" size="LARGE" iconType="REFRESH" ui:field="btnRefresh"/>
+       </div>
+       </div>
+      </div>
+     </div>
+    </g:HTMLPanel>
+   </g:north>
+   <g:center>
+    <g:ResizeLayoutPanel styleName="{style.table-container}" ui:field="resizePanel">
+     <r:SubjectTable ui:field="table"></r:SubjectTable>
+    </g:ResizeLayoutPanel>
+   </g:center>
+  </g:DockLayoutPanel>
+ </g:HTMLPanel>
+ 
+</ui:UiBinder>

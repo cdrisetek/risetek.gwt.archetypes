@@ -12,6 +12,10 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>gwt-app</packaging>
 
+  <properties>
+    <gwt-material.version>2.3.0</gwt-material.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${dollar}{project.groupId}</groupId>
@@ -57,6 +61,16 @@
      <groupId>com.gwtplatform</groupId>
      <artifactId>gwtp-dispatch-rpc-client</artifactId>
     </dependency>
+    <dependency>
+     <groupId>com.github.gwtmaterialdesign</groupId>
+     <artifactId>gwt-material</artifactId>
+     <version>${dollar}{gwt-material.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>com.github.gwtmaterialdesign</groupId>
+     <artifactId>gwt-material-addins</artifactId>
+     <version>${dollar}{gwt-material.version}</version>
+    </dependency>    
   </dependencies>
 
   <build>
