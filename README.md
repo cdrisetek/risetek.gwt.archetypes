@@ -83,6 +83,7 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 * 除了GWTP必要的GinModule外，开发者的AbstractPresenterModule也需要进行install。这部分如何实现自动化的安装呢？
 * bind MyBootstrapper使得GWTP项目在浏览器载入界面运行的初期得以运行在浏览器中，它会启动与后台的用户授权信息同步过程。
 * CurrentUser作为一个Singleton被及早实例化，以提供其它需求。
+* 服务端shiro/MyAuthorizingRealm是管理用户权限的DAO（数据访问目标），如果后台需要实现不同的管理提供，需要修改这个部分的代码。
 
 ### gwtp-frame-shiro PresenterModuleMavenProcesser NOTES
 * 设计PresenterModuleMavenProcesser是为了自动化转载用户编写的各种PresenterModule，这使得用户构建的新项目可以通过删除不需要的PresenterModule代码来达到自由组合的需要。
