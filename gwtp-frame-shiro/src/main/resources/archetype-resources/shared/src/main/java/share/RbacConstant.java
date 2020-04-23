@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.share;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.share;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.gwtplatform.dispatch.rpc.shared.UnsecuredActionImpl;

@@ -10,10 +10,10 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.google.inject.Singleton;
-import ${package}.RbacConstant;
 import ${package}.realmgt.ISubjectManagement;
-import ${package}.realmgt.PrincipalEntity;
-import ${package}.realmgt.SubjectEntity;
+import ${package}.share.RbacConstant;
+import ${package}.share.realmgt.PrincipalEntity;
+import ${package}.share.realmgt.SubjectEntity;
 
 @Singleton
 public class UserManagement implements ISubjectManagement {

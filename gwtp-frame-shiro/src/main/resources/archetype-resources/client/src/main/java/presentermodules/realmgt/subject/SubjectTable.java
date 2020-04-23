@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import ${package}.realmgt.SubjectEntity;
+import ${package}.share.realmgt.SubjectEntity;
 
 public class SubjectTable extends CellTable<SubjectEntity> {
 	private static final int DEFAULT_PAGESIZE = 15;

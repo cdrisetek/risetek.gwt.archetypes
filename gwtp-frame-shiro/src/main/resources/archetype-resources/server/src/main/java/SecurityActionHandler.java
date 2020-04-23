@@ -15,6 +15,10 @@ import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.shiro.UserManagement;
 import ${package}.shiro.UserManagement.UserInformation;
+import ${package}.share.GetResult;
+import ${package}.share.RbacConstant;
+import ${package}.share.SecurityAction;
+import ${package}.share.SecurityInfo;
 
 public class SecurityActionHandler implements ActionHandler<SecurityAction, GetResult<SecurityInfo>> {
 	private static final Logger logger = Logger.getLogger(SecurityActionHandler.class.getName());

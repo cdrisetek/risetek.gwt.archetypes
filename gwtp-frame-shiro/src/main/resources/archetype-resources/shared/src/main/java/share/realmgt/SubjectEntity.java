@@ -1,4 +1,4 @@
-package ${package}.realmgt;
+package ${package}.share.realmgt;
 
 import java.util.Set;
 

@@ -16,12 +16,12 @@ import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import ${package}.GetResults;
-import ${package}.container.StateAction;
-import ${package}.container.StateEntity;
 import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
+import ${package}.share.GetResults;
+import ${package}.share.container.StateAction;
+import ${package}.share.container.StateEntity;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {

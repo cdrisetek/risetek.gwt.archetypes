@@ -1,10 +1,10 @@
-package ${package}.realmgt;
+package ${package}.share.realmgt;
 
 import java.util.Set;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.gwtplatform.dispatch.rpc.shared.UnsecuredActionImpl;
-import ${package}.GetResults;
+import ${package}.share.GetResults;
 
 public class SubjectAction extends UnsecuredActionImpl<GetResults<SubjectEntity>> {
 

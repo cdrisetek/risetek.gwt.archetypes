@@ -1,7 +1,8 @@
 package ${package};
 
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
-import ${package}.container.StateAction;
+import ${package}.share.SecurityAction;
+import ${package}.share.container.StateAction;
 
 public class MyHandlerModule extends HandlerModule {
 	@Override

@@ -17,12 +17,12 @@ import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import ${package}.GetResults;
 import ${package}.presentermodules.realmgt.TokenNames;
-import ${package}.realmgt.PrincipalEntity;
-import ${package}.realmgt.SubjectAction;
-import ${package}.realmgt.SubjectEntity;
 import ${package}.root.RootPresenter;
+import ${package}.share.GetResults;
+import ${package}.share.realmgt.PrincipalEntity;
+import ${package}.share.realmgt.SubjectAction;
+import ${package}.share.realmgt.SubjectEntity;
 
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 

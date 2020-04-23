@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.GetResults;
+import ${package}.share.GetResults;
+import ${package}.share.realmgt.SubjectAction;
+import ${package}.share.realmgt.SubjectEntity;
 import ${package}.shiro.UserManagement;
 
 public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResults<SubjectEntity>> {

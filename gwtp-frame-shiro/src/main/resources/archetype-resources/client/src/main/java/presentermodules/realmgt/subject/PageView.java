@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.realmgt.SubjectEntity;
+import ${package}.share.realmgt.SubjectEntity;
 import ${package}.utils.KeyBoardCode;
 
 import gwt.material.design.addins.client.inputmask.AbstractInputMask;

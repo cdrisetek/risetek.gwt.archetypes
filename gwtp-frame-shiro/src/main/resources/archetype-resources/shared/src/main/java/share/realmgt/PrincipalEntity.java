@@ -1,4 +1,4 @@
-package ${package}.realmgt;
+package ${package}.share.realmgt;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

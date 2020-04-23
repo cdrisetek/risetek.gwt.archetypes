@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.share;
 
 import java.util.Map;
 import java.util.Set;

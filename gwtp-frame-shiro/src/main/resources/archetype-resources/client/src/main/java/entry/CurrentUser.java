@@ -11,11 +11,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import ${package}.GetResult;
-import ${package}.SecurityAction;
-import ${package}.SecurityAction.OP;
-import ${package}.SecurityInfo;
 import ${package}.entry.AuthorityChangedEvent.AuthorityChangedHandler;
+import ${package}.share.GetResult;
+import ${package}.share.SecurityAction;
+import ${package}.share.SecurityAction.OP;
+import ${package}.share.SecurityInfo;
 
 @Singleton
 public class CurrentUser implements AuthorityChangedHandler {
