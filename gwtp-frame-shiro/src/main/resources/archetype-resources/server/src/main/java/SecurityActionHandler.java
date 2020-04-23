@@ -48,7 +48,7 @@ public class SecurityActionHandler implements ActionHandler<SecurityAction, GetR
 				// Login
 				UsernamePasswordToken upt = new UsernamePasswordToken(
 						username, password.toCharArray(),
-						(null != rememberme && "true".equals(rememberme)));
+						"true".equals(rememberme));
 				try {
 					currentUser.login(upt);
 				} catch (Exception e) {
