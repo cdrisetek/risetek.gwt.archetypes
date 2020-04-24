@@ -4,7 +4,7 @@
   version="2.5">
 
   <listener>
-    <listener-class>${package}.server.AppServletContextListener</listener-class>
+    <listener-class>${package}.server.MavenProcessedServletContextListener</listener-class>
   </listener>
 
   <filter>
