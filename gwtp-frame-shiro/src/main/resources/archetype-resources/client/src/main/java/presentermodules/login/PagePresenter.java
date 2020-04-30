@@ -23,6 +23,7 @@ public class PagePresenter extends
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		public void setStatus(String status);
+		public void setAccountOperatorActive(boolean enable);
 	}
 
 	private final String status_loginfailed = "\u767b\u5f55\u5931\u8d25";
@@ -47,6 +48,11 @@ public class PagePresenter extends
 
 	@Override
 	public void Login(String username, String password, boolean rememberme) {
+		if(null == username || username.isEmpty() || null == password || password.isEmpty()) {
+			getView().setStatus(status_loginfailed);
+			return;
+		}
+
 		user.Login(username, password, rememberme, c->getView().setStatus(status_loginfailed));
 	}
 	

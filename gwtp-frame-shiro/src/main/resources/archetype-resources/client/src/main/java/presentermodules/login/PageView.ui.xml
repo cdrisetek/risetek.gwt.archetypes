@@ -1,0 +1,110 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'>
+
+ <ui:style gss="true">
+  @def ITEM_HEIGHT 80px;
+  @def INTERACTIVE_WIDHT 330px;
+  @def INTERACTIVE_HEIGHT 40px;
+  @def LOGIN_BG_PADDING 30px;
+
+  .lg-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  }
+
+  .lg-container:before, .lg-container:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  content: '';
+  display: block;
+  }
+
+  .lg-center {
+  display: block;
+  margin: 0 auto;
+  }
+
+  .lg-center:before, .lg-center:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  content: '';
+  display: block;
+  }
+
+  .lg-background {
+  width: add(
+  LOGIN_BG_PADDING, /* padding left */
+  LOGIN_BG_PADDING, /* padding right */
+  INTERACTIVE_WIDHT
+  );
+  padding: 0px;
+  margin: 0px;
+  }
+
+  .lg-content {
+  padding: 30px 0px 0px 0px;
+  width: INTERACTIVE_WIDHT;
+  margin: 0px auto;
+  }
+
+  .it-container {
+  width: 100%;
+  height: ITEM_HEIGHT;
+  }
+ </ui:style>
+
+ <g:HTMLPanel styleName="{style.lg-container}">
+  <div class='{style.lg-center}'>
+   <div class='{style.lg-background}'>
+    <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5">
+     <m:MaterialCardContent textColor="LIGHT_BLUE">
+      <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
+       <g:HTMLPanel styleName='{style.lg-content}'>
+        <m:MaterialTextBox label="账户"
+          ui:field="username" iconType="PERSON" type="TEXT"
+          fieldType="DEFAULT" maxLength="20" grid="s12"
+          class="{style.it-container}" />
+
+        <m:MaterialTextBox label="密码"
+          ui:field="password" iconType="VPN_KEY" type="PASSWORD"
+          fieldType="DEFAULT" maxLength="30" grid="s12"
+          class="{style.it-container}" />
+
+        <m:MaterialButton text="登录"
+          waves="DEFAULT" textColor="WHITE" ui:field="loginButton" iconType="SEND" width="100%" />
+       </g:HTMLPanel>
+      </m:MaterialCardContent>
+      <m:MaterialCardAction>
+       <m:MaterialCheckBox text="自动登录" value="true" ui:field="remembeme"/>
+      </m:MaterialCardAction>
+    </m:MaterialCard>
+
+    <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5" ui:field="accountop">
+     <m:MaterialCardAction>
+      <m:MaterialLink text="注册新用户" textColor="BLACK" ui:field="newAccount" iconType="OPEN_IN_NEW"/>
+      <m:MaterialLink text="忘记密码" textColor="BLACK" ui:field="forget" iconType="PORTRAIT"/>
+     </m:MaterialCardAction>
+    </m:MaterialCard>
+   </div>
+  </div>
+ </g:HTMLPanel>
+
+</ui:UiBinder>
