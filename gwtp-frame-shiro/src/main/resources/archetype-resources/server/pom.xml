@@ -74,7 +74,8 @@
 
   <build>
     <!-- Generate compiled stuff in the folder used for developing mode -->
-    <outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory>
+    <!-- but eclipse need separate src/test output directory -->
+    <!-- <outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory> -->
     <!-- hacker we missed compile phase for generated-sources, so compile it at testCompile phase -->
     <testOutputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</testOutputDirectory>	 
     <testSourceDirectory>${dollar}{project.build.directory}/generated-sources/annotations</testSourceDirectory>	 
