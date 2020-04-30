@@ -1,36 +1,7 @@
-@external currentcolor div span applet object iframe;
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-body {
-    display: block;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    -webkit-touch-callout: none;
-    min-height: 100%;
-    -webkit-text-size-adjust: 100%;
-}
-
-div, span, applet, object, iframe {
-    border: 0;
-    font-family: inherit;
-    font-size: 100%;
-    font-style: inherit;
-    font-weight: inherit;
-    margin: 0;
-    outline: 0;
-    padding: 0;
-    vertical-align: baseline;
-}
-
-*, :before, :after {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
+ <ui:style gss="true">
 .pan_shell_top_container {
 }
 
@@ -91,3 +62,16 @@ div, span, applet, object, iframe {
         min-width: 100%;
     }
 }
+ </ui:style>
+
+<!-- 
+ pan-shell -> mainLayout  -> topContainer   -> barContainer
+                          -> mainContainer
+-->
+
+ <g:HTMLPanel styleName="{style.p6nVulcanLayoutMain} {style.layoutColumn} {style.flex}">
+  <g:SimplePanel styleName="{style.pan_shell_top_container} {style.layoutColumn} {style.flex_none}" ui:field="topContainer"/>
+  <g:SimplePanel styleName="{style.panShellMainContainer} {style.layoutRow} {style.flex}" ui:field="mainContainer"/>
+ </g:HTMLPanel>
+
+</ui:UiBinder>

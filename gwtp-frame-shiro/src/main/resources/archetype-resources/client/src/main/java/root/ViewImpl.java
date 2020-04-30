@@ -2,49 +2,28 @@ package ${package}.root;
 
 import javax.inject.Inject;
 
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.root.StyleBundle.Style;
 
 public class ViewImpl extends ViewWithUiHandlers<MyUiHandlers> implements RootPresenter.MyView {
+    @UiTemplate("PageView.ui.xml")
+	interface Binder extends UiBinder<HTMLPanel, ViewImpl> {}
 
-	private final Style style = StyleBundle.resources.style();
-    private final SimplePanel mainContainer = new SimplePanel();
-    private final SimplePanel topContainer = new SimplePanel();
-    
+    @UiField
+	SimplePanel mainContainer, topContainer;
+
     @Inject
-    public ViewImpl() {
-		style.ensureInjected();
-
-		// main Layout
-	    FlowPanel mainLayout = new FlowPanel();
-		mainLayout.getElement().setAttribute("layout", "column");
-		mainLayout.setStyleName(style.p6nVulcanLayoutMain(), true);
-		mainLayout.setStyleName(style.layoutColumn(), true);
-		mainLayout.setStyleName(style.flex(), true);
-
-        initWidget(mainLayout);
-
-        // top Container, for Menu Context
-        topContainer.setStyleName(style.pan_shell_top_container());
-        topContainer.setStyleName(style.layoutColumn(), true);
-        topContainer.setStyleName(style.flex_none(), true);
-        mainLayout.add(topContainer);
-        
-        mainContainer.getElement().setId("mainContainer");
+    public ViewImpl(Binder binder) {
+    	initWidget(binder.createAndBindUi(this));
+		asWidget().getElement().setAttribute("layout", "column");
         mainContainer.getElement().setAttribute("layout", "row");
-        mainContainer.setStyleName(style.panShellMainContainer());
-        mainContainer.setStyleName(style.layoutRow(), true);
-        mainContainer.setStyleName(style.flex(), true);
-        mainLayout.add(mainContainer);
     }
 
-    /**
-     * pan-shell -> mainLayout  -> topContainer   -> barContainer
-     *                          -> mainContainer
-    **/
 	@Override
     public void setInSlot(Object slot, IsWidget content) {
         if (slot == RootPresenter.SLOT_MainContent) {
