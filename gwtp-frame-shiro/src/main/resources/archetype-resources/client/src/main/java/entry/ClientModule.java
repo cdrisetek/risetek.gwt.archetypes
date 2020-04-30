@@ -9,13 +9,6 @@ import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 import ${package}.NameTokens;
 import ${package}.root.RootModule;
-/*
-import ${package}.home.HomeModule;
-import ${package}.login.LoginModule;
-import ${package}.platformMenu.PlatformMenuModule;
-import ${package}.convert.ConvertModule;
-import ${package}.security.SecurityModule;
-*/
 
 public class ClientModule extends AbstractPresenterModule {
     @Override
@@ -31,13 +24,7 @@ public class ClientModule extends AbstractPresenterModule {
 
         // Application special
         install(new RootModule());
-/*
-        install(new PlatformMenuModule());
-    	install(new HomeModule());
-    	install(new LoginModule());
-    	install(new ConvertModule());
-    	install(new SecurityModule());
-*/
+
     	bind(MyBootstrapper.class).asEagerSingleton();
         bind(CurrentUser.class).asEagerSingleton();
         bind(LoggedInGatekeeper.class);
