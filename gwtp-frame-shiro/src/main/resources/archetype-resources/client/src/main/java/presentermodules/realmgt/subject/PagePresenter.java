@@ -13,7 +13,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -24,6 +24,7 @@ import ${package}.share.GetResults;
 import ${package}.share.realmgt.PrincipalEntity;
 import ${package}.share.realmgt.SubjectAction;
 import ${package}.share.realmgt.SubjectEntity;
+import ${package}.entry.LoggedInGatekeeper;
 
 @PlainMenu(order = 1001, title = "领域管理", token = TokenNames.realmgt)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
@@ -50,7 +51,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 
 	@ProxyCodeSplit
 	@NameToken(TokenNames.realmgt)
-	@NoGatekeeper
+	@UseGatekeeper(LoggedInGatekeeper.class)
 	public interface MyProxy extends ProxyPlace<PagePresenter> {
 	}
 
