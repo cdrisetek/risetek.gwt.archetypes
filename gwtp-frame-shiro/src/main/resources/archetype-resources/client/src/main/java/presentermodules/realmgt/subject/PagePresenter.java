@@ -17,6 +17,7 @@ import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import ${package}.bindery.PlainMenu;
 import ${package}.presentermodules.realmgt.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
@@ -24,6 +25,7 @@ import ${package}.share.realmgt.PrincipalEntity;
 import ${package}.share.realmgt.SubjectAction;
 import ${package}.share.realmgt.SubjectEntity;
 
+@PlainMenu(order = 1001, title = "领域管理", token = TokenNames.realmgt)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {

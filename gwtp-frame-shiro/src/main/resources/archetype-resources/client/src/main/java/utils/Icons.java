@@ -7,21 +7,21 @@ public class Icons {
 	public static class ArrowRight extends Icon {
 		public ArrowRight() {
 			super("0 0 24 24");
-			createPath("M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z");
+			path("M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z");
 		}
 	}
 
 	public static class ArrowLeft extends Icon {
 		public ArrowLeft() {
 			super("0 0 24 24");
-			createPath("m12,4l1.41,1.41l-5.58,5.59l12.17,0l0,2l-12.17,0l5.58,5.59l-1.41,1.41l-8,-8l8,-8z");
+			path("m12,4l1.41,1.41l-5.58,5.59l12.17,0l0,2l-12.17,0l5.58,5.59l-1.41,1.41l-8,-8l8,-8z");
 		}
 	}
 
 	public static class Login extends Icon {
 		public Login() {
 			super("0 0 512 512");
-			createPath("m345.6,305c-28.7,0 -42.5,16 -89.6,16c-47.1,0 -60.8,-16 -89.6,-16"
+			path("m345.6,305c-28.7,0 -42.5,16 -89.6,16c-47.1,0 -60.8,-16 -89.6,-16"
                     + "c-74.2,0 -134.4,60.2 -134.4,134.4l0,25.6c0,26.5 21.5,48 48,48"
                     + "l352,0c26.5,0 48,-21.5 48,-48l0,-25.6c0,-74.2 -60.2,-134.4 -134.4,-134.4z"
                     + "m86.4,160l-352,0l0,-25.6c0,-47.6 38.8,-86.4 86.4,-86.4c14.6,0 38.3,16 89.6,16"
@@ -35,7 +35,7 @@ public class Icons {
 	public static class Modify extends Icon {
 		public Modify() {
 			super("0 0 576 512");
-			createPath("M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 "
+			path("M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 "
 					 + "48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 "
 					 + "48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 "
 					 + "2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 "
@@ -197,82 +197,29 @@ public class Icons {
         return e;
     }-*/;
     
-    public static native Element convertIcon()
-    /*-{
-        var ns = "http://www.w3.org/2000/svg";
-        var e = document.createElementNS(ns, "svg");
-    	e.setAttribute("fill-rule", "evenodd");
-    	e.setAttribute("viewBox","0 0 24 24");
-    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
-    	e.setAttribute("focusable","false");
-		var p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M5.327 13.1l-2.48 2.098L5.617 20h3.69z");
-        p.setAttribute("opacity", ".8");
-        e.appendChild(p);
+	public static class Convert extends Icon {
+		public Convert() {
+			super("0 0 24 24");
+	        path("M5.327 13.1l-2.48 2.098L5.617 20h3.69z").setAttribute("opacity", ".8");
+	        path("M4.692 12l-1.846 3.198 2.48-2.1z").setAttribute("opacity", ".6");
+	        path("M2.846 15.198L9.31 4H5.62L1 12z");
+	        path("M18.673 10.9l2.48-2.098L18.383 4h-3.69z").setAttribute("opacity", ".8");
+	        path("M19.308 12l1.846-3.198-2.48 2.1z").setAttribute("opacity", ".6");
+	        path("M2.846 15.198L9.31 4H5.62L1 12z");
+	        path("M21.154 8.802L14.69 20h3.69L23 12z").setAttribute("opacity", ".8");
+	        path("M16 12l-1.155-2h-5.69L8 12z");			
+		}
+	}
 
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M4.692 12l-1.846 3.198 2.48-2.1z");
-        p.setAttribute("opacity", ".6");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M2.846 15.198L9.31 4H5.62L1 12z");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M18.673 10.9l2.48-2.098L18.383 4h-3.69z");
-        p.setAttribute("opacity", ".8");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M19.308 12l1.846-3.198-2.48 2.1z");
-        p.setAttribute("opacity", ".6");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M2.846 15.198L9.31 4H5.62L1 12z");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M21.154 8.802L14.69 20h3.69L23 12z");
-        p.setAttribute("opacity", ".8");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M16 12l-1.155-2h-5.69L8 12z");
-        e.appendChild(p);
-        return e;
-    }-*/;
-    
-
-    public static native Element homeIcon()
-    /*-{
-        var ns = "http://www.w3.org/2000/svg";
-        var e = document.createElementNS(ns, "svg");
-    	e.setAttribute("fill-rule", "evenodd");
-    	e.setAttribute("viewBox","0 0 24 24");
-    	e.setAttribute("preserveAspectRatio","xMidYMid meet");
-    	e.setAttribute("focusable","false");
-
-		var p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M12 3.15l-9 9.472 1.352 1.433L12 6.007l7.648 8.048L21 12.622z");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M12 6.007l-7 7.366v2.132l7.475-9z");
-        p.setAttribute("opacity", ".6");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M12.475 6.506l-.475.57V14l2 .002V21h5v-7.627z");
-        p.setAttribute("opacity", ".8");
-        e.appendChild(p);
-
-		p = document.createElementNS(ns, "path");
-        p.setAttribute("d", "M5 15.505V21h5v-7h2V7.077z");
-        e.appendChild(p);
-        return e;
-    }-*/;
+	public static class Home extends Icon {
+		public Home() {
+			super("0 0 24 24");
+			path("M12 3.15l-9 9.472 1.352 1.433L12 6.007l7.648 8.048L21 12.622z");
+			path("M12 6.007l-7 7.366v2.132l7.475-9z").setAttribute("opacity", ".6");
+			path("M12.475 6.506l-.475.57V14l2 .002V21h5v-7.627z").setAttribute("opacity", ".8");
+			path("M5 15.505V21h5v-7h2V7.077z");
+		}
+	}
 
     public static native Element eyeSlashIcon()
     /*-{
@@ -382,21 +329,11 @@ public class Icons {
 			setElement(elementNS(view));
 		}
 		
-		public Element createPath(String path) {
+		public Element path(String path) {
 	        Element p = elementNSPath();
 	        p.setAttribute("d", path);
 	        getElement().appendChild(p);
 	        return p;
 		}
-		
-		public Element setFillNone(Element e) {
-			e.setAttribute("fill", "none");
-			return e;
-		}
-/*		
-		public Element setOpacity(String opacity) {
-			
-		}
-*/
 	}
 }

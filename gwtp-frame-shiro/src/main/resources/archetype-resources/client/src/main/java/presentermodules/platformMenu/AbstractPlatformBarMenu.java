@@ -1,27 +1,70 @@
 package ${package}.presentermodules.platformMenu;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import ${package}.presentermodules.platformMenu.StyleBundle.Style;
-import ${package}.utils.TagWrapBuilder;
+import com.gwtplatform.mvp.client.ViewImpl;
 
-public abstract class AbstractPlatformBarMenu extends Button implements HasUiHandlers<MyUiHandlers> {
-    public final Style style = StyleBundle.resources.style();
+public abstract class AbstractPlatformBarMenu extends ViewImpl implements HasUiHandlers<MyUiHandlers> {
+    @UiTemplate("Menu.ui.xml")
+	public interface Binder extends UiBinder<HTMLPanel, AbstractPlatformBarMenu> {}
+
+    public interface Style extends CssResource {
+    	String matIconButton();
+    	String cfcAccountchooserButtons();
+    	String barButton();
+    	String copyright();
+    	String cfcNavchooserDetails();
+    	String pccConsoleNavButton();
+    	String cfcIcon();
+    	String cfcProfilebutton();
+    	String matIcon();
+    	String cfcProfilepicture();
+    	String largeAccountIcon();
+    	String ngStartInserted();
+    	String cfcAccountChooserMenu();
+    	String cfcAccountchooserDetails();
+    	String navBarContainer();
+    	String navMenubottomContainer();
+    	String cfcProfileRow();
+    }
+    public @UiField Style style;
+    
+    public @UiField Button button;
+    
+    public @UiField HTMLPanel boundingboxMenu, boundingboxTips, accountChooserMenu, NavButton;
+    
+    public @UiField Element matIcon, tooltip, overlaypanelTips, overlaypanelMenu;
+
     protected MyUiHandlers uiHandler;
 
-    public AbstractPlatformBarMenu() {
-    	style.ensureInjected();
-		setStyleName(style.cfcAccountChooserLink());
-    	setTabIndex(0);
+    public AbstractPlatformBarMenu(Binder binder) {
+    	initWidget(binder.createAndBindUi(this));
+    	button.setTabIndex(0);
+		button.sinkEvents(Event.ONMOUSEOVER);
+    	button.addMouseOutHandler(c->{boundingboxTips.removeFromParent();});
+    	boundingboxTips.getElement().setAttribute("style", "top: 0px; left: 0px; height: 100%; width: 100%;");
+    }
 
-    	addMouseOverHandler(c->{uiHandler.showTip(this);});
-		addClickHandler(c->{uiHandler.onMenuClick(this);});
+    @UiHandler("button")
+    void onButtonMouseOver(MouseOverEvent event) {
+    	uiHandler.showTip(this);
+    }
+    
+    @UiHandler("button")
+    void onButtonClick(ClickEvent event) {
+    	uiHandler.onMenuClick(this);
     }
     
 	@Override
@@ -29,56 +72,27 @@ public abstract class AbstractPlatformBarMenu extends Button implements HasUiHan
     	this.uiHandler = uiHandler;
 	}
 	
+	@Override
+	public void onAttach() {
+		int xpostion = button.getAbsoluteLeft();
+		int windowWith = Window.getClientWidth();
+
+		if(xpostion < windowWith/2)
+			overlaypanelTips.setAttribute("style", "pointer-events: auto; top: 48px; left: " + xpostion + "px;");
+		else
+			overlaypanelTips.setAttribute("style", "pointer-events: auto; top: 48px; right: 12px;");
+
+    	tooltip.setInnerText(getTip());
+	}
+	
     abstract public String getTip();
 	abstract public Panel getMenuPanel();
-    abstract public Panel getIcon();
     
-    Button mkButton(String label, Element child) {
-    	Element el = getElement();
-        el.setAttribute("aria-label", label);
-        el.setAttribute("aria-haspopup", "true");
-        el.appendChild(child);
-    	return this;
-    }
+	public Panel getIcon() {
+        return NavButton;
+	}
     
-    Panel mkPositionBoundingBox() {
-    	Panel position = new SimplePanel();
-    	position.getElement().setDir("ltr");
-    	position.setStyleName(style.cdkOverlayConnectedPositionBoundingBox());
-    	return position;
-    }
-    
-    Panel getToolTipPanel() {
-		style.ensureInjected();
-    	Panel position = mkPositionBoundingBox();
-    	position.getElement().setAttribute("style", "top: 0px; left: 0px; height: 100%; width: 100%;");
-
-    	Element overlay = DOM.createDiv();
-    	overlay.setClassName(style.cdkOverlayPane());
-    	
-    	// TODO: we should compute the position.
-		int xpostion = getAbsoluteLeft();
-		int windowWith = Window.getClientWidth();
-		boolean end;
-		if(xpostion < windowWith/2)
-			end = false;
-		else
-			end = true;
-		GWT.log("show at: " + xpostion + " with:" + windowWith);
-    	if(end)
-        	overlay.setAttribute("style", "pointer-events: auto; top: 48px; right: 12px;");
-    	else
-    		overlay.setAttribute("style", "pointer-events: auto; top: 48px; left: " + xpostion + "px;");
-
-    	Panel tooltip =  new TagWrapBuilder("cfcTooltipOverlay")
-    			             .addStyleName(style.cfcTooltipOverlaySimple())
-    			             .build();
-
-    	tooltip.getElement().setAttribute("role", "tooltip");
-    	tooltip.getElement().setInnerText(getTip());
-
-    	overlay.appendChild(tooltip.getElement());
-    	position.getElement().appendChild(overlay);
-    	return position;
+    public Panel getToolTipPanel() {
+    	return boundingboxTips;
     }
 }

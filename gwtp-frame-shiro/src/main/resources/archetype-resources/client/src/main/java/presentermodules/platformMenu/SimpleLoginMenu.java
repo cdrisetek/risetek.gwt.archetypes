@@ -3,6 +3,7 @@ package ${package}.presentermodules.platformMenu;
 import javax.inject.Inject;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -17,7 +18,6 @@ import ${package}.entry.CurrentUser;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
 import ${package}.utils.Icons;
-import ${package}.utils.TagWrapBuilder;
 
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
@@ -25,57 +25,10 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	private final CurrentUser user;
 	
 	@Inject
-	public SimpleLoginMenu(CurrentUser user, EventBus eventBus) {
+	public SimpleLoginMenu(Binder binder, CurrentUser user, EventBus eventBus) {
+		super(binder);
 		this.user = user;
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
-	}
-	
-	
-	@Override
-	public Panel getIcon() {
-        Panel matIcon = new TagWrapBuilder(new Icons.Login(), style.matIcon())
-		        .addStyleName(style.matIcon())
-		        .build();
-
-        Panel cfcIcon = new TagWrapBuilder(matIcon, style.cfcIcon())
-		        .addStyleName(style.cfcIcon())
-		        .addStyleName(style.ngStartInserted())
-		        .build();
-        
-        Button button = mkButton("\u6253\u5f00\u5e10\u53f7\u9009\u9879", cfcIcon.getElement());
-        button.setStyleName(style.barButton());
-        button.setStyleName(style.matIconButton(), true);
-        
-    	return new TagWrapBuilder(button, style.pccConsoleNavButton())
-    			   .addStyleName(style.pccConsoleNavButton())
-    			   .build();
-	}
-	
-	@Override
-	public Panel getMenuPanel() {
-		if(!user.isLogin()) {
-			UrlBuilder builder = new UrlBuilder();
-			builder.setProtocol(Window.Location.getProtocol());
-			builder.setHost(Window.Location.getHost());
-			String port = Window.Location.getPort();
-			if (port != null && port.length() > 0) {
-				builder.setPort(Integer.parseInt(port));
-			}
-			builder.setPath("/login");
-			Window.Location.replace(builder.buildString());
-			return null;
-		}
-		int rightPosition = Window.getClientWidth() - getAbsoluteLeft() - getOffsetWidth();
-		Panel position = mkPositionBoundingBox();
-    	position.getElement().setAttribute("style", "top: 42px; right: " + rightPosition + "px; height: 100%; width: 100%; align-items: flex-end; justify-content: flex-start;");
-		
-    	Panel container = new SimplePanel();
-		container.setStyleName(style.cdkOverlayPane());
-		container.getElement().setPropertyString("style", "pointer-events: auto; position: static;");
-		
-		FlowPanel accountChooserMenu = new FlowPanel();
-		accountChooserMenu.setStyleName(style.cfcAccountChooserMenu(), true);
-		accountChooserMenu.setStyleName(style.ngStartInserted(), true);
 
 		FlowPanel accountChooserDetail = new FlowPanel();
 		accountChooserDetail.setStyleName(style.cfcAccountchooserDetails());
@@ -113,10 +66,34 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 		b.addClickHandler(c->{uiHandler.removeMenuPanel(); user.Logout();});
 		accountchooserButton.add(b);
 
-		container.add(accountChooserMenu);
+		matIcon.appendChild(new Icons.Login().getElement());
+    	Element el = button.getElement();
+        el.setAttribute("aria-label", "\u6253\u5f00\u5e10\u53f7\u9009\u9879");
+	}
+	
+	@Override
+	public void onAttach() {
+		super.onAttach();
+		int rightPosition = Window.getClientWidth() - button.getAbsoluteLeft() - button.getOffsetWidth();
+		boundingboxMenu.getElement().setAttribute("style", "top: 42px; right: " + rightPosition + "px; height: 100%; width: 100%; align-items: flex-end; justify-content: flex-start;");
+	}
+	
+	@Override
+	public Panel getMenuPanel() {
+		if(user.isLogin())
+			return boundingboxMenu;
 		
-		position.add(container);
-		return position;
+		UrlBuilder builder = new UrlBuilder();
+		builder.setProtocol(Window.Location.getProtocol())
+		       .setHost(Window.Location.getHost())
+		       .setPath("/login");
+
+		String port = Window.Location.getPort();
+		if (port != null && port.length() > 0) {
+			builder.setPort(Integer.parseInt(port));
+		}
+		Window.Location.replace(builder.buildString());
+		return null;
    	}
 
 	@Override

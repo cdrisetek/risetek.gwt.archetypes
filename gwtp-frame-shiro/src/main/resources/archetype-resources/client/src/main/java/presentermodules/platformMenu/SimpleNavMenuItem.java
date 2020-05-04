@@ -4,61 +4,35 @@ import java.util.function.Consumer;
 
 import javax.validation.constraints.NotNull;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import ${package}.NameTokens;
-import ${package}.presentermodules.platformMenu.StyleBundle.Style;
-import ${package}.utils.Icons;
 
 public class SimpleNavMenuItem extends FocusPanel {
-    private final Style style = StyleBundle.resources.style();
+    @UiTemplate("MenuItem.ui.xml")
+	interface Binder extends UiBinder<HTMLPanel, SimpleNavMenuItem> {}
+    private static final Binder binder = GWT.create(Binder.class);
+    
+    @UiField DivElement iconContainer;
+    @UiField Label title;
 
 	public SimpleNavMenuItem(@NotNull String name, @NotNull String token, Element icon, @NotNull Consumer<String> consumer) {
-		style.ensureInjected();
-		FlowPanel navItem = new FlowPanel();
-		navItem.setStyleName(style.navItem());
-		SimplePanel iconContainer = new SimplePanel();
-		iconContainer.setStyleName(style.menuIconContainer());
-		if(null != icon) {
-			iconContainer.getElement().appendChild(icon);
-		}
-		navItem.add(iconContainer);
-		Label n = new Label(name);
-		n.setStyleName(style.menuItemTitle());
-		navItem.add(n);
-		add(navItem);
+		add(binder.createAndBindUi(this));
+		
+		if(null != icon)
+			iconContainer.appendChild(icon);
+
+		title.setText(name);
+
 		if(null == token)
 			addClickHandler(c->{consumer.accept(name);});
 		else
 			addClickHandler(c->{consumer.accept(token);});
-	}
-
-	public static Panel makeHelpMenuItem(Consumer<String> consumer) {
-		Panel panel = new SimpleNavMenuItem("\u652f\u6301\u5e2e\u52a9", NameTokens.help, Icons.helpIcon(), consumer);
-		return panel;
-	}
-	
-	public static Panel makeServerMenuItem(Consumer<String> consumer) {
-		Panel panel = new SimpleNavMenuItem("服务状态", NameTokens.help, Icons.serverIcon(), consumer);
-		return panel;
-	}
-
-	public static Panel makeAboutMenuItem(Consumer<String> consumer) {
-		Panel panel = new SimpleNavMenuItem("关于", NameTokens.help, Icons.aboutIcon(), consumer);
-		return panel;
-	}
-    
-	public static Panel makeConvertMenuItem(Consumer<String> consumer) {
-		Panel panel = new SimpleNavMenuItem("\u7f16\u7801\u8f6c\u6362", NameTokens.convert, Icons.convertIcon(), consumer);
-		return panel;
-	}
-
-	public static Panel makeHomeMenuItem(Consumer<String> consumer) {
-		Panel panel = new SimpleNavMenuItem("\u9996\u9875", NameTokens.home, Icons.homeIcon(), consumer);
-		return panel;
 	}
 }

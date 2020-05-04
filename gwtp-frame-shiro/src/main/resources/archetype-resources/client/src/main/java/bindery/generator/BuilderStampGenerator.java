@@ -2,6 +2,7 @@ package ${package}.bindery.generator;
 
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class BuilderStampGenerator extends Generator {
 	private String implTypeName;
 	private String implPackageName;
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+	private Calendar rightNow = Calendar.getInstance();
 
 	@Override
 	public String generate(TreeLogger logger, GeneratorContext context,
@@ -59,6 +61,10 @@ public class BuilderStampGenerator extends Generator {
 
 			sourceWriter.print("public String getBuilderStamp(){");
 			sourceWriter.print("  return \"" + fmt.format(new Date()) + "\";");
+			sourceWriter.print("}");
+
+			sourceWriter.print("public String getYear(){");
+			sourceWriter.print("  return \"" + rightNow.get(Calendar.YEAR) + "\";");
 			sourceWriter.print("}");
 
 			sourceWriter.commit(logger);

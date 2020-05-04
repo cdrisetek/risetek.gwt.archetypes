@@ -1,0 +1,340 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+ <ui:style gss="true" type='${package}.presentermodules.platformMenu.AbstractPlatformBarMenu.Style'>
+@def COLOR_TONE #1a73e8;
+
+.matIconButton {
+min-width: 0;
+flex-shrink: 0;
+line-height: 40px;
+box-sizing: border-box;
+position: relative;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+outline: none;
+border: none;
+-webkit-tap-highlight-color: transparent;
+display: inline-block;
+white-space: nowrap;
+text-decoration: none;
+vertical-align: baseline;
+text-align: center;
+overflow: visible;
+background: transparent;
+font-size: 14px;
+font-weight: 500;
+}
+
+.matButton, .matFlatButton, .matIconButton, .matStrokedButton {
+box-sizing: border-box;
+position: relative;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+outline: none;
+border: none;
+-webkit-tap-highlight-color: transparent;
+display: inline-block;
+white-space: nowrap;
+text-decoration: none;
+vertical-align: baseline;
+text-align: center;
+margin: 0;
+min-width: 64px;
+line-height: 36px;
+padding: 0 16px;
+border-radius: 4px;
+overflow: visible;
+}
+
+.matIconButton {
+padding: 0;
+min-width: 0;
+width: 40px;
+height: 40px;
+flex-shrink: 0;
+line-height: 40px;
+border-radius: 50%;
+}
+
+.matButton, .matIconButton, .matStrokedButton {
+color: inherit;
+background: transparent;
+}
+
+.matButton, .matIconButton, .matStrokedButton, .matFlatButton {
+font-size: 14px;
+font-weight: 500;
+}
+
+.barButton.matIconButton {
+color: #fff;
+}
+
+.barButton.matIconButton {
+line-height: 40px;
+}
+
+.barButton.matIconButton {
+border-radius: 50%;
+border-color: transparent;
+border-width: 0;
+height: 40px;
+width: 40px;
+padding: 0px;
+}
+
+.barButton.matIconButton:hover {
+background: rgba(255,255,255,.2);
+}
+
+@media screen and (max-width: 768px) {
+.barButton.matIconButton {
+    height: 48px;
+    width: 48px;
+}
+}
+
+.navButton {
+margin-right: 4px;
+}
+
+.cfcIcon {
+display: inline-block;
+line-height: 0;
+vertical-align: middle;
+}
+
+.matIcon {
+background-repeat: no-repeat;
+display: inline-block;
+fill: currentColor;
+height: 24px;
+width: 24px;
+}
+
+.matIconButton .matIcon, .matIconButton i {
+line-height: 24px;
+}
+
+.ngStartInserted {
+}
+
+.cfcChooserDynamic {
+height: 36px;
+}
+
+.cfcAccountChooserLink svg {
+border: 0;
+background: none;
+text-decoration: none;
+padding: 0;
+border-radius: 50%;
+height: 32px;
+vertical-align: middle;
+width: 32px;
+margin: auto;
+display: block;
+object-fit: cover;
+}
+
+.cfcAccountChooserLink {
+border: 0;
+background: none;
+text-decoration: none;
+padding: 0;
+height: 36px;
+}
+.pccConsoleNavButton {
+}
+
+.cdcOverlayContainer {
+position: fixed;
+z-index: 1000;
+}
+
+.cdcOverlayContainer, .cdcGlobalOverlayWrapper {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.cfcNg2Region {
+    letter-spacing: normal;
+    -webkit-touch-callout: default;
+}
+
+.cfcNg2Region *, .cfcNg2Region *::before, .cfcNg2Region *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.cdkOverlayPane {
+position: absolute;
+pointer-events: auto;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+z-index: 1000;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+max-width: 100%;
+max-height: 100%;
+}
+
+cfcTooltipOverlay.cfcTooltipOverlaySimple {
+color: #fff;
+background: #757575;
+max-width: 320px;
+padding: 4px 8px;
+}
+
+cfcTooltipOverlay {
+color: rgba(0,0,0,.66);
+font-family: "roboto";
+font-size: 12px;
+font-weight: 400;
+letter-spacing: normal;
+line-height: 16px;
+display: block;
+border-radius: 4px;
+margin: 8px;
+word-wrap: break-word;
+}
+
+.cdkOverlayConnectedPositionBoundingBox {
+position: absolute;
+z-index: 1000;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+-webkit-flex-direction: column;
+flex-direction: column;
+min-width: 1px;
+min-height: 1px;
+}
+
+.cfcAccountChooserMenu {
+background-color: #fff;
+border: 1.1px solid rgba(0,0,0,.12);
+font-size: 13px;
+line-height: normal;
+letter-spacing: normal;
+box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.cfcAccountchooserDetails {
+margin: 20px;
+display: flex;
+}
+
+.cfcProfilepicture {
+margin-right: 20px;
+}
+
+.cfcAccountchooserButtons {
+display: flex;
+justify-content: space-between;
+}
+
+.cfcProfileRow {
+background: #f5f5f5;
+border-top: 1px solid rgba(0,0,0,.12);
+}
+
+.cfcProfilebutton {
+position: relative;
+display: -moz-inline-box;
+display: inline-block;
+background-color: #f5f5f5;
+border: 1px solid rgba(0,0,0,.12);
+color: #666;
+font-size: 13px;
+height: 28px;
+line-height: 28px;
+margin: 10px auto;
+padding: 0 12px;
+cursor: pointer;
+width: 30%;
+vertical-align: middle;
+background-image: -webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.02));
+}
+
+.cfcProfilebutton:hover {
+background-color: #e5e5e5;
+}
+
+.largeAccountIcon {
+height: 96px;
+vertical-align: top;
+width: 96px;
+border-radius: 50%;
+background-color: COLOR_TONE;
+padding:   12px;
+fill: #fff;
+}
+
+.navBarContainer {
+display: flex;
+}
+
+.cfcNavchooserDetails {
+margin:  5px;
+display: block;
+}
+
+.navMenubottomContainer {
+margin:           2px;
+height:           35px;
+background-color: rgba(26, 115, 232, 0.9);
+color:            #fbfb20;
+text-align:       center;
+box-shadow: 0 3px 4px 0 rgba(0,0,0,.2), 0 3px 3px -2px rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+}
+
+.copyright {
+height:      100%;
+font-size:   12px;
+line-height:   35px;
+}
+
+.boundingbox {
+dir: ltr;
+}
+</ui:style>
+ 
+<g:HTMLPanel>
+ <g:HTMLPanel styleName="{style.pccConsoleNavButton}" ui:field="NavButton">
+ <g:Button styleName="{style.barButton} {style.matIconButton}" ui:field="button">
+  <div class="{style.cfcIcon} {style.ngStartInserted}">
+   <div class="{style.matIcon}" aria-haspopup="true" ui:field="matIcon"/>
+  </div>
+ </g:Button>
+ </g:HTMLPanel>
+
+ <g:HTMLPanel styleName="{style.cdkOverlayConnectedPositionBoundingBox} {style.boundingbox}" ui:field="boundingboxMenu">
+ <div class="{style.cdkOverlayPane}" style="pointer-events: auto; position: static;" ui:field="overlaypanelMenu">
+  <g:HTMLPanel styleName="{style.cfcAccountChooserMenu} {style.ngStartInserted}" ui:field="accountChooserMenu"/>
+ </div>
+ </g:HTMLPanel>
+
+ <g:HTMLPanel styleName="{style.cdkOverlayConnectedPositionBoundingBox} {style.boundingbox}" ui:field="boundingboxTips">
+ <div class="{style.cdkOverlayPane}" style="pointer-events: auto; position: static;" ui:field="overlaypanelTips">
+  <cfctooltipoverlay class="{style.cfcTooltipOverlaySimple}" role="tooltip" ui:field="tooltip"/>
+ </div>
+ </g:HTMLPanel>
+
+ </g:HTMLPanel>
+</ui:UiBinder>

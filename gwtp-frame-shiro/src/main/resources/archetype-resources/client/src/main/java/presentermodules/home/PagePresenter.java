@@ -11,10 +11,13 @@ import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import ${package}.bindery.PlainMenu;
+import ${package}.utils.Icons;
 import ${package}.NameTokens;
 import ${package}.root.RootPresenter;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 
+@PlainMenu(order = 0, title = "\u9996\u9875", token = NameTokens.home, iconClass = Icons.Home.class)
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
 		implements MyUiHandlers {

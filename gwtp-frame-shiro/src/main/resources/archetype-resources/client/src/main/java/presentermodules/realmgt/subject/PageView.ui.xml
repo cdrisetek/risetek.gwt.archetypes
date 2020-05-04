@@ -39,6 +39,7 @@
   .tb-search-container {
    margin:  auto 20px;
    width: 50%;
+   z-index: 0;
   } 
 
   .tb-dock {

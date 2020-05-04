@@ -24,7 +24,6 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
     	void installMiddleMenu(AbstractPlatformBarMenu... menus);
     	void installLeftMenu(AbstractPlatformBarMenu... menus);
     	void showTip(AbstractPlatformBarMenu menu);
-    	void removeTip(AbstractPlatformBarMenu menu);
     	void showMenuPanel(AbstractPlatformBarMenu menu);
     }
 
@@ -77,6 +76,13 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		forceReveal();
 	}
 
+	@Override
+	protected
+	void onReveal() {
+		navMenu.onAttach();
+		accountMenu.onAttach();
+	}
+	
 	@Override
 	public void showTip(AbstractPlatformBarMenu menu) {
 		getView().showTip(menu);
