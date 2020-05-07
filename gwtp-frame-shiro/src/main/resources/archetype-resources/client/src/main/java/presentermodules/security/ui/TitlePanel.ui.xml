@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:icons='urn:import:${package}.utils.Icons'>
+	xmlns:m='urn:import:gwt.material.design.client.ui'>
 
 	<ui:style gss="true">
 		.title { width: 100%;}
@@ -122,7 +122,7 @@
 				<div class='{style.titleButton1}'>
 					<div class='{style.titleButton2}'>
 						<g:HTMLPanel styleName='{style.titleButton3}' ui:field='backButton'>
-							<icons:ArrowLeft />
+							<m:MaterialIcon iconType="ARROW_BACK"/>
 						</g:HTMLPanel>
 					</div>
 				</div>

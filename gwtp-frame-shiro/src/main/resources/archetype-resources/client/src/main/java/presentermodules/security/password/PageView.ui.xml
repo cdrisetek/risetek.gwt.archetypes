@@ -1,59 +1,115 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:m='urn:import:${package}.presentermodules.security.ui'>
+	xmlns:m='urn:import:gwt.material.design.client.ui'
+	xmlns:s='urn:import:${package}.presentermodules.security.ui'>
 
-	<ui:style gss="true" src="style.gss" type="${package}.presentermodules.security.password.PageView.MyStyle" />
+<ui:style gss="true">
+@def CONTENT_WIDTH  660px;
+
+.maintanceContainer {
+min-height: 100%;
+width: 100%;
+height: auto;
+position: relative;
+overflow: visible;
+-webkit-font-smoothing: antialiased;
+margin: 0;
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+}
+
+.contentContainer {
+margin: auto;
+max-width: CONTENT_WIDTH;
+}
+
+.notedescription {
+font: caption;
+padding: 12px;
+}
+
+.cardcontextpad { padding: 24px; }
+
+.boxIconInline {
+display: -webkit-box;
+display: -moz-box;
+display: -ms-flexbox;
+display: -webkit-flex;
+display: flex;
+-webkit-box-align: center;
+box-align: center;
+-webkit-align-items: center;
+align-items: center;
+}
+
+.boxflexgrow {
+-webkit-box-flex: 1;
+box-flex: 1;
+-webkit-flex-grow: 1;
+flex-grow: 1;
+-webkit-flex-shrink: 1;
+flex-shrink: 1;
+font-size: 17px;
+min-width: 0;
+}
+
+.boxofwrap {
+overflow-wrap: break-word;
+}
+
+.clearfocus {
+}
+</ui:style>
 	
-	<g:HTMLPanel styleName='{style.containerStyle}'>
-		<m:TitlePanel ui:field='titlePanel' title='密码' />
-			<div class="{style.infoLists}">
-				<div class="{style.mainFlow}">
-					<div class="{style.mainNote}">
-						<p>请选择安全系数高的密码。</p>
-						<p>更改密码将会使您退出自己的设备。您重新登录时需要输入新密码。</p>
-					</div>
-				</div>
-				<div class="{style.inputFrame}">
-					<div class="{style.inputArea}">
-						<c-wiz>
-							<div class="{style.inputAreaWiz}">
-								<div class="{style.inputControl}">
-									<div class="{style.inputLevel0}">
-										<div class="{style.inputLevel1}">
-											<div class="{style.inputWithEyes}">
-												<g:HTMLPanel styleName="{style.inputWrapHeight}" ui:field="inputwrap1" />
-											</div>
-										</div>
-									</div>
-									<div class="{style.inputControlPad}" ><div ui:field="controlpad1" /></div>
-								</div>
-								<div class="{style.commitTips}">
-									<div class="{style.commitTipsTitle}">
-										<span class="{style.commitTipsTitleContent}">密码强度</span>
-									</div>
-									<div class="{style.commitTipsContent}">不要使用很容易被猜到的密码，也不要使用您用于登录其他网站的密码。</div>
-								</div>
-								<div class="{style.inputControl}">
-									<div class="{style.inputLevel0}">
-										<div class="{style.inputLevel1}">
-											<div class="{style.inputWithEyes}">
-												<g:HTMLPanel styleName="{style.inputWrapHeight}" ui:field="inputwrap2" />
-											</div>
-										</div>
-									</div>
-									<div class="{style.inputControlPad}" ><div ui:field="controlpad2" /></div>
-								</div>
-							</div>
-						</c-wiz>
-					</div>
-					<div class="{style.inputCommit}">
-						<g:HTMLPanel styleName="{style.commitButton}" ui:field="commitButton">
-							<content class="{style.buttonContent}">
-								<span class="{style.buttonText}">更改密码</span>
-							</content>
-						</g:HTMLPanel>
-					</div>
-				</div>
-			</div>
-	</g:HTMLPanel>
+<!--  password maintance view -->
+<g:HTMLPanel>
+<m:MaterialIcon iconType="VISIBILITY" iconColor="BLUE" circle="true" ui:field="passwordspy1open"/>
+<m:MaterialIcon iconType="VISIBILITY_OFF" iconColor="BLUE" circle="true" ui:field="passwordspy1close"/>
+<m:MaterialIcon iconType="VISIBILITY" iconColor="BLUE" circle="true" ui:field="passwordspy2open"/>
+<m:MaterialIcon iconType="VISIBILITY_OFF" iconColor="BLUE" circle="true" ui:field="passwordspy2close"/>
+
+<g:HTMLPanel styleName='{style.maintanceContainer}' ui:field="passwordMaintance">
+ <s:TitlePanel ui:field='passwordtitle' title='密码' />
+		
+ <div role='main'>
+  <c-wiz>
+   <div class='{style.contentContainer}'>
+    <div class='{style.notedescription}'>请选择安全系数高的密码。</div>
+    <div class='{style.notedescription}'>更改密码将会使您退出自己的设备。您重新登录时需要输入新密码。</div>
+   </div>
+
+   <m:MaterialCard padding="24" styleName="{style.contentContainer}">
+    <m:MaterialCardContent textColor="LIGHT_BLUE">
+     <g:HTMLPanel styleName="{style.cardcontextpad}">
+      <div class='{style.boxIconInline}'>
+       <div class='{style.boxflexgrow}'>
+        <span class='{style.boxofwrap}'>
+         <m:MaterialTextBox label="新密码" ui:field="password1" type="PASSWORD" fieldType="DEFAULT" maxLength="30"/>
+        </span>
+       </div>
+							
+       <g:FocusPanel styleName="{style.clearfocus}" ui:field="passwordspy1"/>
+      </div>
+
+     <div class='{style.notedescription}'>密码强度</div>
+     <div class='{style.notedescription}'>不要使用很容易被猜到的密码，也不要使用您用于登录其他网站的密码。</div>
+
+     <div class='{style.boxIconInline}'>
+      <div class='{style.boxflexgrow}'>
+       <span class='{style.boxofwrap}'>
+        <m:MaterialTextBox label="确认新密码" ui:field="password2" type="PASSWORD" fieldType="DEFAULT" maxLength="30"/>
+       </span>
+      </div>
+							
+      <g:FocusPanel styleName="{style.clearfocus}" ui:field="passwordspy2"/>
+     </div>
+					
+     <m:MaterialButton margin="24" text="更改密码" textColor="WHITE" ui:field="passwordButton" />
+    </g:HTMLPanel>
+   </m:MaterialCardContent>
+  </m:MaterialCard>
+  </c-wiz>
+ </div>
+</g:HTMLPanel>
+</g:HTMLPanel>
 </ui:UiBinder>

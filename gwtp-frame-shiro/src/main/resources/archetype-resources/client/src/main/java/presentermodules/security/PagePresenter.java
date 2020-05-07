@@ -1,7 +1,7 @@
 package ${package}.presentermodules.security;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -46,28 +46,32 @@ public class PagePresenter extends
 	}
 
 	@Override
-	public HashMap<String, Map<String, String>> getSecurityInformation() {
-		HashMap<String, String> infoMap = new HashMap<>();
-		infoMap.put("value", (String)user.getAuthorityInfo().getPrincipal());
-		HashMap<String, Map<String, String>> infomation = new HashMap<>();
-		infomation.put("名称", infoMap);
-
-		infoMap = new HashMap<>();
-		infoMap.put("value", "******");
-		infoMap.put("link", NameTokens.updatePassword);
-		infomation.put("密码", infoMap);
-		return infomation;
+	public List<informationItem> getSecurityInformation() {
+		List<informationItem> items = new Vector<>();
+		informationItem item = new informationItem();
+		item.key = "名称";
+		item.value = (String)user.getAuthorityInfo().getPrincipal();
+		items.add(item);
+		
+		item = new informationItem();
+		item.key = "密码";
+		item.value = "******";
+		item.link = NameTokens.updatePassword;
+		
+		items.add(item);
+		
+		return items;
 	}
 
 	@Override
-	public HashMap<String, Map<String, String>> getContactInformation() {
-		HashMap<String, String> infoMap = new HashMap<>();
-		infoMap.put("value", user.getAttribute("email"));
-		infoMap.put("link", NameTokens.updateEmail);
-
-		HashMap<String, Map<String, String>> infomation = new HashMap<>();
-		infomation.put("电子邮件", infoMap);
-		return infomation;
+	public List<informationItem> getContactInformation() {
+		List<informationItem> items = new Vector<>();
+		informationItem item = new informationItem();
+		item.key = "电子邮件";
+		item.value = user.getAttribute("email");
+		item.link = NameTokens.updateEmail;
+		items.add(item);
+		return items;
 	}
 
 	@Override
