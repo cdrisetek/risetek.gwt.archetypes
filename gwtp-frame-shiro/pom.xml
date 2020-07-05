@@ -9,7 +9,6 @@
   </parent>
 
   <artifactId>gwtp-frame-shiro</artifactId>
-  <version>HEAD-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>GWTP Modular Auth Framework Archetype</name>
