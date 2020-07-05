@@ -11,13 +11,12 @@ import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.share.GetResults;
 import ${package}.share.realmgt.SubjectAction;
 import ${package}.share.realmgt.SubjectEntity;
-import ${package}.server.shiro.UserManagement;
 
 public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResults<SubjectEntity>> {
 	private static final Logger logger = Logger.getLogger(SubjectActionHandler.class.getName());
 
 	@Inject
-	UserManagement userManagement;
+	ISubjectManagement userManagement;
 	
 	@Override
 	public GetResults<SubjectEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
