@@ -9,6 +9,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.permission.WildcardPermission;
+import org.apache.shiro.subject.Subject;
 import com.google.inject.Singleton;
 import ${package}.server.realmgt.ISubjectManagement;
 import ${package}.share.RbacConstant;
@@ -65,6 +73,13 @@ public class UserManagement implements ISubjectManagement {
 	
 		for(int index =0 ; index < 100; index++)
 			tested_users(index);
+
+		// TODO: If no one have admin role, we create admin for this project as default.
+		if(users.isEmpty()) {
+			final UserInformation defaultUser = new UserInformation().grant("admin").grant("maintenance");
+			defaultUser.password = "admin";
+			users.put("admin", defaultUser);
+		}
 	}
 	
 	public UserInformation getUserInfomation(String username) {
@@ -72,18 +87,7 @@ public class UserManagement implements ISubjectManagement {
 		return user;
 	}
 	
-	public boolean isValid(String username, char[] password) {
-		UserInformation user = users.get(username);
-		if(null == user || null == password || null == user.password) {
-			return false;
-		}
-		
-		if(Arrays.equals(password, user.password.toCharArray()))
-			return true;
-
-		return false;
-	}
-
+	@RequiresAuthentication
 	public Set<String> getRoles(String username) {
 		UserInformation user = users.get(username);
 		if(null != user)
@@ -129,6 +133,9 @@ public class UserManagement implements ISubjectManagement {
 		
 		return false;
 	}
+	
+	// @RequiresPermissions("realm:listsubjects")
+	@RequiresRoles("maintenance")
 	@Override
 	public List<SubjectEntity> ReadSubjects(String like, int offset, int size) {
 		List<SubjectEntity> subjects = new Vector<SubjectEntity>();
@@ -167,5 +174,21 @@ public class UserManagement implements ISubjectManagement {
 			users.put(subject.getPrincipal().getName(), userInfo);		
 		}
 		return true;
+	}
+
+	@Override
+	public boolean checkValid(AuthenticationToken token) {
+		char credentials[] = (char[])token.getCredentials();
+		if(null == credentials)
+			return false;
+
+		UserInformation user = users.get((String)token.getPrincipal());
+		if(null == user || null == user.password)
+			return false;
+
+		if(Arrays.equals(credentials, user.password.toCharArray()))
+			return true;
+
+		return false;
 	}
 }

@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.dispatch.shared.ActionException;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -21,6 +22,8 @@ import ${package}.bindery.PlainMenu;
 import ${package}.presentermodules.realmgt.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
+import ${package}.share.exception.ActionUnauthorizedException;
+import ${package}.utils.ServerExceptionHandler;
 import ${package}.share.realmgt.PrincipalEntity;
 import ${package}.share.realmgt.SubjectAction;
 import ${package}.share.realmgt.SubjectEntity;
@@ -56,6 +59,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	private final DispatchAsync dispatcher;
+	private final PlaceManager placeManager;
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, DispatchAsync dispatcher,
@@ -63,6 +67,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
 		this.dispatcher = dispatcher;
+		this.placeManager = placeManager;
 	}
 
 	private int subjectOffset = 0;
@@ -88,7 +93,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Server State Failed.");
+				ServerExceptionHandler.handler(placeManager, caught);
 			}
 
 			@Override

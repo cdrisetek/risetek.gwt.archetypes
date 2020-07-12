@@ -11,13 +11,13 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-
+import ${package}.server.realmgt.ISubjectManagement;
 import com.google.inject.Inject;
 
 public class MyAuthorizingRealm extends AuthorizingRealm {
 
 	@Inject
-	private UserManagement userManagement;
+	private ISubjectManagement userManagement;
 	
 	public MyAuthorizingRealm() {
 		setCacheManager(new MemoryConstrainedCacheManager());
@@ -29,8 +29,9 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 		if(!(token instanceof UsernamePasswordToken))
 			throw new AuthenticationException("invalid token");
 
-		if(!userManagement.isValid((String)token.getPrincipal(), (char [])token.getCredentials()))
+		if(!userManagement.checkValid(token))
 			return null;
+
 		System.out.println((String)token.getPrincipal() + " login ok");
 		return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), getName());
 	}
@@ -45,6 +46,7 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		authorizationInfo.addRoles(userManagement.getRoles(username));
-		return authorizationInfo;		
+//		authorizationInfo.addStringPermission("realm:list");
+		return authorizationInfo;
 	}
 }

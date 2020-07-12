@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.apache.shiro.guice.aop.ShiroAopModule;
 import org.apache.shiro.guice.web.GuiceShiroFilter;
 
 import com.google.inject.Guice;
@@ -65,7 +66,10 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 				bind(Context.class).toInstance(ctx);
 			}
 		});
-
+		// Install this module to enable Shiro AOP functionality in Guice.
+		modulesList.add(new ShiroAopModule());
+		
+		// @AutoLoadModule loading.
 		appendModules(modulesList);
 		modulesList.add(new MyShiroWebModule(servletContext));
 		return Guice.createInjector(modulesList);

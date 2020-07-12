@@ -58,10 +58,15 @@ public class PagePresenter extends
 	
 	@Override
     protected void onReveal() {
-		if(!user.isLogin())
-			return;
-		GWT.log("force to home for user had login.");
-		placeManager.revealDefaultPlace();
+		// when be here, old user information may be out of time.
+		user.sync(s->{
+			if(!user.isLogin())
+				return;
+
+			GWT.log("force to home for user had login.");
+			placeManager.revealDefaultPlace();
+		
+		}, f->{GWT.log("server side exception when login, may be we goto error place?");});
     }
 	
 	@Override

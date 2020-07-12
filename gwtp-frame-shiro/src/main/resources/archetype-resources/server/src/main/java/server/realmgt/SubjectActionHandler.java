@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
+import ${package}.server.ActionExceptionMapper;
 import ${package}.share.GetResults;
 import ${package}.share.realmgt.SubjectAction;
 import ${package}.share.realmgt.SubjectEntity;
@@ -21,6 +22,7 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 	@Override
 	public GetResults<SubjectEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
 		logger.fine("handler SubjectAction");
+		try{
 		switch(action.op) {
 		case CREATE:
 			if(null == action.subjects)
@@ -44,6 +46,9 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 			break;
 		default:
 			break;
+		}
+		} catch(Throwable t) {
+			ActionExceptionMapper.handler(t);
 		}
 		return null;
 	}

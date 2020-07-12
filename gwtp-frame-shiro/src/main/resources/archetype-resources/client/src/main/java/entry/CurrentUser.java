@@ -16,6 +16,7 @@ import ${package}.share.GetResult;
 import ${package}.share.SecurityAction;
 import ${package}.share.SecurityAction.OP;
 import ${package}.share.SecurityInfo;
+import ${package}.utils.ServerExceptionHandler;
 
 @Singleton
 public class CurrentUser implements AuthorityChangedHandler {
@@ -36,7 +37,7 @@ public class CurrentUser implements AuthorityChangedHandler {
 		dispatcher.execute(action, new AsyncCallback<GetResult<SecurityInfo>>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log(caught.getMessage());
+				ServerExceptionHandler.handler(null, caught);
 				fail.accept(caught);
 			}
 

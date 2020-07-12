@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
@@ -19,6 +20,7 @@ import ${package}.share.GetResult;
 import ${package}.share.RbacConstant;
 import ${package}.share.SecurityAction;
 import ${package}.share.SecurityInfo;
+import ${package}.share.exception.ActionAuthenticationException;
 
 public class SecurityActionHandler implements ActionHandler<SecurityAction, GetResult<SecurityInfo>> {
 	private static final Logger logger = Logger.getLogger(SecurityActionHandler.class.getName());
@@ -55,9 +57,9 @@ public class SecurityActionHandler implements ActionHandler<SecurityAction, GetR
 						"true".equals(rememberme));
 				try {
 					currentUser.login(upt);
-				} catch (Exception e) {
+				} catch (Throwable t) {
 					logger.fine(username + ": login failed");
-					throw new ActionException(e.getMessage(), e);
+					ActionExceptionMapper.handler(t);
 				} finally {
 					logger.fine(username + ": login successed");
 					// For security.
