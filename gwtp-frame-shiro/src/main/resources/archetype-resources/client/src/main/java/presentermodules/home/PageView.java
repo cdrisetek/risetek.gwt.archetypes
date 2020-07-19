@@ -1,7 +1,9 @@
 package ${package}.presentermodules.home;
 
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import ${package}.presentermodules.home.cards.InfoCardContainer;
@@ -9,14 +11,12 @@ import ${package}.presentermodules.home.cards.InfoCardContainer;
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		PagePresenter.MyView {
 
-	private final StyleBundle.Style style = StyleBundle.resources.style();
 	private final InfoCardContainer cardContainer;
-	
+	interface Binder extends UiBinder<HTMLPanel, PageView> {}
+
 	@Inject
-	public PageView() {
-		style.ensureInjected();
-		SimplePanel container = new SimplePanel();
-		container.setStyleName(style.homeStyle());
+	public PageView(Binder uiBinder) {
+		Panel container = uiBinder.createAndBindUi(this);
 		initWidget(container);
 		cardContainer = new InfoCardContainer().setParent(container).build();
 	}

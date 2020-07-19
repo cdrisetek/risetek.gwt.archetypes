@@ -2,7 +2,6 @@ package ${package}.presentermodules.realmgt.homecard;
 
 import com.google.inject.Inject;
 import ${package}.presentermodules.home.cards.InfoCard;
-import ${package}.presentermodules.realmgt.TokenNames;
 import ${package}.utils.Icons;
 
 public class HomeCardView extends InfoCard<MyUiHandlers> implements
@@ -10,8 +9,7 @@ public class HomeCardView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		headLabel.setInnerHTML("Realm management");
-		iconPanel.appendChild(Icons.compassIcon());
-		updateRedirect("Go to Realm management", "/#" + TokenNames.realmgt);
+		setTitle("Realm management", Icons.compassIcon());
+		addAction("Go to Realm management", c->{getUiHandlers().reveal();});
 	}
 }

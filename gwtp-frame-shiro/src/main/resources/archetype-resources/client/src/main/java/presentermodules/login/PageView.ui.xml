@@ -1,7 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
- xmlns:m='urn:import:gwt.material.design.client.ui'
- xmlns:ma='urn:import:gwt.material.design.addins.client'>
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
 
  <ui:style gss="true">
   @def ITEM_HEIGHT 80px;
@@ -60,7 +59,7 @@
   }
 
   .lg-content {
-  padding: 30px 0px 0px 0px;
+  padding: 10px 0px 0px 0px;
   width: INTERACTIVE_WIDHT;
   margin: 0px auto;
   }
@@ -76,21 +75,23 @@
    <div class='{style.lg-background}'>
     <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5">
      <m:MaterialCardContent textColor="LIGHT_BLUE">
+      <m:MaterialRow><m:MaterialColumn grid="l12 s12" paddingLeft="20" paddingRight="20">
       <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
-       <g:HTMLPanel styleName='{style.lg-content}'>
-        <m:MaterialTextBox label="账户"
-          ui:field="username" iconType="PERSON" type="TEXT"
-          fieldType="DEFAULT" maxLength="20" grid="s12"
-          class="{style.it-container}" />
+      </m:MaterialColumn></m:MaterialRow>
+      <g:HTMLPanel styleName='{style.lg-content}'>
+       <m:MaterialTextBox placeholder="账户"
+         ui:field="username" iconType="PERSON" type="TEXT"
+         fieldType="DEFAULT" maxLength="20"
+         class="{style.it-container}" />
 
-        <m:MaterialTextBox label="密码"
+       <m:MaterialTextBox placeholder="密码"
           ui:field="password" iconType="VPN_KEY" type="PASSWORD"
-          fieldType="DEFAULT" maxLength="30" grid="s12"
+          fieldType="DEFAULT" maxLength="30"
           class="{style.it-container}" />
 
-        <m:MaterialButton text="登录"
+       <m:MaterialButton text="登录"
           waves="DEFAULT" textColor="WHITE" ui:field="loginButton" iconType="SEND" width="100%" />
-       </g:HTMLPanel>
+      </g:HTMLPanel>
       </m:MaterialCardContent>
       <m:MaterialCardAction>
        <m:MaterialCheckBox text="自动登录" value="true" ui:field="remembeme"/>

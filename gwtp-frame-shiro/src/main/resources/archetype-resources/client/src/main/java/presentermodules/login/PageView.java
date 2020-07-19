@@ -1,5 +1,6 @@
 package ${package}.presentermodules.login;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -41,14 +42,16 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
     	initWidget(binder.createAndBindUi(this));
     	
     	username.setAutocomplete(false);
-		username.asValueBoxBase().getElement().setAttribute("spellcheck", "false");
-		username.asValueBoxBase().getElement().setAttribute("autocapitalize", "off");
-		username.asValueBoxBase().getElement().setAttribute("autocorrect", "off");
+    	Element el = username.asValueBoxBase().getElement();
+		el.setAttribute("spellcheck", "false");
+		el.setAttribute("autocapitalize", "off");
+		el.setAttribute("autocorrect", "off");
     	
     	password.setAutocomplete(false);
-    	password.asValueBoxBase().getElement().setAttribute("spellcheck", "false");
-    	password.asValueBoxBase().getElement().setAttribute("autocapitalize", "off");
-    	password.asValueBoxBase().getElement().setAttribute("autocorrect", "off");
+    	el = password.asValueBoxBase().getElement();
+		el.setAttribute("spellcheck", "false");
+		el.setAttribute("autocapitalize", "off");
+		el.setAttribute("autocorrect", "off");
     	
     	// default no account operation panel.
     	setAccountOperatorActive(false);
@@ -64,6 +67,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	@UiHandler("username")
 	void onUserNameFocus(FocusEvent e) {
 		username.clearErrorText();
+		password.clearErrorText();
 	}
 
 	@UiHandler("username")
@@ -74,14 +78,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			reset();
 	}
 	
-	@UiHandler("username")
-	void onUserNameBlur(BlurEvent e) {
-		if(username.getValue().isEmpty())
-			username.setErrorText("账户不能为空");
-	}
-
 	@UiHandler("password")
 	void onPasswordFocus(FocusEvent e) {
+		username.clearErrorText();
 		password.clearErrorText();
 	}
 	
@@ -91,12 +90,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			doLogin();
 		else
 			reset();
-	}
-
-	@UiHandler("password")
-	void onPasswordBlur(BlurEvent e) {
-		if(password.getValue().isEmpty())
-			password.setErrorText("密码不能为空");
 	}
 
 	@UiHandler("loginButton")

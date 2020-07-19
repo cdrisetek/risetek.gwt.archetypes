@@ -9,7 +9,6 @@ public class HomeCardView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		headLabel.setInnerHTML("应用信息");
-		iconPanel.appendChild(Icons.compassIcon());
+		setTitle("应用信息", Icons.compassIcon());
 	}
 }

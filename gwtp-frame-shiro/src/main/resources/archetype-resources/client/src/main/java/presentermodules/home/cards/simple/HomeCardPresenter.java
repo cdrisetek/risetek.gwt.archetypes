@@ -31,6 +31,6 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	@ProxyEvent
 	@Override
 	public void onRevealHomeCard(RevealHomeCardEvent event) {
-		event.getConsumer().accept(this, 0);
+		event.getConsumer().accept(this, 0 /* order */);
 	}
 }

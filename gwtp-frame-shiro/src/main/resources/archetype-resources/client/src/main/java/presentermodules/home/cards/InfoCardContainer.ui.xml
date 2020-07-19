@@ -1,13 +1,67 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-	<ui:style gss="true" src="style.gss"
-		type='${package}.presentermodules.home.cards.InfoCardContainer.MyStyle' />
-		
-		<g:HTMLPanel styleName="{style.panelBody} {style.panelBodyScrollable}">
-		<div class="{style.panelBodyScrollContent} {style.startInserted}">
-			<g:HTMLPanel styleName="{style.infoCardContainer} {style.infoCardContainerCenter} {style.infoCardContainerCenterNoWrap} {style.startInserted}"
-				ui:field="container" />
-		</div>
-	</g:HTMLPanel>
+<ui:style gss="true" type='${package}.presentermodules.home.cards.InfoCardContainer.MyStyle'>
+@def COLUMN_MAX_WIDTH 460px;
+@def COLUMN_MIN_WIDTH 296px;
+
+.panelBodyScrollable {
+    height: 100%;
+    overflow: auto;
+}
+
+.panelBodyContent {
+    padding: 24px;
+}
+
+.infoCardContainer {
+    flex-wrap: nowrap;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.infoCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.infoCardContainer.infoCardContainerCenter {
+    justify-content: center;
+}
+
+.infoCardContainer.infoCardContainerCenterNoWrap {
+    flex-wrap: nowrap;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.homeCardColumn.homeCardColumnWidth {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: COLUMN_MAX_WIDTH;
+    max-width: COLUMN_MAX_WIDTH;
+    min-width: COLUMN_MIN_WIDTH;
+    flex-basis: COLUMN_MIN_WIDTH;
+}
+
+.homeCardColumn {
+    display: block;
+    float: none;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.homeCardColumn:last-of-type {
+    margin-right: 0;
+}
+
+</ui:style>
+ <g:HTMLPanel styleName="{style.panelBodyScrollable}">
+  <div class="{style.panelBodyContent}">
+   <g:HTMLPanel styleName="{style.infoCardContainer} {style.infoCardContainerCenter} {style.infoCardContainerCenterNoWrap}"
+    ui:field="container" />
+  </div>
+ </g:HTMLPanel>
 </ui:UiBinder>

@@ -9,7 +9,6 @@ public class HomeCardView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		headLabel.setInnerHTML("欢迎使用");
-		iconPanel.appendChild(new Icons.Login().getElement());
+		setTitle("欢迎使用", new Icons.Login());
 	}
 }

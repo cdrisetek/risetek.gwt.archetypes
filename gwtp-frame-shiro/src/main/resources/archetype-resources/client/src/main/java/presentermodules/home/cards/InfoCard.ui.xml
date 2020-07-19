@@ -1,7 +1,156 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-	<ui:style gss="true" src="style.gss" type="${package}.presentermodules.home.cards.InfoCard.MyStyle" />
+	<ui:style gss="true" type="${package}.presentermodules.home.cards.InfoCard.MyStyle">
+ @def COLOR_TONE                   #1a73e8;
+	
+	.infoCard {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 0;
+    position: relative;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: linear;
+    }
+	
+	.infoCardStyling {
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    background-color: #f7f7f7;
+    border-radius: 2px;
+    }
+	.infoCardTopRight {
+    position: absolute;
+    right: 4px;
+    top: 12px;
+    z-index: 9;
+}
+	.infoCardHeader {
+    align-items: center;
+    display: flex;
+    padding-bottom: 4px;
+    padding-top: 20px;
+    color: COLOR_TONE;
+}
+	
+	.infoCardItemLeftGutter {
+    align-items: center;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 24px;
+    line-height: initial;
+    padding-left: 20px;
+    position: relative;
+    text-align: center;
+    width: 28px;
+}
+	.matIcon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 24px;
+    width: 24px;
+}
+	
+	.headContent {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 16px;
+    }
+
+.headText {
+    margin: 0 12px 0 0;
+    color: COLOR_TONE;
+    font-family: "roboto";
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: normal;
+    line-height: 24px;
+    }
+	
+	.cfcLoader {
+}
+	
+	.loaderContent {
+}
+
+.cardBodyGroup {
+    padding-bottom: 12px;
+}
+	.infoCardItem {
+    align-items: center;
+    display: flex;
+    position: relative;
+    padding: 4px 16px 4px 0;
+    width: 100%;
+}
+	
+.infoCardItem {
+    color: #000;
+    border: 0;
+    text-decoration: none;
+    transition: background-color .3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+
+
+
+.infoCardItemContentLeft {
+    flex: 1 1;
+    min-width: 0;
+}
+
+	
+	
+.InfoCardItemContent {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1;
+    min-width: 0;
+    padding-left: 16px;
+    width: 100%;
+}
+
+div.cardInfoText.cardInfoTextSecondary {
+    color: rgba(0,0,0,.66);
+}
+
+.infoTextLine {
+    display: flex;
+    justify-content: space-between;
+}
+	
+.infoTextLine:first-child {
+    padding-top: 6px;
+}
+	
+	.action {
+    display: flex;
+    cursor: pointer;
+
+    border-top: 1px solid rgba(0,0,0,.12);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-decoration: none;
+
+}
+	
+	.cardRedirect {
+    display: flex;
+    align-items: center;
+}
+	
+.startInserted {
+}
+	
+	</ui:style>
 
 	<g:HTMLPanel styleName="{style.startInserted}">
 			<div class="{style.startInserted} {style.infoCard}">
@@ -21,6 +170,7 @@
 							ui:field="loaderContent">
 							<g:FlowPanel styleName="{style.cardBodyGroup}"
 								ui:field="cardBodyGroup" />
+							<g:FlowPanel ui:field="actionGroup" />
 						</g:FlowPanel>
 					</div>
 				</div>

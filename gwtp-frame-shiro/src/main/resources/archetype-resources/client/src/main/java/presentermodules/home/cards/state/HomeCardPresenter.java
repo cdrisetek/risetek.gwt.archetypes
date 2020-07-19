@@ -5,7 +5,6 @@ import java.util.Vector;
 
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -22,13 +21,13 @@ import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 import ${package}.share.GetResults;
 import ${package}.share.container.StateAction;
 import ${package}.share.container.StateEntity;
+import ${package}.utils.ServerExceptionHandler;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		public InfoCard<?> updateInfoItems(List<InfoItem> items);
-
-		public InfoCard<?> updateRedirect(String title, String link);
+		public void clear();
 	}
 
 	@ProxyStandard
@@ -55,11 +54,12 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Server State Failed.");
+				ServerExceptionHandler.handler(null, caught);
 			}
 
 			@Override
 			public void onSuccess(GetResults<StateEntity> result) {
+				getView().clear();
 				List<InfoItem> items = new Vector<>();
 				for (StateEntity entity : result.getResults()) {
 					InfoItem item = new InfoItem();
@@ -76,8 +76,6 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	@ProxyEvent
 	@Override
 	public void onRevealHomeCard(RevealHomeCardEvent event) {
-		GWT.log("add state homecard");
-		event.getConsumer().accept(this, 1);
-		updateStateInfoCard();
+		event.getConsumer().accept(this, 1 /* order */);
 	}
 }
