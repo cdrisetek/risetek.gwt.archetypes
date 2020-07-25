@@ -75,22 +75,22 @@
    <div class='{style.lg-background}'>
     <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5">
      <m:MaterialCardContent textColor="LIGHT_BLUE">
-      <m:MaterialRow><m:MaterialColumn grid="l12 s12" paddingLeft="20" paddingRight="20">
-      <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
-      </m:MaterialColumn></m:MaterialRow>
+      <m:MaterialRow>
+       <m:MaterialColumn grid="l12 s12" paddingLeft="20" paddingRight="20">
+        <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
+       </m:MaterialColumn>
+      </m:MaterialRow>
       <g:HTMLPanel styleName='{style.lg-content}'>
-       <m:MaterialTextBox placeholder="账户"
-         ui:field="username" iconType="PERSON" type="TEXT"
-         fieldType="DEFAULT" maxLength="20"
-         class="{style.it-container}" />
+       <m:MaterialTextBox placeholder="账户" maxLength="20"
+          ui:field="username" iconType="PERSON" type="TEXT"
+          fieldType="DEFAULT" class="{style.it-container}" />
 
-       <m:MaterialTextBox placeholder="密码"
+       <m:MaterialTextBox placeholder="密码" maxLength="30"
           ui:field="password" iconType="VPN_KEY" type="PASSWORD"
-          fieldType="DEFAULT" maxLength="30"
-          class="{style.it-container}" />
+          fieldType="DEFAULT" class="{style.it-container}" />
 
-       <m:MaterialButton text="登录"
-          waves="DEFAULT" textColor="WHITE" ui:field="loginButton" iconType="SEND" width="100%" />
+       <m:MaterialButton text="登录" waves="DEFAULT" textColor="WHITE"
+                         ui:field="loginButton" iconType="SEND" width="100%" />
       </g:HTMLPanel>
       </m:MaterialCardContent>
       <m:MaterialCardAction>

@@ -22,15 +22,17 @@ import ${package}.utils.Icons;
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
 
-	private final CurrentUser user;
+	private final CurrentUser account;
 	
+	private FlowPanel accountChooserDetail = new FlowPanel();
+	private Label account_id = new Label();
+
 	@Inject
 	public SimpleLoginMenu(Binder binder, CurrentUser user, EventBus eventBus) {
 		super(binder);
-		this.user = user;
+		this.account = user;
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
 
-		FlowPanel accountChooserDetail = new FlowPanel();
 		accountChooserDetail.setStyleName(style.cfcAccountchooserDetails());
 		
 		SimplePanel imgPanel = new SimplePanel();
@@ -44,9 +46,9 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 
 		imgPanel.add(accountIcon);
 		accountChooserDetail.add(imgPanel);
-		
+		accountChooserDetail.add(account_id);
+
 		accountChooserMenu.add(accountChooserDetail);
-		accountChooserDetail.add(new Label((String)user.getAuthorityInfo().getPrincipal()));
 
 		FlowPanel accountchooserButton = new FlowPanel();
 		accountchooserButton.setStyleName(style.cfcAccountchooserButtons(), true);
@@ -74,13 +76,19 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	@Override
 	public void onAttach() {
 		super.onAttach();
+
+		if(account.isLogin())
+			account_id.setText(account.getAccount().getAccountPrincipal());
+		else
+			account_id.setText("");
+		
 		int rightPosition = Window.getClientWidth() - button.getAbsoluteLeft() - button.getOffsetWidth();
 		boundingboxMenu.getElement().setAttribute("style", "top: 42px; right: " + rightPosition + "px; height: 100%; width: 100%; align-items: flex-end; justify-content: flex-start;");
 	}
 	
 	@Override
 	public Panel getMenuPanel() {
-		if(user.isLogin())
+		if(account.isLogin())
 			return boundingboxMenu;
 		
 		UrlBuilder builder = new UrlBuilder();
@@ -99,15 +107,15 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	@Override
 	public String getTip() {
 
-		if(user.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + (String)user.getAuthorityInfo().getPrincipal();
+		if(account.isLogin())
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + account.getAccount().getAccountPrincipal();
 
 		return "\u767b\u5f55\u7528\u6237";
 	}
 
 	@Override
 	public void onUserStatusChange() {
-		if(user.isLogin())
+		if(account.isLogin())
 			GWT.log("should show login icon");
 		else
 			GWT.log("should show logout icon");

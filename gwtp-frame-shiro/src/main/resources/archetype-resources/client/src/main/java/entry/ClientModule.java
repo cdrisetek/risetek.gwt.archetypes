@@ -9,6 +9,8 @@ import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 import ${package}.NameTokens;
 import ${package}.root.RootModule;
+import ${package}.utils.ServerExceptionHandler;
+import ${package}.presentermodules.errorplace.ErrorModule;
 
 public class ClientModule extends AbstractPresenterModule {
     @Override
@@ -19,12 +21,13 @@ public class ClientModule extends AbstractPresenterModule {
     	install(new DefaultModule.Builder().tokenFormatter(RouteTokenFormatter.class).build());
         // DefaultPlaceManager Places
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
-        bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.home);
+        bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error);
         bindConstant().annotatedWith(UnauthorizedPlace.class).to(NameTokens.login);
 
         // Application special
+        install(new ErrorModule());
         install(new RootModule());
-
+        bind(ServerExceptionHandler.class).asEagerSingleton();
     	bind(MyBootstrapper.class).asEagerSingleton();
         bind(CurrentUser.class).asEagerSingleton();
         bind(LoggedInGatekeeper.class);

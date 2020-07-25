@@ -1,7 +1,6 @@
 package ${package}.server.realmgt;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -11,32 +10,30 @@ import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.ActionExceptionMapper;
 import ${package}.share.GetResults;
 import ${package}.share.realmgt.SubjectAction;
-import ${package}.share.realmgt.SubjectEntity;
+import ${package}.share.realmgt.AccountEntity;
 
-public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResults<SubjectEntity>> {
-	private static final Logger logger = Logger.getLogger(SubjectActionHandler.class.getName());
-
+public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResults<AccountEntity>> {
 	@Inject
 	ISubjectManagement userManagement;
 	
 	@Override
-	public GetResults<SubjectEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
-		logger.fine("handler SubjectAction");
+	public GetResults<AccountEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
 		try{
 		switch(action.op) {
 		case CREATE:
 			if(null == action.subjects)
 				throw new ActionException("no valid datas");
-			userManagement.CreateSubjects(action.subjects);
+			userManagement.CreateSubjects(action.subjects, action.password);
 			break;
 		case READ:
 			if(null == action.subjects || action.subjects.size() == 0) {
 				// READ all subjects
-				List<SubjectEntity> subjects = userManagement.ReadSubjects(action.like, action.offset, action.size);
-				return new GetResults<SubjectEntity>(subjects);
+				List<AccountEntity> subjects = userManagement.ReadSubjects(action.like, action.offset, action.size);
+				return new GetResults<AccountEntity>(subjects);
 			}
 			break;
 		case UPDATE:
+			userManagement.UpdateSubjects(action.subjects);
 			break;
 		case DELETE:
 			break;
@@ -59,7 +56,7 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 	}
 
 	@Override
-	public void undo(SubjectAction action, GetResults<SubjectEntity> result, ExecutionContext context)
+	public void undo(SubjectAction action, GetResults<AccountEntity> result, ExecutionContext context)
 			throws ActionException {
 		// do nothing.
 	}}

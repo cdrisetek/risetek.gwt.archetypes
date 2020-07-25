@@ -55,7 +55,7 @@ public class PagePresenter extends
 
 	@Override
 	public String getOriginEmail() {
-		return user.getAttribute("email");
+		return user.getAccountAttribute("email");
 	}
 
 	@Override

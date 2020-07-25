@@ -1,6 +1,5 @@
 package ${package}.presentermodules.realmgt.subject;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,47 +8,35 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.dispatch.shared.ActionException;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.bindery.PlainMenu;
+import ${package}.entry.CurrentUser;
 import ${package}.presentermodules.realmgt.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
-import ${package}.share.exception.ActionUnauthorizedException;
 import ${package}.utils.ServerExceptionHandler;
-import ${package}.share.realmgt.PrincipalEntity;
+import ${package}.share.realmgt.AccountEntity;
 import ${package}.share.realmgt.SubjectAction;
-import ${package}.share.realmgt.SubjectEntity;
 import ${package}.entry.LoggedInGatekeeper;
 
-@PlainMenu(order = 1001, title = "领域管理", token = TokenNames.realmgt)
+@PlainMenu(order = 1001, title = "账户管理", token = TokenNames.realmgt)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		void setSubjects(List<SubjectEntity> subjects);
-
+		void setSubjects(List<AccountEntity> subjects);
 		int getSubjectsCapacity();
-
 		void upDatePagerStatus(int offset, boolean hasMore);
-
 		void alert(String message);
-
-		public String getName();
-
-		public String getEmail();
-
-		public String getTelphone();
-
-		public void reset();
-
-		void dialogClose();
+		public void showSubjectCreatePlace();
+		public void closeSubjectCreatePlace();
+		public void showSubjectMaintancePlace(AccountEntity subject);
+		public void closeSubjectMaintancePlace();
 	}
 
 	@ProxyCodeSplit
@@ -58,16 +45,18 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public interface MyProxy extends ProxyPlace<PagePresenter> {
 	}
 
+	private final CurrentUser user;
 	private final DispatchAsync dispatcher;
-	private final PlaceManager placeManager;
+	private final ServerExceptionHandler exceptionHandler;
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, DispatchAsync dispatcher,
-			PlaceManager placeManager) {
+			CurrentUser user, ServerExceptionHandler exceptionHandler) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
 		this.dispatcher = dispatcher;
-		this.placeManager = placeManager;
+		this.exceptionHandler = exceptionHandler;
+		this.user = user;
 	}
 
 	private int subjectOffset = 0;
@@ -88,16 +77,16 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			offset = 0;
 
 		// read more than require so to determine the end of data.
-		SubjectAction action = new SubjectAction(null, SubjectAction.OP.READ, offset, (size + 1), like, sequence++);
-		dispatcher.execute(action, new AsyncCallback<GetResults<SubjectEntity>>() {
+		SubjectAction action = new SubjectAction(null, null, SubjectAction.OP.READ, offset, (size + 1), like, sequence++);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				ServerExceptionHandler.handler(placeManager, caught);
+				exceptionHandler.handler(caught);
 			}
 
 			@Override
-			public void onSuccess(GetResults<SubjectEntity> result) {
+			public void onSuccess(GetResults<AccountEntity> result) {
 				if (result.getResults().size() == 0)
 					return;
 
@@ -116,49 +105,39 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		});
 	}
 
-	private void newSubjects(Set<SubjectEntity> subjects) {
-
+	@Override
+	public void onSubjectPlace() {
+		// TODO: check role.
+		if(!user.checkRole("admin")) {
+			getView().alert("you have no privage to create new account");
+			return;
+		}
+		getView().showSubjectCreatePlace();
+	}
+	
+	@Override
+	public void onSubjectCreate(Set<AccountEntity> subjects, String password) {
 		// read more than require so to determine the end of data.
-		SubjectAction action = new SubjectAction(subjects, SubjectAction.OP.CREATE, 0, 0, null, 0);
-		dispatcher.execute(action, new AsyncCallback<GetResults<SubjectEntity>>() {
+		SubjectAction action = new SubjectAction(subjects, password, SubjectAction.OP.CREATE, 0, 0, null, 0);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Server State Failed.");
 				getView().alert("Server State Failed.");
+				exceptionHandler.handler(caught);
 			}
 
 			@Override
-			public void onSuccess(GetResults<SubjectEntity> result) {
+			public void onSuccess(GetResults<AccountEntity> result) {
 				getView().alert("新用户成功创建");
-				getView().dialogClose();
+				getView().closeSubjectCreatePlace();
 				readSubjects(0);
 			}
 		});
 	}
 
 	@Override
-	public void onCreateSubject() {
-		SubjectEntity subject = new SubjectEntity();
-		PrincipalEntity principal = new PrincipalEntity();
-		subject.setPrincipal(principal);
-
-		principal.setName(getView().getName());
-		principal.setEmail(getView().getEmail());
-		principal.setTelphone(getView().getTelphone());
-
-		if (principal.getName().isEmpty()) {
-			getView().alert("name empty");
-			return;
-		}
-
-		Set<SubjectEntity> subjects = new HashSet<>();
-		subjects.add(subject);
-		newSubjects(subjects);
-	}
-
-	@Override
-	public void onSearch(String like) {
+	public void onSubjectSearch(String like) {
 		if (like.length() == 0)
 			this.like = null;
 		else
@@ -184,4 +163,31 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		subjectOffset = 0;
 		readSubjects(0);
 	}
+
+	@Override
+	public void onSubjectMaintance(AccountEntity subject) {
+		getView().showSubjectMaintancePlace(subject);
+	}
+
+	@Override
+	public void onSubjectUpdate(Set<AccountEntity> subjects) {
+		// read more than require so to determine the end of data.
+		SubjectAction action = new SubjectAction(subjects, null, SubjectAction.OP.UPDATE, 0, 0, null, 0);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				getView().alert("Server State Failed.");
+				exceptionHandler.handler(caught);
+			}
+
+			@Override
+			public void onSuccess(GetResults<AccountEntity> result) {
+				getView().alert("账户更新成功");
+				getView().closeSubjectMaintancePlace();
+				readSubjects(0);
+			}
+		});
+	}
+
 }

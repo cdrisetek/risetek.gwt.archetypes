@@ -34,6 +34,6 @@ public class MyBootstrapper implements Bootstrapper {
     @Override
     public void onBootstrap() {
     	// TODO: ErrorPlace
-    	user.sync(c->placeManager.revealCurrentPlace(), failure->GWT.log("sync account failure"));
+    	user.accountSync(c->placeManager.revealCurrentPlace(), failure->GWT.log("sync account failure"));
     }
 }

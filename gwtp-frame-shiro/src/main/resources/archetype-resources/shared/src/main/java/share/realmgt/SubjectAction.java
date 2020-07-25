@@ -6,15 +6,16 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.gwtplatform.dispatch.rpc.shared.UnsecuredActionImpl;
 import ${package}.share.GetResults;
 
-public class SubjectAction extends UnsecuredActionImpl<GetResults<SubjectEntity>> {
+public class SubjectAction extends UnsecuredActionImpl<GetResults<AccountEntity>> {
 
 	public static enum OP implements IsSerializable { CREATE, READ, UPDATE, DELETE, ENABLE, DISABLE }; 	
 
 	protected SubjectAction(){}
 
 	
-	public SubjectAction(Set<SubjectEntity> subjects, OP op, int offset, int size, String like, long sequence) {
+	public SubjectAction(Set<AccountEntity> subjects, String password, OP op, int offset, int size, String like, long sequence) {
 		this.subjects = subjects;
+		this.password = password;
 		this.op = op;
 		this.offset = offset;
 		this.size = size;
@@ -27,5 +28,6 @@ public class SubjectAction extends UnsecuredActionImpl<GetResults<SubjectEntity>
 	public int size;
 	public String like;
 	public OP op;
-	public Set<SubjectEntity> subjects;
+	public Set<AccountEntity> subjects;
+	public String password;
 }

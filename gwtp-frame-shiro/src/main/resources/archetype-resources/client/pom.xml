@@ -13,7 +13,7 @@
   <packaging>gwt-app</packaging>
 
   <properties>
-    <gwt-material.version>2.3.0</gwt-material.version>
+    <gwt-material.version>2.4.0-rc1</gwt-material.version>
   </properties>
 
   <dependencies>

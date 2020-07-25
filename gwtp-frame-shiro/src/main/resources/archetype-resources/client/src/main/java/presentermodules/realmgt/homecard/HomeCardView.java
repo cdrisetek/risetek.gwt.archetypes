@@ -9,7 +9,7 @@ public class HomeCardView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		setTitle("Realm management", Icons.compassIcon());
+		setTitle("账户管理", Icons.compassIcon());
 		addAction("Go to Realm management", c->{getUiHandlers().reveal();});
 	}
 }

@@ -5,23 +5,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresGuest;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.authz.permission.WildcardPermission;
-import org.apache.shiro.subject.Subject;
+
 import com.google.inject.Singleton;
 import ${package}.server.realmgt.ISubjectManagement;
 import ${package}.share.RbacConstant;
-import ${package}.share.realmgt.PrincipalEntity;
-import ${package}.share.realmgt.SubjectEntity;
+import ${package}.share.realmgt.AccountDescriptionsEntity;
+import ${package}.share.realmgt.AccountEntity;
 
 @Singleton
 public class UserManagement implements ISubjectManagement {
@@ -33,103 +28,146 @@ public class UserManagement implements ISubjectManagement {
 	 * visitor
 	 * maintenance
 	 */
-	public class UserInformation {
-		public String email;
+	public class AccountRecord {
+		public AccountEntity subject;
 		String password;
-		private Set<String> roles = new HashSet<String>();
 		
-		public UserInformation grant(String role) {
-			if(RbacConstant.isValidRole(role))
-				roles.add(role);
+		public AccountRecord() {
+			subject = new AccountEntity();
+			subject.setRoles(new HashSet<>());
+			subject.setAccountDescriptions(new AccountDescriptionsEntity());
+		}
+
+		public AccountRecord(String name) {
+			subject = new AccountEntity();
+			subject.setAccountPrincipal(name);
+			subject.setRoles(new HashSet<>());
+			subject.setAccountDescriptions(new AccountDescriptionsEntity());
+		}
+
+		public AccountRecord setName(String name) {
+			subject.setAccountPrincipal(name);
 			return this;
 		}
 
-		public UserInformation email(String email) {
-			this.email = email;
+		public AccountRecord grant(String role) {
+			if(RbacConstant.isValidRole(role))
+				subject.getRoles().add(role);
+			return this;
+		}
+
+		public AccountRecord setEmail(String email) {
+			subject.getAccountDescriptions().setEmail(email);
+			return this;
+		}
+		
+		public AccountRecord setNotes(String notes) {
+			subject.getAccountDescriptions().setNotes(notes);
+			return this;
+		}
+		
+		public AccountRecord setEnable(boolean enable) {
+			subject.setEnable(enable);
+			return this;
+		}
+		
+		public AccountRecord setTelphone(String telphone) {
+			subject.getAccountDescriptions().setTelphone(telphone);
+			return this;
+		}
+
+		public AccountRecord setPassword(String password) {
+			this.password = password;
 			return this;
 		}
 	}
 
-	private final Map<String, UserInformation> users = new HashMap<>();
+	private final Map<String, AccountRecord> accounts = new HashMap<>();
 
 	private void tested_users(int index) {
-		UserInformation userInfo = new UserInformation();
-		userInfo.password = "admin" + index;
-		userInfo.grant("admin" + index).grant("developer").grant("maintenance").grant("operator").grant("visitor").email("admin@risetek.com");
-		users.put("admin" + index, userInfo);		
+		AccountRecord account = new AccountRecord("admin"+ index);
+		account.password = "admin" + index;
+		account.setName("admin" + index).grant("admin" + index).grant("developer").grant("maintenance").grant("operator").grant("visitor")
+		       .setEmail("admin"+ index + "@risetek.com");
+		account.setNotes("account admin" + index);
+		account.setEnable(false);
+		accounts.put(account.subject.getAccountPrincipal(), account);		
 	}
 
 	public UserManagement() {
-		UserInformation userInfo = new UserInformation();
-		userInfo.password = "gamelan";
-		userInfo.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor").email("wangyc@risetek.com");
-		users.put("wangyc@risetek.com", userInfo);
+		AccountRecord account = new AccountRecord("wangyc@risetek.com");
+		account.password = "gamelan";
+		account.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor").setEmail("wangyc@risetek.com");
+		accounts.put(account.subject.getAccountPrincipal(), account);
 		
 		
-		userInfo = new UserInformation();
-		userInfo.password = "gamelan";
-		userInfo.grant("visitor").email("wangyc@risetek.com");
-		users.put("wangyc", userInfo);		
+		account = new AccountRecord("wangyc");
+		account.password = "gamelan";
+		account.grant("visitor").setEmail("wangyc@risetek.com");
+		accounts.put(account.subject.getAccountPrincipal(), account);		
 	
 		for(int index =0 ; index < 100; index++)
 			tested_users(index);
 
 		// TODO: If no one have admin role, we create admin for this project as default.
-		if(users.isEmpty()) {
-			final UserInformation defaultUser = new UserInformation().grant("admin").grant("maintenance");
+		if(accounts.isEmpty()) {
+			final AccountRecord defaultUser = new AccountRecord("admin").grant("admin").grant("maintenance");
 			defaultUser.password = "admin";
-			users.put("admin", defaultUser);
+			accounts.put(account.subject.getAccountPrincipal(), defaultUser);
 		}
 	}
 	
-	public UserInformation getUserInfomation(String username) {
-		UserInformation user = users.get(username);
+	public AccountRecord getUserInfomation(String username) {
+		AccountRecord user = accounts.get(username);
 		return user;
 	}
 	
 	@RequiresAuthentication
 	public Set<String> getRoles(String username) {
-		UserInformation user = users.get(username);
+		AccountRecord user = accounts.get(username);
 		if(null != user)
-			return user.roles;
+			return user.subject.getRoles();
 		return null;
 	}
 	
-	// TODO: password email etc. should be managed as key-value attributes.
-	
-	public void updatePassword(String username, String newpassword) {
-		UserInformation user = users.get(username);
+	@RequiresAuthentication
+	public void updateSecurity(String username, String password, AccountEntity account) {
+		AccountRecord user = accounts.get(username);
 		if(null == user)
 			return;
-		user.password = newpassword;
-	}
-	
-	public void updateEmail(String username, String newemail) {
-		UserInformation user = users.get(username);
-		if(null == user)
-			return;
-		user.email = newemail;
-	}
-	
-	public void updateSecurity(String username, Map<String, String> security) {
-		for(Entry<String, String> entry:security.entrySet()) {
-			if("password".equals(entry.getKey()))
-				updatePassword(username, entry.getValue());
-			else if("email".equals(entry.getKey()))
-				updateEmail(username, entry.getValue());
+
+		if(null != password)
+			user.password = password;
+
+		if(null != account) {
+			AccountDescriptionsEntity accountDescription = account.getAccountDescriptions();
+			if(null != accountDescription.getEmail())
+				user.subject.getAccountDescriptions().setEmail(accountDescription.getEmail());
+			if(null != accountDescription.getNotes())
+				user.subject.getAccountDescriptions().setEmail(accountDescription.getNotes());
+			if(null != accountDescription.getTelphone())
+				user.subject.getAccountDescriptions().setEmail(accountDescription.getTelphone());
 		}
 	}
 
-	private boolean isLike(String like, String text) {
-		if(null == like)
+	private boolean isLike(String like, Map.Entry<String, AccountRecord> entry) {
+		if(null == like || null == entry || entry.getKey().indexOf(like) != -1)
+			return true;
+
+		AccountRecord account = entry.getValue();
+		if(null == account)
 			return true;
 		
-		if(null == text)
-			return false;
-
-		if(text.indexOf(like) != -1) {
+		AccountDescriptionsEntity pe = account.subject.getAccountDescriptions();
+		
+		if(null != pe.getEmail() && pe.getEmail().indexOf(like) != -1)
 			return true;
-		}
+		
+		if(null != pe.getNotes() && pe.getNotes().indexOf(like) != -1)
+			return true;
+
+		if(null != pe.getTelphone() && pe.getTelphone().indexOf(like) != -1)
+			return true;
 		
 		return false;
 	}
@@ -137,12 +175,12 @@ public class UserManagement implements ISubjectManagement {
 	// @RequiresPermissions("realm:listsubjects")
 	@RequiresRoles("maintenance")
 	@Override
-	public List<SubjectEntity> ReadSubjects(String like, int offset, int size) {
-		List<SubjectEntity> subjects = new Vector<SubjectEntity>();
+	public List<AccountEntity> ReadSubjects(String like, int offset, int size) {
+		List<AccountEntity> subjects = new Vector<AccountEntity>();
 		int start = 0;
 		int count = 0;
-		for(Map.Entry<String, UserInformation> entry : users.entrySet()) {
-			if(!(isLike(like, entry.getKey()) || isLike(like, entry.getValue().email)))
+		for(Map.Entry<String, AccountRecord> entry : accounts.entrySet()) {
+			if(!isLike(like, entry))
 				continue;
 
 			if(start++ < offset)
@@ -151,27 +189,49 @@ public class UserManagement implements ISubjectManagement {
 			if(count++ > size)
 				break;
 
-			PrincipalEntity principal = new PrincipalEntity();
-			principal.setName(entry.getKey());
-			principal.setEmail(entry.getValue().email);
-			principal.setTelphone(null);
-			
-			SubjectEntity subject = new SubjectEntity();
-			subject.setPrincipal(principal);
-			
-			subjects.add(subject);
-		
+			subjects.add(entry.getValue().subject);
 		}
 		return subjects;
 	}
 
 	@Override
-	public boolean CreateSubjects(Set<SubjectEntity> subjects) {
-		for(SubjectEntity subject:subjects) {
-			UserInformation userInfo = new UserInformation();
-			userInfo.password = "admin";
-			userInfo.grant("developer").grant("maintenance").grant("operator").grant("visitor").email(subject.getPrincipal().getEmail());
-			users.put(subject.getPrincipal().getName(), userInfo);		
+	@RequiresRoles("admin")
+	public boolean CreateSubjects(Set<AccountEntity> subjects, String password) {
+		for(AccountEntity subject:subjects) {
+			AccountRecord account = new AccountRecord(subject.getAccountPrincipal());
+			account.grant("developer").grant("maintenance").grant("operator").grant("visitor")
+			        .setPassword(password)
+	                .setTelphone(subject.getAccountDescriptions().getTelphone())
+	                .setNotes(subject.getAccountDescriptions().getNotes())
+			        .setEmail(subject.getAccountDescriptions().getEmail())
+			        .setEnable(true);
+			accounts.put(subject.getAccountPrincipal(), account);		
+		}
+		return true;
+	}
+
+	@Override
+	@RequiresRoles("admin")
+	public boolean UpdateSubjects(Set<AccountEntity> subjects) {
+		for(AccountEntity subject:subjects) {
+			AccountRecord account = accounts.get(subject.getAccountPrincipal());
+			if(null == account)
+				continue;
+
+			AccountEntity oldacct = account.subject;
+			oldacct.setEnable(subject.isEnable());
+			
+			AccountDescriptionsEntity newDescription = subject.getAccountDescriptions();
+			if(null != newDescription) {
+				if(null != newDescription.getEmail())
+					oldacct.getAccountDescriptions().setEmail(newDescription.getEmail());
+				
+				if(null != newDescription.getNotes())
+					oldacct.getAccountDescriptions().setNotes(newDescription.getNotes());
+				
+				if(null != newDescription.getTelphone())
+					oldacct.getAccountDescriptions().setTelphone(newDescription.getTelphone());
+			}
 		}
 		return true;
 	}
@@ -182,7 +242,7 @@ public class UserManagement implements ISubjectManagement {
 		if(null == credentials)
 			return false;
 
-		UserInformation user = users.get((String)token.getPrincipal());
+		AccountRecord user = accounts.get((String)token.getPrincipal());
 		if(null == user || null == user.password)
 			return false;
 

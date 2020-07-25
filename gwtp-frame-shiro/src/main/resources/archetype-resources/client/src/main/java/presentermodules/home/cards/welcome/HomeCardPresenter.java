@@ -76,7 +76,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";
-			Set<String> roles = user.getAuthorityInfo().getRoles();
+			Set<String> roles = user.getAccount().getRoles();
 			StringBuffer sb = new StringBuffer();
 			for (String role : roles)
 				sb.append(" " + role);

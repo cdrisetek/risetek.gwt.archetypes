@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.Title;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -31,6 +32,7 @@ public class PagePresenter extends
 	private final CurrentUser user;
     private final PlaceManager placeManager;
 	
+    @Title("Login")
     @ProxyStandard
 	@NameToken(NameTokens.login)
     @NoGatekeeper
@@ -59,7 +61,7 @@ public class PagePresenter extends
 	@Override
     protected void onReveal() {
 		// when be here, old user information may be out of time.
-		user.sync(s->{
+		user.accountSync(s->{
 			if(!user.isLogin())
 				return;
 

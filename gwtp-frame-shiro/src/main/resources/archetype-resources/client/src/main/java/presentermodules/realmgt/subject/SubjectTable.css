@@ -1,3 +1,24 @@
+.subjectTable {
+}
+
+.subjectTable tr {
+ box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+}
+
+.subjectTable tr.emptytr {
+ box-shadow: none;
+}
+
+.subjectTable td {
+ font-size: 24px;
+ padding: 10px 0 0 0;
+ cursor: pointer;
+ white-space: nowrap;
+ overflow:hidden;
+ text-overflow: ellipsis;
+ -o-text-overflow: ellipsis;
+}
+
 .cellTableHoveredRow {
  background: transparent;
 }
@@ -7,33 +28,22 @@
 }
 
 .subjectcardContainer {
- font-size: 24px;
- font-family: "roboto";
- cursor: pointer;
- white-space: nowrap;
- overflow:hidden;
- text-overflow: ellipsis;
- -o-text-overflow: ellipsis; 
- border-width: 0px;
  outline: none;
  height: 100%;
  margin: 0;
  display: flex;
  vertical-align: middle;
- background-color: #F7F7F7;
-}
-
-.subjectcardtd {
- font-size: 24px;
- padding: 10px 0 0 0;
-}
-
-.subjectcardtr {
- border-color: transparent;
- box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
 }
 
 .subjectcard {
   vertical-align: middle;
   margin: auto 0 auto 10px;
+}
+
+.accountEnabled {
+ background-color: #C0FFC0;
+}
+
+.accountDisabled {
+ background-color: #F7F7F7;
 }

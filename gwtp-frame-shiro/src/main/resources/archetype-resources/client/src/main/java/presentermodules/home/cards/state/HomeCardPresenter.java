@@ -36,11 +36,13 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	}
 
 	private final DispatchAsync dispatcher;
+	private final ServerExceptionHandler exceptionHandler;
 
 	@Inject
-	public HomeCardPresenter(EventBus eventBus, DispatchAsync dispatcher, MyView view, MyProxy proxy) {
+	public HomeCardPresenter(EventBus eventBus, DispatchAsync dispatcher, MyView view, MyProxy proxy, ServerExceptionHandler exceptionHandler) {
 		super(eventBus, view, proxy);
 		this.dispatcher = dispatcher;
+		this.exceptionHandler = exceptionHandler;
 		getView().setUiHandlers(this);
 	}
 
@@ -54,7 +56,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 
 			@Override
 			public void onFailure(Throwable caught) {
-				ServerExceptionHandler.handler(null, caught);
+				exceptionHandler.handler(caught);
 			}
 
 			@Override

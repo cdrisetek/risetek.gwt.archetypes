@@ -20,30 +20,33 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import ${package}.share.realmgt.SubjectEntity;
+import ${package}.share.realmgt.AccountEntity;
 
-public class SubjectTable extends CellTable<SubjectEntity> {
+public class SubjectTable extends CellTable<AccountEntity> implements HasSubjectSelected {
 	private static final int DEFAULT_PAGESIZE = 15;
 
 	public SubjectTable() {
-		super(DEFAULT_PAGESIZE, SubjectTableBundle.style, new ProvidesKey<SubjectEntity>() {
+		super(DEFAULT_PAGESIZE, SubjectTableBundle.style, new ProvidesKey<AccountEntity>() {
 
 			@Override
-			public Object getKey(SubjectEntity item) {
-				return item.getPrincipal().getName();
+			public Object getKey(AccountEntity item) {
+				return item.getAccountPrincipal();
 			}
 		});
+		
+		addStyleName(SubjectTableBundle.style.cellTableStyle().subjectTable());
 
-		CellTableBuilder<SubjectEntity> tableBuilder = new MyCellTableBuilder<>(this);
-//		CellTableBuilder<SubjectEntity> tableBuilder = new DefaultCellTableBuilder<>(this);
+		CellTableBuilder<AccountEntity> tableBuilder = new MyCellTableBuilder(this);
+//		CellTableBuilder<AccountEntity> tableBuilder = new DefaultCellTableBuilder<>(this);
 		setTableBuilder(tableBuilder);
 
 		setSize("100%", "100%");
-		NoSelectionModel<SubjectEntity> noSelectionModel = new NoSelectionModel<>();
+		NoSelectionModel<AccountEntity> noSelectionModel = new NoSelectionModel<>();
 		noSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				// do nothing.
+				subjectSeletedEventHandler.onSelected(noSelectionModel.getLastSelectedObject());
 			}
 		});
 
@@ -53,8 +56,8 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 		AbstractSubjectEntityColumn nameColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(SubjectEntity object) {
-				return null == object ? null : object.getPrincipal().getName();
+			public String getValue(AccountEntity object) {
+				return null == object ? null : object.getAccountPrincipal();
 			}
 
 		};
@@ -62,8 +65,8 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 		AbstractSubjectEntityColumn emailColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(SubjectEntity object) {
-				return null == object ? null : object.getPrincipal().getEmail();
+			public String getValue(AccountEntity object) {
+				return null == object ? null : object.getAccountDescriptions().getEmail();
 			}
 
 		};
@@ -71,18 +74,27 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 		AbstractSubjectEntityColumn telphoneColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(SubjectEntity object) {
-				return null == object ? null : object.getPrincipal().getTelphone();
+			public String getValue(AccountEntity object) {
+				return null == object ? null : object.getAccountDescriptions().getTelphone();
+			}
+
+		};
+
+		AbstractSubjectEntityColumn notesColumn = new AbstractSubjectEntityColumn() {
+
+			@Override
+			public String getValue(AccountEntity object) {
+				return null == object ? null : object.getAccountDescriptions().getNotes();
 			}
 
 		};
 
 		addColumn(nameColumn);
-		setColumnWidth(nameColumn, 200, Unit.PX);
+		setColumnWidth(nameColumn, 400, Unit.PX);
 		addColumn(emailColumn);
-		setColumnWidth(emailColumn, 300, Unit.PX);
+		setColumnWidth(emailColumn, 400, Unit.PX);
 		addColumn(telphoneColumn);
-
+		addColumn(notesColumn);
 	}
 
 	// Override getKeyboardSelectedElement,
@@ -98,14 +110,14 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 	};
 
 	// ------------- Helper for null rows --------------
-	private abstract class AbstractSubjectEntityColumn extends Column<SubjectEntity, String> {
+	private abstract class AbstractSubjectEntityColumn extends Column<AccountEntity, String> {
 
 		public AbstractSubjectEntityColumn() {
 			super(new TextCell());
 		}
 
 		@Override
-		public void render(Context context, SubjectEntity object, SafeHtmlBuilder sb) {
+		public void render(Context context, AccountEntity object, SafeHtmlBuilder sb) {
 			if (object == null)
 				sb.appendHtmlConstant("&nbsp;");
 			else {
@@ -114,27 +126,28 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 		}
 	}
 
-	class MyCellTableBuilder<T> extends DefaultCellTableBuilder<T> {
-		private final String cellStyle = SubjectTableBundle.style.cellTableStyle().subjectcardtd();
+	class MyCellTableBuilder extends DefaultCellTableBuilder<AccountEntity> {
+		SubjectTableBundle.SubjectTableStyleBundle.Style style = SubjectTableBundle.style.cellTableStyle();
 
-		public MyCellTableBuilder(AbstractCellTable<T> cellTable) {
+		public MyCellTableBuilder(AbstractCellTable<AccountEntity> cellTable) {
 			super(cellTable);
 		}
 
 		@Override
-		public void buildRowImpl(T rowValue, int absRowIndex) {
+		public void buildRowImpl(AccountEntity rowValue, int absRowIndex) {
 
-			StringBuilder trClasses = new StringBuilder(SubjectTableBundle.style.cellTableStyle().subjectcardtr());
+			StringBuilder trClasses = new StringBuilder(style.emptytr());
 			// Build the row.
 			TableRowBuilder tr = startRow(rowValue);
-			tr.className(trClasses.toString());
+			if(null == rowValue)
+				tr.className(trClasses.toString());
 
 			// Build the columns.
 			int columnCount = cellTable.getColumnCount();
 			for (int curColumn = 0; curColumn < columnCount; curColumn++) {
-				Column<T, ?> column = cellTable.getColumn(curColumn);
+				Column<AccountEntity, ?> column = cellTable.getColumn(curColumn);
 				// Create the cell styles.
-				StringBuilder tdClasses = new StringBuilder(cellStyle);
+				StringBuilder tdClasses = new StringBuilder();
 				// Add class names specific to the cell.
 				Context context = new Context(absRowIndex, curColumn, cellTable.getValueKey(rowValue));
 				String cellStyles = column.getCellStyleNames(context, rowValue);
@@ -159,9 +172,15 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 
 				// Add the inner div.
 				DivBuilder div = td.startDiv();
-				div.className(SubjectTableBundle.style.cellTableStyle().subjectcardContainer());
+				if(null != rowValue) {
+					if(rowValue.isEnable())
+						div.className(style.subjectcardContainer() + " " + style.accountEnabled());
+					else
+						div.className(style.subjectcardContainer()+ " " + style.accountDisabled());
+				}
+
 				DivBuilder _div = div.startDiv();
-				_div.className(SubjectTableBundle.style.cellTableStyle().subjectcard());
+				_div.className(style.subjectcard());
 
 				// Render the cell into the div.
 				renderCell(_div, context, column, rowValue);
@@ -184,14 +203,19 @@ public class SubjectTable extends CellTable<SubjectEntity> {
 			Style cellTableStyle();
 
 			interface Style extends CellTable.Style {
+				public String subjectTable();
 				public String subjectcard();
-
-				public String subjectcardtd();
-
 				public String subjectcardContainer();
-
-				public String subjectcardtr();
+				public String accountEnabled();
+				public String accountDisabled();
+				public String emptytr();
 			}
 		}
+	}
+
+	private SubjectSeletedEventHandler subjectSeletedEventHandler;
+	@Override
+	public void addSubjectSelectedHandler(SubjectSeletedEventHandler handler) {
+		subjectSeletedEventHandler = handler;
 	}
 }

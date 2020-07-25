@@ -1,7 +1,11 @@
 package ${package}.presentermodules.realmgt.subject;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -14,15 +18,15 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.share.realmgt.SubjectEntity;
-import ${package}.utils.KeyBoardCode;
-
-import gwt.material.design.addins.client.inputmask.AbstractInputMask;
+import gwt.material.design.client.constants.Display;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialDialog;
 import gwt.material.design.client.ui.MaterialSearch;
-import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialToast;
+import gwt.material.design.client.ui.MaterialValueBox;
+import ${package}.share.realmgt.AccountDescriptionsEntity;
+import ${package}.share.realmgt.AccountEntity;
+import ${package}.utils.KeyBoardCode;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
 
@@ -33,45 +37,43 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	MaterialSearch searchinput;
 
 	@UiField
-	MaterialButton btnBack, btnFirstPage, btnNext;
+	MaterialButton btnBack, btnFirstPage, btnNext, btnCommit, btnmCommit, btnmEnable, btnmDisable;
 
 	@UiField
-	SubjectTable table;
+	SubjectTable subjectsDisplay;
 
 	@UiField
-	MaterialDialog dialog;
+	MaterialDialog subjectCreateDialog, subjectMaintanceDialog;
 
 	@UiField
-	MaterialTextBox name, email;
-	@UiField
-	AbstractInputMask<String> telphone;
+	MaterialValueBox<String> name, email, password, telphone, notes, mname, memail, mtelphone, mnotes;
 
 	interface Binder extends UiBinder<HTMLPanel, PageView> {
 	}
 
-	private final ListDataProvider<SubjectEntity> dataProvider = new ListDataProvider<>();
+	private final ListDataProvider<AccountEntity> dataProvider = new ListDataProvider<>();
 
 	@Inject
 	public PageView(Binder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		dataProvider.addDataDisplay(table);
+		dataProvider.addDataDisplay(subjectsDisplay);
 
 		searchinput.addKeyUpHandler(c -> {
-			getUiHandlers().onSearch(searchinput.getText());
+			getUiHandlers().onSubjectSearch(searchinput.getText());
 		});
 
 		searchinput.addCloseHandler(event -> {
 			searchinput.setValue(null);
-			getUiHandlers().onSearch(searchinput.getText());
+			getUiHandlers().onSubjectSearch(searchinput.getText());
 		});
 		
-		dialog.addCloseHandler(closeEvent->reset());
+		subjectsDisplay.addSubjectSelectedHandler(c->getUiHandlers().onSubjectMaintance(c));
 	}
 	
 	@UiHandler("resizePanel")
 	void onResize(ResizeEvent e) {
-		table.setPageSize((e.getHeight() - table.getHeaderHeight()) / rowHeight);
+		subjectsDisplay.setPageSize((e.getHeight() - subjectsDisplay.getHeaderHeight()) / rowHeight);
 		getUiHandlers().onSubjectTablePagerFlush(true, false);
 	}
 
@@ -97,19 +99,107 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	@UiHandler("btnCancel")
 	void onCancelClick(ClickEvent e) {
-		dialogClose();
+		closeSubjectCreatePlace();
 	}
 
 	@UiHandler("btnCommit")
-	void onCommitClick(ClickEvent e) {
-		getUiHandlers().onCreateSubject();
+	void onCommitCreatorPlaceClick(ClickEvent e) {
+		AccountEntity subject = new AccountEntity();
+		subject.setEnable(true);
+		AccountDescriptionsEntity principal = new AccountDescriptionsEntity();
+		subject.setAccountPrincipal(name.getValue());
+		principal.setEmail(email.getValue());
+		principal.setTelphone(telphone.getValue());
+		principal.setNotes(notes.getValue());
+		
+		subject.setAccountDescriptions(principal);
+
+		if (subject.getAccountPrincipal() == null || subject.getAccountPrincipal().isEmpty()) {
+			alert("name empty");
+			return;
+		}
+
+		Set<AccountEntity> subjects = new HashSet<>();
+		subjects.add(subject);
+		
+		getUiHandlers().onSubjectCreate(subjects, password.getValue());
 	}
 
 	@UiHandler("btnCreate")
 	void onAddNewClick(ClickEvent e) {
-		dialog.open();
+		getUiHandlers().onSubjectPlace();
 	}
 
+	@Override
+	public void showSubjectCreatePlace() {
+		name.clear();
+		password.clear();
+		email.clear();
+		telphone.clear();
+		notes.clear();
+		
+		name.setFocus(true);
+		subjectCreateDialog.open();
+	}
+
+	@UiHandler("btnmCancel")
+	void onCancelMaintancePlaceClick(ClickEvent e) {
+		closeSubjectMaintancePlace();
+	}
+	
+	private void maintanceAccountEnable(boolean enable) {
+		AccountEntity subject = new AccountEntity();
+		subject.setAccountPrincipal(mname.getValue());
+		subject.setEnable(enable);
+
+		Set<AccountEntity> subjects = new HashSet<>();
+		subjects.add(subject);
+
+		getUiHandlers().onSubjectUpdate(subjects);
+	}
+	@UiHandler("btnmDisable")
+	void onMaintancePlaceAccountDisableClick(ClickEvent e) {
+		maintanceAccountEnable(false);
+	}
+	@UiHandler("btnmEnable")
+	void onMaintancePlaceAccountEnableClick(ClickEvent e) {
+		maintanceAccountEnable(true);
+	}
+	
+	@UiHandler("btnmCommit")
+	void onCommitMaintancePlaceClick(ClickEvent e) {
+		AccountEntity subject = new AccountEntity();
+		subject.setAccountPrincipal(mname.getValue());
+		AccountDescriptionsEntity principal = new AccountDescriptionsEntity();
+		
+		principal.setEmail(memail.getValue());
+		principal.setTelphone(mtelphone.getValue());
+		principal.setNotes(mnotes.getValue());
+		
+		subject.setAccountDescriptions(principal);
+
+		Set<AccountEntity> subjects = new HashSet<>();
+		subjects.add(subject);
+
+		getUiHandlers().onSubjectUpdate(subjects);
+	}
+
+	@Override
+	public void showSubjectMaintancePlace(AccountEntity subject) {
+		mname.setValue(subject.getAccountPrincipal());
+		memail.setValue(subject.getAccountDescriptions().getEmail());
+		mtelphone.setValue(subject.getAccountDescriptions().getTelphone());
+		mnotes.setValue(subject.getAccountDescriptions().getNotes());
+		if(subject.isEnable()) {
+			btnmEnable.setDisplay(Display.NONE);
+			btnmDisable.setDisplay(Display.BLOCK);
+		} else {
+			btnmEnable.setDisplay(Display.BLOCK);
+			btnmDisable.setDisplay(Display.NONE);
+		}
+		subjectMaintanceDialog.open();
+	}
+	
 	@Override
 	public void alert(String message) {
 		MaterialToast.fireToast(message);
@@ -138,6 +228,18 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 						getUiHandlers().onSubjectTablePager(1);
 					else if (KeyBoardCode.UP == keyCode || KeyBoardCode.PAGEUP == keyCode)
 						getUiHandlers().onSubjectTablePager(-1);
+					else if(KeyBoardCode.ENTER == keyCode) {
+						if(subjectMaintanceDialog.isOpen()) {
+						    NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false,
+							        false, false, false);
+						    btnmCommit.getElement().dispatchEvent(evt);
+						}
+						if(subjectCreateDialog.isOpen()) {
+						    NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false,
+						        false, false, false);
+						    btnCommit.getElement().dispatchEvent(evt);
+						}
+					}
 				}
 			} else if (eventType == Event.ONMOUSEWHEEL) {
 				if (event.isFirstHandler()) {
@@ -152,23 +254,23 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	@Override
-	public void setSubjects(List<SubjectEntity> subjects) {
+	public void setSubjects(List<AccountEntity> subjects) {
 		// fill the table space. this is simple way.
-		for (int i = subjects.size(); i <= table.getPageSize(); i++)
+		for (int i = subjects.size(); i <= subjectsDisplay.getPageSize(); i++)
 			subjects.add(null);
 
 		dataProvider.setList(subjects);
 
 		// Set the total row count. This isn't strictly necessary, but it affects
 		// paging calculations, so its good habit to keep the row count up to date.
-		table.setRowCount(table.getPageSize(), true);
+		subjectsDisplay.setRowCount(subjectsDisplay.getPageSize(), true);
 	}
 
 	private int rowHeight = 100; // Unit.PX
 
 	@Override
 	public int getSubjectsCapacity() {
-		return table.getPageSize();
+		return subjectsDisplay.getPageSize();
 	}
 
 	@Override
@@ -179,30 +281,13 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	@Override
-	public void dialogClose() {
-		dialog.close();
+	public void closeSubjectCreatePlace() {
+		subjectCreateDialog.close();
 	}
 
 	@Override
-	public String getName() {
-		return name.getValue();
-	}
-
-	@Override
-	public String getEmail() {
-		return email.getValue();
-	}
-
-	@Override
-	public String getTelphone() {
-		return telphone.getValue();
-	}
-
-	@Override
-	public void reset() {
-		name.clear();
-		email.clear();
-		telphone.clear();
+	public void closeSubjectMaintancePlace() {
+		subjectMaintanceDialog.close();
 	}
 
 }

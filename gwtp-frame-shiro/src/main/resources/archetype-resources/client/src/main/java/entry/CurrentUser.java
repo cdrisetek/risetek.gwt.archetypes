@@ -1,7 +1,5 @@
 package ${package}.entry;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -15,114 +13,107 @@ import ${package}.entry.AuthorityChangedEvent.AuthorityChangedHandler;
 import ${package}.share.GetResult;
 import ${package}.share.SecurityAction;
 import ${package}.share.SecurityAction.OP;
-import ${package}.share.SecurityInfo;
+import ${package}.share.realmgt.AccountDescriptionsEntity;
+import ${package}.share.realmgt.AccountEntity;
 import ${package}.utils.ServerExceptionHandler;
 
 @Singleton
 public class CurrentUser implements AuthorityChangedHandler {
 
+	private AccountEntity subject;
+
 	private final DispatchAsync dispatcher;
 	private final EventBus eventBus;
-	private SecurityInfo authority;
-
+	private final ServerExceptionHandler exceptionHandler;
 	@Inject
-	public CurrentUser(DispatchAsync dispatcher, EventBus eventBus) {
+	public CurrentUser(DispatchAsync dispatcher, EventBus eventBus, ServerExceptionHandler exceptionHandler) {
 		this.dispatcher = dispatcher;
 		this.eventBus = eventBus;
+		this.exceptionHandler = exceptionHandler;
 		eventBus.addHandler(AuthorityChangedEvent.getType(), this);
 	}
 	
 	private void doAction(SecurityAction action, Consumer<String> success, Consumer<Throwable> fail) {
-		GWT.log("do security action");
-		dispatcher.execute(action, new AsyncCallback<GetResult<SecurityInfo>>() {
+		dispatcher.execute(action, new AsyncCallback<GetResult<AccountEntity>>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				ServerExceptionHandler.handler(null, caught);
+				exceptionHandler.handler(caught);
 				fail.accept(caught);
 			}
 
 			@Override
-			public void onSuccess(GetResult<SecurityInfo> result) {
-				authority = result.getResults();
+			public void onSuccess(GetResult<AccountEntity> result) {
+				subject = result.getResults();
 				success.accept("success");
 			}});
 	}
 
 	public void Login(String username, String password, boolean rememberme, Consumer<Throwable> loginFailure) {
-		SecurityInfo securityInfo = new SecurityInfo();
-		Map<String, String> attribute = new HashMap<>();
-		attribute.put("username", username);
-		attribute.put("password", password);
-		if(rememberme)
-			attribute.put("rememberme", "true");
-		
-		securityInfo.setAttributes(attribute);
-		SecurityAction action = new SecurityAction(securityInfo, OP.LOGIN);
+		AccountEntity sub = new AccountEntity();
+		sub.setAccountDescriptions(new AccountDescriptionsEntity());
+		sub.setAccountPrincipal(username);
+
+		SecurityAction action = new SecurityAction(sub, password, rememberme, OP.LOGIN);
 		doAction(action, c->eventBus.fireEvent(UserRolesChangeEvent.INSTANCE), fail->loginFailure.accept(fail));
 	}
     
 	public void Logout() {
-		SecurityInfo securityInfo = new SecurityInfo();
-		Map<String, String> attribute = new HashMap<>();
-		securityInfo.setAttributes(attribute);
-		SecurityAction action = new SecurityAction(securityInfo, OP.LOGOUT);
+		SecurityAction action = new SecurityAction(null, null, false, OP.LOGOUT);
 		doAction(action, s->eventBus.fireEvent(UserRolesChangeEvent.INSTANCE), f->GWT.log("logout failed."));
 	}
 
-	public void sync(Consumer<String> success, Consumer<Throwable> failure) {
-		SecurityInfo securityInfo = new SecurityInfo();
-		Map<String, String> attribute = new HashMap<>();
-		securityInfo.setAttributes(attribute);
-		SecurityAction action = new SecurityAction(securityInfo, OP.SYNC);
+	public void accountSync(Consumer<String> success, Consumer<Throwable> failure) {
+		SecurityAction action = new SecurityAction(null, null, false, OP.SYNC);
 		doAction(action, c->success.accept("success"), fail->failure.accept(fail));
 	}
 	
 	@Override
 	public void onAuthorityChanged() {
-		sync(c->eventBus.fireEvent(UserRolesChangeEvent.INSTANCE), fail->GWT.log("sync account failed."));
+		accountSync(c->eventBus.fireEvent(UserRolesChangeEvent.INSTANCE), fail->GWT.log("sync account failed."));
 	}
-
-	public SecurityInfo getAuthorityInfo() {
-		return authority;
+	
+	public AccountEntity getAccount() {
+		return subject;
 	}
 
 	public boolean isLogin() {
-		return null != authority && authority.isLogin();
+		return null != subject;
 	}
 	
-	public String getAttribute(String key) {
-		if(null == authority)
+	public String getAccountAttribute(String key) {
+		if(null == subject)
 			return null;
 
-		Map<String, String> attribute = authority.getAttributes();
-		if(null == attribute)
-			return null;
-		
-		return attribute.get(key);
-	}
+		if("email".equals(key))
+			return subject.getAccountDescriptions().getEmail();
 
-	private void changeSecurity(String key, String value, Consumer<String> consumer) {
-		SecurityInfo securityInfo = new SecurityInfo();
-		Map<String, String> attribute = new HashMap<>();
-		attribute.put(key, value);
-		
-		securityInfo.setAttributes(attribute);
-		SecurityAction action = new SecurityAction(securityInfo, OP.UPDATE);
-		doAction(action, consumer, fail->{GWT.log("change attribute failed.");});
+		return null;
 	}
 
 	public void changePassword(String newPassword, Consumer<String> consumer) {
-		changeSecurity("password", newPassword, consumer);
+		SecurityAction action = new SecurityAction(null, newPassword, false, OP.UPDATE);
+		doAction(action, consumer, fail->{GWT.log("change password failed.");});
 	}
 
 	public void changeEmail(String newEmail, Consumer<String> consumer) {
-		changeSecurity("email", newEmail, consumer);
+		AccountDescriptionsEntity attribute = new AccountDescriptionsEntity();
+		attribute.setEmail(newEmail);
+		AccountEntity newAccount = new AccountEntity();
+		newAccount.setAccountDescriptions(attribute);
+
+		SecurityAction action = new SecurityAction(newAccount, null, false, OP.UPDATE);
+		doAction(action, consumer, fail->{GWT.log("change email failed.");});
 	}
 	
 	public void newAccount(String username, String password) {
 		GWT.log("new Account:" + username + " with password:" + password);
 	}
 	
+	public boolean checkRole(String role) {
+		if(null == subject)
+			return false;
+		return subject.getRoles().contains(role);
+	}
 	public void resetPassword(String email) {
 		
 	}

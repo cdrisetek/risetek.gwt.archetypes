@@ -50,7 +50,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "名称";
-		item.value = (String)user.getAuthorityInfo().getPrincipal();
+		item.value = user.getAccount().getAccountPrincipal();
 		items.add(item);
 		
 		item = new informationItem();
@@ -68,7 +68,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "电子邮件";
-		item.value = user.getAttribute("email");
+		item.value = user.getAccountAttribute("email");
 		item.link = NameTokens.updateEmail;
 		items.add(item);
 		return items;
