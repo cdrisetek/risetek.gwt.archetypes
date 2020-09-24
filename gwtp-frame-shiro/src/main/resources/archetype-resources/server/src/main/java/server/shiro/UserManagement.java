@@ -1,7 +1,7 @@
 package ${package}.server.shiro;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -82,10 +82,10 @@ public class UserManagement implements ISubjectManagement {
 		}
 	}
 
-	private final Map<String, AccountRecord> accounts = new HashMap<>();
+	private final Map<String, AccountRecord> accounts = new TreeMap<>();
 
 	private void tested_users(int index) {
-		AccountRecord account = new AccountRecord("admin"+ index);
+		AccountRecord account = new AccountRecord(String.format("admin%03d", index));
 		account.password = "admin" + index;
 		account.setName("admin" + index).grant("admin" + index).grant("developer").grant("maintenance").grant("operator").grant("visitor")
 		       .setEmail("admin"+ index + "@risetek.com");
