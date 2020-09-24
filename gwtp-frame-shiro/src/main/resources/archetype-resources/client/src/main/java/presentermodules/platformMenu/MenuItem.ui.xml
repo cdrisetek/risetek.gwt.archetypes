@@ -2,7 +2,7 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
 <ui:style gss="true">
-@def COLOR_TONE                   #1a73e8;
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
 @def NAV_MENU_WIDTH               180px;
 @def NAV_MENU_HEIGHT              60px;
 
