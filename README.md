@@ -77,7 +77,9 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 * (server) AjaxAuthenticationFilter.java
 * User.java CurrentUser.java & ServerUser.java
 
-### gwtp-frame-shiro NOTES
+gwtp-frame-shiro
+====================
+#### NOTES
 * client中的module.gwt.xml有<set-configuration-property name="gin.ginjector.modules" value="com.risetek.entry.ClientModule"/> 构建运行时（GWT compiler 运行时）采用google gin进行依赖注入。
 * ClientModule在GWT compiler运行时install各种GinModule。这些被安装的GinModule又会进行其自身领域的依赖注入。
 * 除了GWTP必要的GinModule外，开发者的AbstractPresenterModule也需要进行install。这部分如何实现自动化的安装呢？
@@ -85,10 +87,17 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 * CurrentUser作为一个Singleton被及早实例化，以提供其它需求。
 * 服务端shiro/MyAuthorizingRealm是管理用户权限的DAO（数据访问目标），如果后台需要实现不同的管理提供，需要修改这个部分的代码。
 
-### gwtp-frame-shiro PresenterModuleMavenProcesser NOTES
+#### PresenterModuleMavenProcesser NOTES
 * 设计PresenterModuleMavenProcesser是为了自动化转载用户编写的各种PresenterModule，这使得用户构建的新项目可以通过删除不需要的PresenterModule代码来达到自由组合的需要。
 * 至少有一个用户的PresidentModule 需要 AutoLoadPresenterModule annotation。否则没有机会生成 MavenProcessedPresenterModuleLoader，造成构建失败。 
 
+#### UI:Infinity Card List
+* 实现了一个无止境的卡片布局容器，InfinityCardList只能实现一列的卡片布局方式。
+* Card需要按照CSS响应式设计方式，当width发生变化的时候，通过变更height来适应外部Panel的width变化。这种单个Card的height变化造成的List布局变化会由InfinityCardList通过调整TOP值消化。
+
+#### Authorization
+
+Origin Document
 ==================================
 
 #### 以下是原始文档
