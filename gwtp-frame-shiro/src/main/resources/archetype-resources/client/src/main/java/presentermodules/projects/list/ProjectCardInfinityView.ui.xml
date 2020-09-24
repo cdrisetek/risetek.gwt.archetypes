@@ -1,0 +1,28 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" src="card.gss" type="${package}.presentermodules.projects.list.ProjectCardInfinityView.CardListStyle">
+.item-row {
+ width: 100%;
+ height: ITEM_HEIGHT;
+}
+
+.note-textarea { width: 100%; }
+</ui:style>
+
+<g:HTMLPanel>
+ <!-- Project Editor Panel -->
+ <g:HTMLPanel ui:field="editor">
+  <m:MaterialTextArea placeholder="注释" ui:field="editorNote" iconType="NOTE" type="TEXT"
+                      length="300" styleName="{style.note-textarea}"/>
+ </g:HTMLPanel>
+
+ <!-- Project Creator Panel -->
+ <g:HTMLPanel ui:field="creator">
+  <m:MaterialTextBox placeholder="名称" ui:field="creatorName" iconType="FILTER_VINTAGE" type="TEXT"
+                       maxLength="30" styleName="{style.item-row}"/>
+  <m:MaterialTextArea placeholder="注释" ui:field="creatorNote" iconType="NOTE" type="TEXT"
+                       length="300" styleName="{style.note-textarea}"/>
+ </g:HTMLPanel>
+</g:HTMLPanel>
+</ui:UiBinder>

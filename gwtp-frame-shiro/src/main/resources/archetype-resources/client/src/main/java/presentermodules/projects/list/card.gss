@@ -1,0 +1,29 @@
+
+@external gwt-Button button;
+
+@def MAIN_COLOR eval("${package}.resource.Resources.getMainColor()");
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
+
+@def CELL_WIDTH 160px;
+@def MAX_WIDTH mult(CELL_WIDTH, 8);
+@def MIN_WIDTH mult(CELL_WIDTH, 4);
+@def ITEM_HEIGHT 70px;
+
+.card_removing {
+background-color:  #42a5f5;
+}
+
+.card_removed {
+-webkit-animation: fadeOut 500ms;
+-moz-animation: fadeOut 500ms;
+animation: fadeOut 500ms;
+}
+
+.card_transition {
+background-color:  COLOR_TONE;
+-moz-transition: all 0.5s ease-in,color 0.3s ease-out;
+-webkit-transition: all 0.5s ease-in,color 0.3s ease-out;
+-o-transition: all 0.5s ease-in,color 0.3s ease-out;
+transition: all 0.5s ease-in,color 0.3s ease-out;
+}
+

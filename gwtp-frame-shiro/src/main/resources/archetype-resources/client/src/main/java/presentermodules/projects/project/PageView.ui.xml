@@ -1,0 +1,232 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'>
+ <ui:style gss="true">
+ @external gwt-Button gwt-HTML;
+  @def MAIN_COLOR  #f7f7f7;
+  @def BUTTON_SIZE 80px;
+@def COLOR_TONE #42a5f5;
+  @def ITEM_HEIGHT 70px;
+  @def DG_CREATE_ACCOUNT_PANE_WIDTH  600px;
+@def CELL_WIDTH 160px;
+
+.global-container {
+ width: 100%;
+}
+
+.btn-back {
+margin: auto 0px;
+line-height: 48px;
+}
+
+  .container, .tb-container, .tb-dock, .tb-shadow {
+   width: 100%;
+   max-width: mult(CELL_WIDTH, 8);
+   min-width: mult(CELL_WIDTH, 4);
+   display: block;
+   margin: 0 auto;
+padding: 10px;
+   box-sizing: border-box;
+   
+  }
+
+
+.cell-container {
+ width: 100%;
+ border: 1px solid #dadce0;
+ border-radius: 8px;
+ overflow: hidden;
+ background: #fff;
+ padding: 20px;
+ margin: 10px 0;
+}
+
+
+  .tb-container {
+    font-weight: bold;
+    padding: 10px;
+    overflow: hidden;
+    background-color:  MAIN_COLOR;
+    width: auto;
+  }
+
+  .tb-shadow {
+   max-width: mult(CELL_WIDTH, 8);
+   min-width: mult(CELL_WIDTH, 2);
+    box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+    border-radius: 2px;
+    margin: auto;
+  }
+
+  .tb-dock {
+   display: inline-flex;
+   align-items: center;
+   justify-content: space-between;
+  }
+
+  .tb-tool-container {
+   margin:  auto 30px;
+   height:  64px;
+   line-height: 64px;
+   align-items: center;
+  } 
+
+  .tb-search-container {
+   width: 40%;
+   z-index: 0;
+  } 
+
+   .it-container {
+   width: 100%;
+   height: ITEM_HEIGHT;
+  }
+  
+  .dg-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: DG_CREATE_ACCOUNT_PANE_WIDTH;
+    padding: 24px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+    border-radius: 2px;
+  }
+  
+
+.tools-bar {
+ position: relative;
+ width: 100%;
+ height: 60px;
+ box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(26,120,200,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+ border-radius: 2px;
+ margin: 3px 1px;
+ padding: 0 10px; 
+ display: inline-flex;
+ align-items: center;
+ justify-content: space-between; 
+}
+
+.role-card-container .gwt-HTML, .role-card {
+ font-size: 1.2rem;
+ width: 100%;
+ min-width: CELL_WIDTH;
+ max-width: mult(CELL_WIDTH, 2);
+ line-height: 50px;
+ background-color: COLOR_TONE; /* rgba(0,0,0,0.05); */
+ box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(26,120,200,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+ border-radius: 2px;
+ display: flex;
+ margin: 5px;
+ padding: 0 20px;
+}
+
+.role-card-container {
+display: flex;
+padding: 0px;
+margin: 10px 0;
+}
+
+.title-bar {
+ display: flex;
+ margin: 10px 0px;
+ line-height: 48px;
+ border-bottom: 1px;
+
+
+}
+
+.it-textarea {
+ width: 100%;
+/* height: mul(ITEM_HEIGHT, 3); */
+}
+.editor {
+margin: 20px;
+/* background-color:  COLOR_TONE; */
+
+}
+
+.tool-name {
+ font-size: 2rem;
+ margin: auto 10px;
+}
+.btn-tool-bar {
+margin: auto 0px;
+}
+
+.funtion-notes {
+}
+
+.tiny-textbox {
+margin: auto 20px;
+min-width: CELL_WIDTH;
+}
+
+.tool-bar-compose {
+display: flex;
+}
+ </ui:style>
+<g:HTMLPanel styleName="{style.global-container}"> 
+
+
+<g:HTMLPanel styleName="{style.container}">
+
+<g:HTMLPanel styleName="{style.title-bar}">
+ <m:MaterialButton type="FLOATING" waves="LIGHT" iconType="ARROW_BACK" styleName="{style.btn-back}" ui:field="btnBack" />
+<g:HTML styleName="{style.tool-name}">管理项目：</g:HTML>
+<g:HTML styleName="{style.tool-name}" ui:field="name"></g:HTML>
+</g:HTMLPanel>
+
+
+<g:HTMLPanel styleName="{style.cell-container}">
+<g:HTMLPanel styleName="{style.tools-bar}">
+<g:HTML styleName="{style.tool-name}">停用项目</g:HTML>
+<m:MaterialSwitch ui:field="btnDisable" value="true" styleName="{style.btn-tool-bar}"/>
+</g:HTMLPanel>
+
+<g:HTMLPanel styleName="{style.tools-bar}">
+ <g:HTML styleName="{style.tool-name}">删除项目</g:HTML>
+ <m:MaterialButton type="FLOATING" waves="LIGHT" iconType="CLOSE" styleName="{style.btn-tool-bar}" ui:field="btnDelete" />
+</g:HTMLPanel>
+</g:HTMLPanel>
+
+
+<g:HTMLPanel styleName="{style.cell-container}">
+<g:HTMLPanel styleName="{style.editor}">
+  <m:MaterialTextArea placeholder="注释" ui:field="note" iconType="NOTE" type="TEXT"
+                       length="300" class="{style.it-textarea}"/>
+
+</g:HTMLPanel>
+<g:HTMLPanel>
+<m:MaterialButton waves="LIGHT" iconType="DONE" text="更新注释" ui:field="btnNoteCommit" />
+</g:HTMLPanel>
+</g:HTMLPanel>
+
+<g:HTMLPanel styleName="{style.cell-container}">
+<g:HTMLPanel>
+<g:HTMLPanel styleName="{style.tools-bar}">
+<g:HTML styleName="{style.tool-name}">项目角色</g:HTML>
+<g:HTMLPanel styleName="{style.tool-bar-compose}">
+<m:MaterialTextBox placeholder="新建角色" ui:field="roleName" type="TEXT"
+                       maxLength="15" styleName="{style.tiny-textbox}"/>
+<m:MaterialButton waves="LIGHT" iconType="DONE" text="确定" styleName="btn {style.btn-tool-bar}" ui:field="btnRoleCommit" />
+</g:HTMLPanel>
+</g:HTMLPanel>
+<g:HTMLPanel>
+
+<g:HTMLPanel styleName="{style.role-card-container}" ui:field="roleCards" />
+</g:HTMLPanel>
+</g:HTMLPanel>
+</g:HTMLPanel>
+
+
+<g:HTMLPanel styleName="{style.cell-container}">
+<g:HTMLPanel styleName="{style.tools-bar}">
+<g:HTML styleName="{style.tool-name}">项目授权</g:HTML>
+<g:HTMLPanel>
+</g:HTMLPanel>
+
+</g:HTMLPanel>
+</g:HTMLPanel>
+</g:HTMLPanel>
+</g:HTMLPanel>
+ 
+</ui:UiBinder>

@@ -1,0 +1,120 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" src="card.gss">
+@def TAIL_WIDTH 40px;
+@def BOX_SHADOW eval("${package}.resource.Resources.getBoxShadow()");
+
+.card-container {
+max-width: MAX_WIDTH;
+margin: 0 auto;
+padding: 10px 0px;
+display: block;
+box-sizing:border-box;
+}
+
+.card-body {
+display: inline-flex;
+width: 100%;
+border-radius: 3px;
+margin: 0px;
+padding: 0px;
+background-color: transparent;
+box-shadow: BOX_SHADOW;
+}
+
+.card-operations {
+display: flex;
+justify-content: flex-end;
+word-wrap: normal;
+margin: auto 0px auto auto;
+}
+
+.btn-forward {
+width: TAIL_WIDTH;
+min-width: TAIL_WIDTH;
+border: 0px;
+cursor: pointer;
+background-color:  COLOR_TONE;
+color: white;
+border-radius: 0px 3px 3px 0px;
+}
+
+.card-pad {
+width: 100%;
+height: 100%;
+padding: 10px;
+}
+
+.card-content {
+margin: 0px;
+padding: 0px;
+width: 100%;
+height: 100%;
+display: inline-flex;
+}
+
+.card-name {
+margin: 2px;
+width: mult(CELL_WIDTH, 2);
+min-width: CELL_WIDTH;
+word-wrap: normal;
+overflow: hidden;
+}
+
+.card-name::before {
+content: "\9879\76ee:";
+font-weight:bold;
+margin-right: 10px;
+font-size: 1.2em;
+color: COLOR_TONE;
+}
+.card-note {
+min-width: mult(CELL_WIDTH, 2);
+margin: 2px;
+word-wrap: normal;
+overflow: hidden;
+text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+}
+
+.card-note::before {
+content: "\5907\6ce8:";
+font-weight:bold;
+font-size: 1.2em;
+margin-right: 10px;
+color: COLOR_TONE;
+}
+
+@media only screen and (max-width: 1020px) {
+ .card-note { width: sub(mult(CELL_WIDTH, 3), TAIL_WIDTH, 40px); }
+}
+
+@media only screen and (min-width: 1020px) {
+ .card-note { width: sub(mult(CELL_WIDTH, 4), TAIL_WIDTH, 40px); }
+}
+
+@media only screen and (max-width: 840px) {
+ .card-body { min-width: MIN_WIDTH; }
+ .card-content { display: block; }
+ .card-operations { background-color: rgba(0,0,0,0.05); }
+ .card-note { width: 100%; }
+}
+
+</ui:style>
+
+<g:HTMLPanel styleName="{style.card-container}" ui:field="body">
+<div class="{style.card-body}">
+ <div class="{style.card-pad}">
+  <div class="{style.card-content}">
+   <g:HTML styleName="{style.card-name}" ui:field="name" />
+   <g:HTML styleName="{style.card-note}" ui:field="note" />
+   <g:HTMLPanel styleName="{style.card-operations}">
+    <m:MaterialButton type="FLOATING" waves="LIGHT" iconType="EDIT" ui:field="edit" />
+   </g:HTMLPanel>
+  </div>
+ </div>
+ <m:MaterialButton waves="LIGHT" iconType="KEYBOARD_ARROW_RIGHT" styleName="{style.btn-forward}" ui:field="btnForward" />
+</div>
+</g:HTMLPanel>
+</ui:UiBinder>
