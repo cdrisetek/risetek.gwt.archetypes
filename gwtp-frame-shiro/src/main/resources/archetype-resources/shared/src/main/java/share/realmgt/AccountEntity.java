@@ -3,6 +3,7 @@ package ${package}.share.realmgt;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -31,7 +32,7 @@ public class AccountEntity implements IsSerializable {
 	private Set<String> roles;
 	private boolean enable;
 	
-	@NotNull // Account identity
+	@NotNull @Size(max=64)// Account identity
 	private String accountPrincipal;
 
 	public String getAccountPrincipal() {
