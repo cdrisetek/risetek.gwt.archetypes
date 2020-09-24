@@ -1,0 +1,38 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true">
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
+@def CELL_WIDTH 160px;
+
+.dialog-container {
+ max-width: mult(CELL_WIDTH, 4);
+ min-width: mult(CELL_WIDTH, 2);
+ flex-grow: 1;
+ flex-shrink: 1;
+ padding: 12px;
+ border-radius: 2px;
+}
+.dg-header {
+background-color: COLOR_TONE;
+padding: 12px;
+}
+.dg-title {
+color: #F0F0F0;
+}
+</ui:style>
+
+<m:MaterialDialog ui:field="dgPanel" type="WINDOW" dismissible="true" inDuration="200" outDuration="200" styleName="{style.dialog-container}">
+   <m:MaterialDialogHeader styleName="{style.dg-header}">
+    <m:MaterialTitle ui:field="title" styleName="{style.dg-title}"/>
+   </m:MaterialDialogHeader>
+   <m:MaterialDialogContent ui:field="contentContainer" />
+   <m:MaterialDialogFooter>
+    <m:MaterialButton margin="2" text="确定" waves="LIGHT" textColor="WHITE" iconType="CHECK" iconPosition="LEFT" ui:field="btnCommit"/>
+    <m:MaterialButton margin="2" text="启用" waves="LIGHT" textColor="WHITE" iconType="SENTIMENT_SATISFIED" iconPosition="LEFT" ui:field="btnEnable"/>
+    <m:MaterialButton margin="2" text="停用" waves="LIGHT" textColor="WHITE" iconType="SENTIMENT_DISSATISFIED" iconPosition="LEFT" ui:field="btnDisable"/>
+    <m:MaterialButton margin="2" text="删除" waves="LIGHT" textColor="WHITE" iconType="CLEAR" iconPosition="LEFT" ui:field="btnDelete"/>
+    <m:MaterialButton margin="2" text="取消" waves="LIGHT" textColor="WHITE" iconType="CLEAR" iconPosition="LEFT" ui:field="btnCancel"/>
+   </m:MaterialDialogFooter>
+  </m:MaterialDialog>
+</ui:UiBinder>
