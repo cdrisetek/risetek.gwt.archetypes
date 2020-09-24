@@ -21,7 +21,11 @@
   height: 100%;
   }
 
-  .lg-container:before, .lg-container:after {
+ .lg-container input {
+  font-size: 1.5rem;
+ }
+
+ .lg-container:before, .lg-container:after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-box-flex: 1;
@@ -81,9 +85,8 @@
        </m:MaterialColumn>
       </m:MaterialRow>
       <g:HTMLPanel styleName='{style.lg-content}'>
-       <m:MaterialTextBox placeholder="账户" maxLength="20"
-          ui:field="username" iconType="PERSON" type="TEXT"
-          fieldType="DEFAULT" class="{style.it-container}" />
+       <m:MaterialTextBox class="{style.it-container}" placeholder="账户" maxLength="20"
+          ui:field="username" iconType="PERSON" type="TEXT" fieldType="DEFAULT" />
 
        <m:MaterialTextBox placeholder="密码" maxLength="30"
           ui:field="password" iconType="VPN_KEY" type="PASSWORD"
