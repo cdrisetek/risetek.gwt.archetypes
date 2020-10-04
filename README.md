@@ -79,6 +79,10 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 
 gwtp-frame-shiro
 ====================
+#### TODO
+* 服务端AotoLoadModule的处理在增加一个新的模块时会失效，开发者必须重新编译整个项目，而不能依赖于jetty的restart过程。
+* 如何实现一种模板配置的方式，通过声明需要的package来组织成初始代码。
+
 #### NOTES
 * client中的module.gwt.xml有<set-configuration-property name="gin.ginjector.modules" value="com.risetek.entry.ClientModule"/> 构建运行时（GWT compiler 运行时）采用google gin进行依赖注入。
 * ClientModule在GWT compiler运行时install各种GinModule。这些被安装的GinModule又会进行其自身领域的依赖注入。
