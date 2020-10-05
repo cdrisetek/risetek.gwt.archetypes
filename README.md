@@ -101,6 +101,12 @@ gwtp-frame-shiro
 
 #### Authorization
 
+#### Client handler Exception from Server
+* 服务端执行Action产生的ActionException需要通过ActionExceptionMapper转换成可序列化的ActionException才能通过RPC过程传递到客户端。
+* 客户端调用Action执行服务端程序如果出现异常，会回调onFailuer函数，ServerExceptionHandler帮助对这些服务端异常的通常处理，比如onFailure得到的服务端异常类型是ActionAuthenticationException，那么就前往UnauthorizedPlace，通常这是一个Login界面。
+* 可序列化的ActionException在xxx.share.exception包中。
+* ServerExceptionHandler类在client的utils.ServerExceptionHandler。
+
 Origin Document
 ==================================
 
