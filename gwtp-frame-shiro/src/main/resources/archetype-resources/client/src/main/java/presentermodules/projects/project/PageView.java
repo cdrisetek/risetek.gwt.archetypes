@@ -30,7 +30,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	public void showProject(ProjectEntity entity) {
 		name.setHTML(entity.getName());
 		note.setValue(entity.getNote());
-		entity.getRoles().getRole().forEach(r->{roleCards.add(new HTML(r));});
+		roleCards.clear();
+		entity.getRoleSet().forEach(r->{roleCards.add(new HTML(r));});
 	}
 	
 	@UiHandler("btnBack")

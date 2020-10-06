@@ -1,4 +1,4 @@
-package ${package}.presentermodules.realmgt.subject;
+package ${package}.presentermodules.users.subject;
 
 import java.util.List;
 import java.util.Set;
@@ -17,25 +17,25 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.bindery.PlainMenu;
 import ${package}.entry.CurrentUser;
-import ${package}.presentermodules.realmgt.TokenNames;
+import ${package}.presentermodules.users.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
 import ${package}.utils.ServerExceptionHandler;
-import ${package}.share.realmgt.AccountEntity;
-import ${package}.share.realmgt.SubjectAction;
+import ${package}.share.auth.UserEntity;
+import ${package}.share.users.UserAction;
 import ${package}.entry.LoggedInGatekeeper;
 
-@PlainMenu(order = 1001, title = "账户管理", token = TokenNames.realmgt)
+@PlainMenu(order = 1001, title = "用户管理", token = TokenNames.realmgt)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		void setSubjects(List<AccountEntity> subjects);
+		void setSubjects(List<UserEntity> subjects);
 		int getSubjectsCapacity();
 		void upDatePagerStatus(int offset, boolean hasMore);
 		void alert(String message);
 		public void showSubjectCreatePlace();
 		public void closeSubjectCreatePlace();
-		public void showSubjectMaintancePlace(AccountEntity subject);
+		public void showSubjectMaintancePlace(UserEntity subject);
 		public void closeSubjectMaintancePlace();
 	}
 
@@ -77,8 +77,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			offset = 0;
 
 		// read more than require so to determine the end of data.
-		SubjectAction action = new SubjectAction(null, null, SubjectAction.OP.READ, offset, (size + 1), like, sequence++);
-		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
+		UserAction action = new UserAction(offset, (size + 1), like, sequence++);
+		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -86,7 +86,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<AccountEntity> result) {
+			public void onSuccess(GetResults<UserEntity> result) {
 				if (result.getResults().size() == 0)
 					return;
 
@@ -106,20 +106,10 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onSubjectPlace() {
-		// TODO: check role.
-		if(!user.checkRole("admin")) {
-			getView().alert("you have no privage to create new account");
-			return;
-		}
-		getView().showSubjectCreatePlace();
-	}
-	
-	@Override
-	public void onSubjectCreate(Set<AccountEntity> subjects, String password) {
+	public void onUserCreate(Set<UserEntity> subjects, String password) {
 		// read more than require so to determine the end of data.
-		SubjectAction action = new SubjectAction(subjects, password, SubjectAction.OP.CREATE, 0, 0, null, 0);
-		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
+		UserAction action = new UserAction(subjects, password);
+		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -128,7 +118,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<AccountEntity> result) {
+			public void onSuccess(GetResults<UserEntity> result) {
 				getView().alert("新用户成功创建");
 				getView().closeSubjectCreatePlace();
 				readSubjects(0);
@@ -137,8 +127,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onSubjectSearch(String like) {
-		if (like.length() == 0)
+	public void onUserSearch(String like) {
+		if (like.isEmpty())
 			this.like = null;
 		else
 			this.like = like;
@@ -165,15 +155,25 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onSubjectMaintance(AccountEntity subject) {
+	public void onUserCreatePlace() {
+		// TODO: check role.
+		if(!user.checkRole("admin")) {
+			getView().alert("you have no privage to create new account");
+			return;
+		}
+		getView().showSubjectCreatePlace();
+	}
+
+	@Override
+	public void onUserMaintancePlace(UserEntity subject) {
 		getView().showSubjectMaintancePlace(subject);
 	}
 
 	@Override
-	public void onSubjectUpdate(Set<AccountEntity> subjects) {
+	public void onUserUpdate(Set<UserEntity> subjects) {
 		// read more than require so to determine the end of data.
-		SubjectAction action = new SubjectAction(subjects, null, SubjectAction.OP.UPDATE, 0, 0, null, 0);
-		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
+		UserAction action = new UserAction(subjects);
+		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -182,7 +182,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<AccountEntity> result) {
+			public void onSuccess(GetResults<UserEntity> result) {
 				getView().alert("账户更新成功");
 				getView().closeSubjectMaintancePlace();
 				readSubjects(0);

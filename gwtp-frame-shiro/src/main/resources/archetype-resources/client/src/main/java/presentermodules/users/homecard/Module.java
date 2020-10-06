@@ -1,4 +1,4 @@
-package ${package}.presentermodules.realmgt.homecard;
+package ${package}.presentermodules.users.homecard;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import ${package}.bindery.AutoLoadPresenterModule;

@@ -1,4 +1,4 @@
-package ${package}.presentermodules.realmgt.homecard;
+package ${package}.presentermodules.users.homecard;
 
 import javax.inject.Inject;
 
@@ -13,7 +13,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
-import ${package}.presentermodules.realmgt.TokenNames;
+import ${package}.presentermodules.users.TokenNames;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {

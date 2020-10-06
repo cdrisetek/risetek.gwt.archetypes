@@ -1,8 +1,10 @@
-package ${package}.presentermodules.realmgt.subject;
+package ${package}.presentermodules.users.subject;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
@@ -24,8 +26,9 @@ import gwt.material.design.client.ui.MaterialDialog;
 import gwt.material.design.client.ui.MaterialSearch;
 import gwt.material.design.client.ui.MaterialToast;
 import gwt.material.design.client.ui.MaterialValueBox;
-import ${package}.share.realmgt.AccountDescriptionsEntity;
-import ${package}.share.realmgt.AccountEntity;
+import ${package}.share.auth.UserEntity;
+import ${package}.share.users.EnumUserDescription;
+import ${package}.share.users.UserStateEntity;
 import ${package}.utils.KeyBoardCode;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
@@ -51,7 +54,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	interface Binder extends UiBinder<HTMLPanel, PageView> {
 	}
 
-	private final ListDataProvider<AccountEntity> dataProvider = new ListDataProvider<>();
+	private final ListDataProvider<UserEntity> dataProvider = new ListDataProvider<>();
 
 	@Inject
 	public PageView(Binder uiBinder) {
@@ -60,15 +63,15 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		dataProvider.addDataDisplay(subjectsDisplay);
 
 		searchinput.addKeyUpHandler(c -> {
-			getUiHandlers().onSubjectSearch(searchinput.getText());
+			getUiHandlers().onUserSearch(searchinput.getText());
 		});
 
 		searchinput.addCloseHandler(event -> {
 			searchinput.setValue(null);
-			getUiHandlers().onSubjectSearch(searchinput.getText());
+			getUiHandlers().onUserSearch(searchinput.getText());
 		});
 		
-		subjectsDisplay.addSubjectSelectedHandler(c->getUiHandlers().onSubjectMaintance(c));
+		subjectsDisplay.addSubjectSelectedHandler(c->getUiHandlers().onUserMaintancePlace(c));
 	}
 	
 	@UiHandler("resizePanel")
@@ -102,32 +105,42 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		closeSubjectCreatePlace();
 	}
 
+	private static void setUserEnable(UserEntity entity, boolean enable) {
+		UserStateEntity state = entity.getState();
+		if(null == state) {
+			state = new UserStateEntity();
+			entity.setState(state);
+		}
+		entity.getState().setEnable(enable);
+	}
+
+	private static void setUserDescription(UserEntity entity, String key, String value) {
+		Map<String, String> descriptions = entity.getDescriptions();
+		if(null == descriptions) {
+			descriptions = new HashMap<>();
+			entity.setDescriptions(descriptions);
+		}
+		entity.getDescriptions().put(key, value);
+	}
+
 	@UiHandler("btnCommit")
 	void onCommitCreatorPlaceClick(ClickEvent e) {
-		AccountEntity subject = new AccountEntity();
-		subject.setEnable(true);
-		AccountDescriptionsEntity principal = new AccountDescriptionsEntity();
-		subject.setAccountPrincipal(name.getValue());
-		principal.setEmail(email.getValue());
-		principal.setTelphone(telphone.getValue());
-		principal.setNotes(notes.getValue());
-		
-		subject.setAccountDescriptions(principal);
+		UserEntity subject = new UserEntity();
+		setUserEnable(subject, true);
+		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), name.getValue());
+		setUserDescription(subject, EnumUserDescription.EMAIL.name(), email.getValue());
+		setUserDescription(subject, EnumUserDescription.TELPHONE.name(), telphone.getValue());
+		setUserDescription(subject, EnumUserDescription.NOTES.name(), notes.getValue());
 
-		if (subject.getAccountPrincipal() == null || subject.getAccountPrincipal().isEmpty()) {
-			alert("name empty");
-			return;
-		}
-
-		Set<AccountEntity> subjects = new HashSet<>();
+		Set<UserEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 		
-		getUiHandlers().onSubjectCreate(subjects, password.getValue());
+		getUiHandlers().onUserCreate(subjects, password.getValue());
 	}
 
 	@UiHandler("btnCreate")
 	void onAddNewClick(ClickEvent e) {
-		getUiHandlers().onSubjectPlace();
+		getUiHandlers().onUserCreatePlace();
 	}
 
 	@Override
@@ -148,14 +161,14 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 	
 	private void maintanceAccountEnable(boolean enable) {
-		AccountEntity subject = new AccountEntity();
-		subject.setAccountPrincipal(mname.getValue());
-		subject.setEnable(enable);
+		UserEntity subject = new UserEntity();
+		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), mname.getValue());
+		setUserEnable(subject, enable);
 
-		Set<AccountEntity> subjects = new HashSet<>();
+		Set<UserEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 
-		getUiHandlers().onSubjectUpdate(subjects);
+		getUiHandlers().onUserUpdate(subjects);
 	}
 	@UiHandler("btnmDisable")
 	void onMaintancePlaceAccountDisableClick(ClickEvent e) {
@@ -168,29 +181,26 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	
 	@UiHandler("btnmCommit")
 	void onCommitMaintancePlaceClick(ClickEvent e) {
-		AccountEntity subject = new AccountEntity();
-		subject.setAccountPrincipal(mname.getValue());
-		AccountDescriptionsEntity principal = new AccountDescriptionsEntity();
-		
-		principal.setEmail(memail.getValue());
-		principal.setTelphone(mtelphone.getValue());
-		principal.setNotes(mnotes.getValue());
-		
-		subject.setAccountDescriptions(principal);
+		UserEntity subject = new UserEntity();
+		setUserEnable(subject, true);
+		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), mname.getValue());
+		setUserDescription(subject, EnumUserDescription.EMAIL.name(), memail.getValue());
+		setUserDescription(subject, EnumUserDescription.TELPHONE.name(), mtelphone.getValue());
+		setUserDescription(subject, EnumUserDescription.NOTES.name(), mnotes.getValue());
 
-		Set<AccountEntity> subjects = new HashSet<>();
+		Set<UserEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 
-		getUiHandlers().onSubjectUpdate(subjects);
+		getUiHandlers().onUserUpdate(subjects);
 	}
 
 	@Override
-	public void showSubjectMaintancePlace(AccountEntity subject) {
-		mname.setValue(subject.getAccountPrincipal());
-		memail.setValue(subject.getAccountDescriptions().getEmail());
-		mtelphone.setValue(subject.getAccountDescriptions().getTelphone());
-		mnotes.setValue(subject.getAccountDescriptions().getNotes());
-		if(subject.isEnable()) {
+	public void showSubjectMaintancePlace(UserEntity subject) {
+		mname.setValue(subject.getDescriptions().get(EnumUserDescription.PRINCIPAL.name()));
+		memail.setValue(subject.getDescriptions().get(EnumUserDescription.EMAIL.name()));
+		mtelphone.setValue(subject.getDescriptions().get(EnumUserDescription.TELPHONE.name()));
+		mnotes.setValue(subject.getDescriptions().get(EnumUserDescription.NOTES.name()));
+		if(subject.getState().isEnable()) {
 			btnmEnable.setDisplay(Display.NONE);
 			btnmDisable.setDisplay(Display.BLOCK);
 		} else {
@@ -254,7 +264,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	@Override
-	public void setSubjects(List<AccountEntity> subjects) {
+	public void setSubjects(List<UserEntity> subjects) {
 		// fill the table space. this is simple way.
 		for (int i = subjects.size(); i <= subjectsDisplay.getPageSize(); i++)
 			subjects.add(null);

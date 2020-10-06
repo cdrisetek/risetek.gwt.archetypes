@@ -2,7 +2,7 @@ package ${package}.presentermodules.home.cards.welcome;
 
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -63,7 +63,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	private void updateLoginInfoCard() {
 		getView().clear();
 
-		List<InfoItem> items = new Vector<>();
+		List<InfoItem> items = new ArrayList<>();
 		InfoItem item = new InfoItem();
 		item.infoText = "\u767b\u5f55\u72b6\u6001";
 		item.infoTextSecondary = user.isLogin() ? "已登录" : "未登录";
@@ -76,7 +76,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";
-			Set<String> roles = user.getAccount().getRoles();
+			Set<String> roles = user.getRoles();
 			StringBuffer sb = new StringBuffer();
 			for (String role : roles)
 				sb.append(" " + role);

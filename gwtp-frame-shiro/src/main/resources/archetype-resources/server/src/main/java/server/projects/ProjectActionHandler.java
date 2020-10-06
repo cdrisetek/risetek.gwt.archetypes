@@ -23,16 +23,16 @@ public class ProjectActionHandler implements ActionHandler<ProjectAction, GetRes
 		case CREATE:
 			if(null == action.projects)
 				throw new ActionException("no valid datas");
-			management.CreateProjects(action.projects);
+			management.createProjects(action.projects);
 			break;
 		case READ:
 			// READ projects
-			List<ProjectEntity> projects = management.ReadProjects(action.projects, action.like, action.offset, action.limit);
+			List<ProjectEntity> projects = management.readProjects(action.projects, action.like, action.offset, action.limit);
 			return new GetResults<ProjectEntity>(projects);
 		case UPDATE:
 			break;
 		case DELETE:
-			management.DeleteProjects(action.projects);
+			management.deleteProjects(action.projects);
 			break;
 		case ENABLE:
 			break;

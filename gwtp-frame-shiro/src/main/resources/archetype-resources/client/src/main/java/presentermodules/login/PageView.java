@@ -121,7 +121,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			return;
 
 		loginButton.setText(buttonLogining);
-		getUiHandlers().Login(username.getValue(), password.getValue(), remembeme.getValue());
+		getUiHandlers().Login(username.getValue(), password.getValue(), remembeme.getValue(), "TODOProject");
 		username.setValue(null);
 		password.setValue(null);
 		username.setFocus(true);

@@ -2,7 +2,7 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
  xmlns:m='urn:import:gwt.material.design.client.ui'
  xmlns:ma='urn:import:gwt.material.design.addins.client'
- xmlns:r='urn:import:${package}.presentermodules.realmgt.subject'>
+ xmlns:r='urn:import:${package}.presentermodules.users.subject'>
  <ui:style gss="true">
   @def MAIN_COLOR  #f7f7f7;
   @def MAX_WIDTH   1280px;

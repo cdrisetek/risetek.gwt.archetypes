@@ -5,7 +5,7 @@ import java.util.Set;
 
 import ${package}.share.projects.ProjectEntity;
 public interface IProjectsManagement {
-	public List<ProjectEntity> ReadProjects(Set<ProjectEntity> projects, String like, int offset, int limit);
-	public void CreateProjects(Set<ProjectEntity> projects);
-	public void DeleteProjects(Set<ProjectEntity> projects);
+	public List<ProjectEntity> readProjects(Set<ProjectEntity> projects, String like, int offset, int limit);
+	public void createProjects(Set<ProjectEntity> projects);
+	public void deleteProjects(Set<ProjectEntity> projects);
 }

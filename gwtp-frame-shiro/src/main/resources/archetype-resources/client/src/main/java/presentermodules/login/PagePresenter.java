@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.Title;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -33,7 +33,7 @@ public class PagePresenter extends
     private final PlaceManager placeManager;
 	
     @Title("Login")
-    @ProxyStandard
+	@ProxyCodeSplit
 	@NameToken(NameTokens.login)
     @NoGatekeeper
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
@@ -46,30 +46,20 @@ public class PagePresenter extends
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
 		this.placeManager = placeManager;
 		this.user = user;
+		
+		// TODO: get the project for OAuth service.
 	}
 
 	@Override
-	public void Login(String username, String password, boolean rememberme) {
+	public void Login(String username, String password, boolean rememberme, String project) {
 		if(null == username || username.isEmpty() || null == password || password.isEmpty()) {
 			getView().setStatus(status_loginfailed);
 			return;
 		}
 
-		user.Login(username, password, rememberme, c->getView().setStatus(status_loginfailed));
+		user.Login(username, password, rememberme, project, c->getView().setStatus(status_loginfailed));
 	}
 	
-	@Override
-    protected void onReveal() {
-		// when be here, old user information may be out of time.
-		user.accountSync(s->{
-			if(!user.isLogin())
-				return;
-
-			GWT.log("force to home for user had login.");
-			placeManager.revealDefaultPlace();
-		
-		}, f->{GWT.log("server side exception when login, may be we goto error place?");});
-    }
 	
 	@Override
 	public void onUserStatusChange() {

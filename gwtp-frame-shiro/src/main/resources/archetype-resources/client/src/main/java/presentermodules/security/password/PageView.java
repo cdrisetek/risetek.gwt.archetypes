@@ -80,7 +80,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	@UiHandler("passwordButton")
 	void onPasswordbuttonClick(ClickEvent event) {
-		GWT.log("change password");
 		if (!password1.getValue().isEmpty() && password1.getValue().equals(password2.getValue()))
 			getUiHandlers().changePassword(password1.getValue());
 		else

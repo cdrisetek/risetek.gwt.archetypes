@@ -18,6 +18,7 @@ import ${package}.entry.CurrentUser;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
 import ${package}.utils.Icons;
+import ${package}.share.users.EnumUserDescription;
 
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
@@ -77,9 +78,10 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public void onAttach() {
 		super.onAttach();
 
-		if(account.isLogin())
-			account_id.setText(account.getAccount().getAccountPrincipal());
-		else
+		if(account.isLogin()) {
+			String principal = account.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+			account_id.setText((null == principal)?"unknow":principal);
+		} else
 			account_id.setText("");
 		
 		int rightPosition = Window.getClientWidth() - button.getAbsoluteLeft() - button.getOffsetWidth();
@@ -108,7 +110,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public String getTip() {
 
 		if(account.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + account.getAccount().getAccountPrincipal();
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + account.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
 
 		return "\u767b\u5f55\u7528\u6237";
 	}

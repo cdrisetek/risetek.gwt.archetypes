@@ -1,97 +1,159 @@
 package ${package}.server.projects;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import com.google.inject.Singleton;
+import ${package}.server.auth.HasAuthorization;
+import ${package}.share.UniqueID;
 import ${package}.share.projects.ProjectEntity;
-import ${package}.share.realmgt.RoleEntity;
+import ${package}.share.users.EnumUserDescription;
 
+@Singleton
 public class SimpleProjectsManagement implements IProjectsManagement {
-
-	private Map<String, ProjectEntity> projects = new TreeMap<>(); 
+	public final static Map<String, Project> projects = new TreeMap<>(); 
 	
-	@Override
-	public List<ProjectEntity> ReadProjects(Set<ProjectEntity> requires, String like, int offset, int limit) {
-		List<ProjectEntity> subjects = new Vector<>();
-		int start = 0;
-		int count = 0;
-		int id = 0;
-		if(null != requires) {
-			requires.forEach(req->{subjects.add(projects.get(req.getName()));});
-			return subjects;
-		}
-		for(Map.Entry<String, ProjectEntity> entry : projects.entrySet()) {
-			id++;
-			if(!isLike(like, entry))
-				continue;
+	public SimpleProjectsManagement() {
+		loadProjects();
+	}
 
+	private final static Map<UniqueID, Map<String, String>> descriptions = new HashMap<>();
+	private final static Map<UniqueID, Map<UniqueID, Set<String>>> authorizations = new HashMap<>();
+
+	private static class Project implements HasAuthorization {
+		private final UniqueID ID = new UniqueID();
+		private String name;
+		private Set<String> roleSet = new HashSet<>();
+
+		public Project(String name) {
+			this.name = name;
+		}
+
+		public Project append() {
+			projects.put(name, this);
+			return this;
+		}
+		
+		public ProjectEntity getSummaryProjectEntity() {
+			ProjectEntity entity = new ProjectEntity();
+			entity.setName(name);
+			Optional.ofNullable(descriptions.get(ID)).ifPresent(m->entity.setNote(m.get(EnumUserDescription.NOTES.name())));
+			return entity;
+		}
+
+		public ProjectEntity getProjectEntity() {
+			ProjectEntity entity = getSummaryProjectEntity();
+			entity.setRoleSet(roleSet);
+			Optional.ofNullable(authorizations.get(ID)).ifPresent(m->entity.setRoles(m));
+			return entity;
+		}
+
+		public Project setDescription(String key, String value) {
+			Map<String, String> description = Optional.ofNullable(descriptions.get(ID))
+					.orElseGet(()->{descriptions.put(ID, new HashMap<>());return descriptions.get(ID);});
+
+			description.put(key, value);
+			return this;
+		}
+		
+		@Override
+		public Set<String> getUserRoles(UniqueID id) {
+			Map<UniqueID, Set<String>> authorization = authorizations.get(ID);
+			if(null == authorization)
+				return null;
+
+			return authorization.get(id);
+		}
+		
+		@Override
+		public Project addRoleSet(String role) {
+			roleSet.add(role);
+			return this;
+		}
+		
+		public boolean isLike(String like) {
+			if(null == like)
+				return true;
+
+			if(name.indexOf(like) != -1)
+				return true;
+			
+			Map<String, String> description = descriptions.get(ID);
+			
+			if((null != description) && description.values().stream().anyMatch(v->v.indexOf(like) != -1))
+				return true;
+
+			return false;
+		}
+	}	
+	@Override
+	public List<ProjectEntity> readProjects(Set<ProjectEntity> requires, String like, int offset, int limit) {
+		List<ProjectEntity> entities = new Vector<>();
+
+		// For given entity, we fill all attribute to it.
+		if(null != requires) {
+			requires.forEach(e->Optional.ofNullable(projects.get(e.getName())).ifPresent(c->entities.add(c.getProjectEntity())));
+			return entities;
+		}
+
+		// Only fill basic attribute for project entity.
+		int start = 0, count = 0;
+		for(Project project:projects.values()) {
+			ProjectEntity entity = project.getSummaryProjectEntity();
+
+			if(!project.isLike(like))
+				continue;
+			
 			if(start++ < offset)
 				continue;
 			
 			if(count++ > limit)
 				break;
 
-			entry.getValue().setId(id++);
-			subjects.add(entry.getValue());
+			entities.add(entity);
 		}
-		return subjects;
+
+		return entities;
 	}
 
 	@Override
-	public void CreateProjects(Set<ProjectEntity> entities) {
-		entities.parallelStream().forEach(e->projects.put(e.getName(), e));
+	public void createProjects(Set<ProjectEntity> entities) {
+		entities.parallelStream().forEach(e->{
+			Project project = new Project(e.getName()).append();
+			project.setDescription(EnumUserDescription.NOTES.name(), e.getNote());
+			// TODO: roleSet or method to update roleSet? account role?
+			}
+		);
 	}
 
 	@Override
-	public void DeleteProjects(Set<ProjectEntity> entities) {
+	public void deleteProjects(Set<ProjectEntity> entities) {
 		entities.parallelStream().forEach(e->projects.remove(e.getName()));
 	}
 
-	private boolean isLike(String like, Map.Entry<String, ProjectEntity> entry) {
-		if(null == like || null == entry || entry.getKey().indexOf(like) != -1)
-			return true;
+	// for Test only 
+	private static void loadProjects() {
+		for(int index = 0; index < 60; index++) {
+			String projectName = String.format("Project%03d", index);
+			Project project = new Project(projectName).addRoleSet("admin")
+					         .addRoleSet("maintance").addRoleSet("viewer").append();
 
-		ProjectEntity project = entry.getValue();
-		if(null == project)
-			return true;
-		
-		if(project.getName().indexOf(like) != -1)
-			return true;
-
-		return false;
-	}
-	
-	private void testdata(Map<String, ProjectEntity> projects, int size) {
-		for(int count = 0; count < size; count++) {
-			ProjectEntity project = new ProjectEntity();
-			project.setName(String.format("Project%03d", count));
-			if(count % 2 == 0)
-				project.setNote("This is a long long long long long long long long"
+			if(index % 2 == 0) {
+				project.setDescription(EnumUserDescription.NOTES.name(), "This is a long long long long long long long long"
 						+ " long long long long long long long long long long long"
 						+ " long long long long long long long long long long long"
 						+ " long long note");
-			else
-				project.setNote("This is a short note");
-			
-			RoleEntity roles = new RoleEntity();
-			roles.addRole("admin").addRole("operator").addRole("viewer");
-			project.setRoles(roles);
-			
-			Map<String, RoleEntity> userRoles = new HashMap<>();
-			userRoles.put("wangyc@risetek.com", new RoleEntity().addRole("admin").addRole("operator"));
-			userRoles.put("wangyuchun@risetek.com", new RoleEntity().addRole("operator"));
-			userRoles.put("risetek@risetek.com", new RoleEntity().addRole("viewer"));
-			project.setUserRoles(userRoles);
-			
-			projects.put(project.getName(), project);
+				project.addRoleSet("admin").addRoleSet("operator").addRoleSet("viewer");
+			} else {
+				project.setDescription(EnumUserDescription.NOTES.name(), "This is a short note");
+				project.addRoleSet("operator").addRoleSet("viewer");
+			}
 		}
-	}
-	
-	public SimpleProjectsManagement() {
-		testdata(projects, 600);
 	}
 }

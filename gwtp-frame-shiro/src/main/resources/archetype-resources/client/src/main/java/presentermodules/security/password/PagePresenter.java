@@ -42,6 +42,9 @@ public class PagePresenter extends
 		getView().setUiHandlers(this);
 	}
 
+	/**
+	 * reset password with password == "";
+	 */
 	@Override
 	public void changePassword(String newPassword) {
 		user.changePassword(newPassword, c->{

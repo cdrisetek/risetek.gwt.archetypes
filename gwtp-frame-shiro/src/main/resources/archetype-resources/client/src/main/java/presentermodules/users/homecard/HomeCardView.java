@@ -1,4 +1,4 @@
-package ${package}.presentermodules.realmgt.homecard;
+package ${package}.presentermodules.users.homecard;
 
 import com.google.inject.Inject;
 import ${package}.presentermodules.home.cards.InfoCard;
@@ -9,7 +9,7 @@ public class HomeCardView extends InfoCard<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		setTitle("账户管理", Icons.compassIcon());
-		addAction("Go to Realm management", c->{getUiHandlers().reveal();});
+		setTitle("用户管理", Icons.compassIcon());
+		addAction("Go to User management", c->{getUiHandlers().reveal();});
 	}
 }

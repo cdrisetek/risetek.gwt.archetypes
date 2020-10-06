@@ -1,4 +1,4 @@
-package ${package}.presentermodules.realmgt.subject;
+package ${package}.presentermodules.users.subject;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import ${package}.bindery.AutoLoadPresenterModule;

@@ -6,249 +6,332 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
-
-import org.apache.shiro.authc.AuthenticationToken;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import com.google.inject.Singleton;
-import ${package}.server.realmgt.ISubjectManagement;
-import ${package}.share.RbacConstant;
-import ${package}.share.realmgt.AccountDescriptionsEntity;
-import ${package}.share.realmgt.AccountEntity;
+import com.gwtplatform.dispatch.shared.ActionException;
+import ${package}.server.auth.IUserManagement;
+import ${package}.share.UniqueID;
+import ${package}.share.auth.EnumRBAC;
+import ${package}.share.auth.UserEntity;
+import ${package}.share.exception.ActionUnauthenticatedException;
+import ${package}.share.users.EnumUserDescription;
+import ${package}.share.users.UserStateEntity;
 
+/**
+ * 本实现基于内存存储
+ * 本实现对于权限(Role)的依赖基于Shiro
+ * 对用户信息的修改仅限于用户自身，本实现不允许别人修改用户的信息
+ * 考虑到系统初始化时没有初始数据，因此当用户中不存在ADMIN权限时，系统缺省建立admin/admin用户，并具有ADMIN权限
+ * 
+ * @author wangyc@risetek.com
+ *
+ */
 @Singleton
-public class UserManagement implements ISubjectManagement {
+public class UserManagement implements IUserManagement {
 
-	/*
-	 * Roles:
-	 * admin
-	 * operator
-	 * visitor
-	 * maintenance
-	 */
-	public class AccountRecord {
-		public AccountEntity subject;
+	private static class UserRecorder {
+		String username;
 		String password;
-		
-		public AccountRecord() {
-			subject = new AccountEntity();
-			subject.setRoles(new HashSet<>());
-			subject.setAccountDescriptions(new AccountDescriptionsEntity());
-		}
+		public UniqueID ID = new UniqueID();
 
-		public AccountRecord(String name) {
-			subject = new AccountEntity();
-			subject.setAccountPrincipal(name);
-			subject.setRoles(new HashSet<>());
-			subject.setAccountDescriptions(new AccountDescriptionsEntity());
-		}
-
-		public AccountRecord setName(String name) {
-			subject.setAccountPrincipal(name);
-			return this;
-		}
-
-		public AccountRecord grant(String role) {
-			if(RbacConstant.isValidRole(role))
-				subject.getRoles().add(role);
-			return this;
-		}
-
-		public AccountRecord setEmail(String email) {
-			subject.getAccountDescriptions().setEmail(email);
-			return this;
-		}
-		
-		public AccountRecord setNotes(String notes) {
-			subject.getAccountDescriptions().setNotes(notes);
-			return this;
-		}
-		
-		public AccountRecord setEnable(boolean enable) {
-			subject.setEnable(enable);
-			return this;
-		}
-		
-		public AccountRecord setTelphone(String telphone) {
-			subject.getAccountDescriptions().setTelphone(telphone);
-			return this;
-		}
-
-		public AccountRecord setPassword(String password) {
+		public UserRecorder(String username, String password) {
+			this.username = username;
 			this.password = password;
+			setDescription(EnumUserDescription.PRINCIPAL, username);
+			userCollection.put(username, this);
+		}
+
+		public UserRecorder(String username, String password, Map<String, String> description) {
+			this.username = username;
+			this.password = "random";
+			descriptions.put(ID, description);
+			userCollection.put(username, this);
+		}
+		
+		public UserEntity getEntity() {
+			UserEntity entity = new UserEntity();
+			entity.setDescriptions(descriptions.get(ID));
+			entity.setState(states.get(ID));
+
+			return entity;
+		}
+
+		public UserRecorder setDescription(EnumUserDescription enumUserDescription, String value) {
+			Map<String, String> description = Optional.ofNullable(descriptions.get(ID))
+					.orElseGet(()->{descriptions.put(ID, new HashMap<>()); return descriptions.get(ID);});
+
+			description.put(enumUserDescription.name(), value);
 			return this;
 		}
+
+		public UserRecorder setRole(EnumRBAC enumRBAC) {
+			Set<String> authorization = Optional.ofNullable(authorizations.get(ID))
+					.orElseGet(()->{authorizations.put(ID, new HashSet<>()); return authorizations.get(ID);});
+			
+			authorization.add(enumRBAC.name().toLowerCase());
+			return this;
+		}
+		
+		public UserRecorder setStateEnable(boolean enable) {
+			UserStateEntity state = Optional.ofNullable(states.get(ID))
+					.orElseGet(()->{states.put(ID, new UserStateEntity()); return states.get(ID);});
+
+			state.setEnable(enable);
+			return this;
+		}
+
+		public boolean isLike(String like) {
+			if(null == like)
+				return true;
+			if(username.indexOf(like) != -1)
+				return true;
+			
+			Map<String, String> description = descriptions.get(ID);
+			if((null != description) && description.values().stream().anyMatch(val->val.indexOf(like) != -1))
+				return true;
+			
+			return false;
+		}
 	}
 
-	private final Map<String, AccountRecord> accounts = new TreeMap<>();
-
-	private void tested_users(int index) {
-		AccountRecord account = new AccountRecord(String.format("admin%03d", index));
-		account.password = "admin" + index;
-		account.setName("admin" + index).grant("admin" + index).grant("developer").grant("maintenance").grant("operator").grant("visitor")
-		       .setEmail("admin"+ index + "@risetek.com");
-		account.setNotes("account admin" + index);
-		account.setEnable(false);
-		accounts.put(account.subject.getAccountPrincipal(), account);		
-	}
-
+	private final static Map<String, UserRecorder> userCollection = new TreeMap<>();
+	private final static Map<UniqueID, Map<String, String>> descriptions = new HashMap<>();
+	private final static Map<UniqueID, UserStateEntity> states = new HashMap<>();
+	private final static Map<UniqueID, Set<String>> authorizations = new HashMap<>();
+	
+	// 非 OAuth Client模式下，application需要有Role设定。
+	// 大多数情况下，Role Set是与application相关的，是可以程序预先设定的。
+	// TODO: 
+	// 与OAuth Server交互的时候，这个预设的Role Set需要与OAuth Server
+	// 中的数据相一致，可以考虑由本应用发起一个数据同步的过程。
+	private final static Set<String> roleSet = new HashSet<>();
+	
 	public UserManagement() {
-		AccountRecord account = new AccountRecord("wangyc@risetek.com");
-		account.password = "gamelan";
-		account.grant("admin").grant("developer").grant("maintenance").grant("operator").grant("visitor").setEmail("wangyc@risetek.com");
-		accounts.put(account.subject.getAccountPrincipal(), account);
-		
-		
-		account = new AccountRecord("wangyc");
-		account.password = "gamelan";
-		account.grant("visitor").setEmail("wangyc@risetek.com");
-		accounts.put(account.subject.getAccountPrincipal(), account);		
-	
-		for(int index =0 ; index < 100; index++)
-			tested_users(index);
+		// Initial application RoleSet, It should be changed by developer for another project.
+		// All role defined in RBAC
+		for(EnumRBAC r:EnumRBAC.values())
+			addRoleSet(r.name().toLowerCase());
 
+		// Load users data
+		loadUsers();
+		
 		// TODO: If no one have admin role, we create admin for this project as default.
-		if(accounts.isEmpty()) {
-			final AccountRecord defaultUser = new AccountRecord("admin").grant("admin").grant("maintenance");
-			defaultUser.password = "admin";
-			accounts.put(account.subject.getAccountPrincipal(), defaultUser);
-		}
-	}
-	
-	public AccountRecord getUserInfomation(String username) {
-		AccountRecord user = accounts.get(username);
-		return user;
-	}
-	
-	@RequiresAuthentication
-	public Set<String> getRoles(String username) {
-		AccountRecord user = accounts.get(username);
-		if(null != user)
-			return user.subject.getRoles();
-		return null;
-	}
-	
-	@RequiresAuthentication
-	public void updateSecurity(String username, String password, AccountEntity account) {
-		AccountRecord user = accounts.get(username);
-		if(null == user)
-			return;
-
-		if(null != password)
-			user.password = password;
-
-		if(null != account) {
-			AccountDescriptionsEntity accountDescription = account.getAccountDescriptions();
-			if(null != accountDescription.getEmail())
-				user.subject.getAccountDescriptions().setEmail(accountDescription.getEmail());
-			if(null != accountDescription.getNotes())
-				user.subject.getAccountDescriptions().setEmail(accountDescription.getNotes());
-			if(null != accountDescription.getTelphone())
-				user.subject.getAccountDescriptions().setEmail(accountDescription.getTelphone());
-		}
-	}
-
-	private boolean isLike(String like, Map.Entry<String, AccountRecord> entry) {
-		if(null == like || null == entry || entry.getKey().indexOf(like) != -1)
-			return true;
-
-		AccountRecord account = entry.getValue();
-		if(null == account)
-			return true;
-		
-		AccountDescriptionsEntity pe = account.subject.getAccountDescriptions();
-		
-		if(null != pe.getEmail() && pe.getEmail().indexOf(like) != -1)
-			return true;
-		
-		if(null != pe.getNotes() && pe.getNotes().indexOf(like) != -1)
-			return true;
-
-		if(null != pe.getTelphone() && pe.getTelphone().indexOf(like) != -1)
-			return true;
-		
-		return false;
+		if(!authorizations.values().stream()
+			.anyMatch(author->author
+			 .contains(EnumRBAC.ADMIN.name().toLowerCase())))
+			new UserRecorder("admin", "admin")
+			   .setDescription(EnumUserDescription.NOTES, "this is the only one")
+			   .setRole(EnumRBAC.ADMIN);
 	}
 	
 	// @RequiresPermissions("realm:listsubjects")
-	@RequiresRoles("maintenance")
+	@RequiresRoles(value={"admin", "maintance"}, logical=Logical.OR)
 	@Override
-	public List<AccountEntity> ReadSubjects(String like, int offset, int size) {
-		List<AccountEntity> subjects = new Vector<AccountEntity>();
+	public List<UserEntity> readUsers(String like, int offset, int size) throws Exception {
+		List<UserEntity> list = new ArrayList<UserEntity>();
 		int start = 0;
 		int count = 0;
-		for(Map.Entry<String, AccountRecord> entry : accounts.entrySet()) {
-			if(!isLike(like, entry))
+		for(UserRecorder user:userCollection.values()) {
+			if(!user.isLike(like))
 				continue;
 
 			if(start++ < offset)
 				continue;
-			
+
 			if(count++ > size)
 				break;
 
-			subjects.add(entry.getValue().subject);
+			UserEntity entity = user.getEntity();
+			entity.setState(states.get(user.ID));
+			list.add(entity);
 		}
-		return subjects;
+
+		return list;
+	}
+
+	private UserRecorder getUserRecord(UserEntity entity) {
+		Map<String, String> description = entity.getDescriptions();
+		if(null == description)
+			return null;
+		String principal = description.get(EnumUserDescription.PRINCIPAL.name());
+		if(null == principal)
+			return null;
+		return userCollection.get(principal);
+		
+	}
+	// 创建新用户的场景出现在注册用户的情况下，如果是OAuth Server，新用户注册还涉及到Project的信息。
+	// 新用户创建后，角色(Role)并没有被授予，也就意味着没有任何权限
+	// 创建用户的场景也出现在简单的系统构建中，管理员可以主动创建用户，但是密码的处理需要特别考虑，比如通过
+	// email进行二次确认？
+
+	@Override
+	@RequiresRoles("admin")
+	public void createUser(UserEntity user, String password) throws Exception {
+		Map<String, String> description = user.getDescriptions();
+		if(null == description)
+			return;
+		String principal = description.get(EnumUserDescription.PRINCIPAL.name());
+		if(null == principal)
+			return;
+		
+		new UserRecorder(principal, password, description);
 	}
 
 	@Override
 	@RequiresRoles("admin")
-	public boolean CreateSubjects(Set<AccountEntity> subjects, String password) {
-		for(AccountEntity subject:subjects) {
-			AccountRecord account = new AccountRecord(subject.getAccountPrincipal());
-			account.grant("developer").grant("maintenance").grant("operator").grant("visitor")
-			        .setPassword(password)
-	                .setTelphone(subject.getAccountDescriptions().getTelphone())
-	                .setNotes(subject.getAccountDescriptions().getNotes())
-			        .setEmail(subject.getAccountDescriptions().getEmail())
-			        .setEnable(true);
-			accounts.put(subject.getAccountPrincipal(), account);		
-		}
-		return true;
+	public void createUser(UserEntity user) throws Exception {
+		// TODO: Notice user to change password somehow.
+		String password = "random";
+		createUser(user, password);
 	}
-
+	
+	@Override
+	@RequiresRoles(value={"admin", "maintance"}, logical=Logical.OR)
+	public void setUserState(UserEntity user, UserStateEntity state) throws Exception {
+		Optional.ofNullable(getUserRecord(user)).ifPresent(u->{
+			states.get(u.ID).setEnable(state.isEnable());
+		});
+	}
+	
+	// HasGod interface implement
 	@Override
 	@RequiresRoles("admin")
-	public boolean UpdateSubjects(Set<AccountEntity> subjects) {
-		for(AccountEntity subject:subjects) {
-			AccountRecord account = accounts.get(subject.getAccountPrincipal());
-			if(null == account)
-				continue;
+	public void updateUsers(Set<UserEntity> users) throws Exception {
+		users.stream().forEach(user->{
 
-			AccountEntity oldacct = account.subject;
-			oldacct.setEnable(subject.isEnable());
-			
-			AccountDescriptionsEntity newDescription = subject.getAccountDescriptions();
-			if(null != newDescription) {
-				if(null != newDescription.getEmail())
-					oldacct.getAccountDescriptions().setEmail(newDescription.getEmail());
+			Optional.ofNullable(getUserRecord(user)).ifPresent(u->{
+				Map<String, String> description =
+				Optional.ofNullable(descriptions.get(u.ID)).orElseGet(()->{
+					descriptions.put(u.ID, new HashMap<>());
+					return descriptions.get(u.ID);
+				});
 				
-				if(null != newDescription.getNotes())
-					oldacct.getAccountDescriptions().setNotes(newDescription.getNotes());
+				user.getDescriptions().entrySet().stream().forEach(entry->{
+					description.put(entry.getKey(), entry.getValue());
+				});
+
+				if(null != user.getState())
+					states.get(u.ID).setEnable(user.getState().isEnable());
 				
-				if(null != newDescription.getTelphone())
-					oldacct.getAccountDescriptions().setTelphone(newDescription.getTelphone());
-			}
-		}
-		return true;
+			});
+		});
 	}
-
+	
 	@Override
-	public boolean checkValid(AuthenticationToken token) {
-		char credentials[] = (char[])token.getCredentials();
-		if(null == credentials)
-			return false;
+	@RequiresAuthentication
+	public void setUserPassword(UserEntity user, String password) {
+		// TODO: only current user can update himself User Informations.
+	}
+	// End of HasGod interface implement
 
-		AccountRecord user = accounts.get((String)token.getPrincipal());
+	// HasSubject interface implements
+	@RequiresAuthentication
+	@Override
+	public Set<String> getSubjectRoles() throws Exception {
+		Subject currentUser = SecurityUtils.getSubject();
+		UniqueID id = (UniqueID)currentUser.getPrincipal();
+		return authorizations.get(id);
+	}
+	
+	@RequiresAuthentication
+	@Override
+	public UserEntity getSubjectUserEntity() throws Exception {
+		Subject currentUser = SecurityUtils.getSubject();
+		UniqueID id = (UniqueID)currentUser.getPrincipal();
+		UserEntity entity = new UserEntity();
+		entity.setDescriptions(descriptions.get(id));
+		return entity;
+	}
+	
+	@RequiresAuthentication
+	@Override
+	public void setSubjectUserPassword(String password) throws ActionException {
+		if(null == password || password.isEmpty()) {
+			System.out.println("resetCurrentUserPassword");
+			// TODO: should send email for this.
+			password = "randomresetpassword";
+		}
+
+		Subject subject = SecurityUtils.getSubject();
+		UniqueID id = (UniqueID)subject.getPrincipal();
+		String username = descriptions.get(id).get(EnumUserDescription.PRINCIPAL.name());
+		if(null == username)
+			throw new ActionException("can't find subject user name. this should not happen.");
+		UserRecorder user = userCollection.get(username);
+		if(null == user)
+			throw new ActionException("can't find subject user. this should not happen.");
+
+		user.password = password;
+		
+		// Logout and force user login with new password again.
+		subject.logout();
+		throw new ActionUnauthenticatedException();
+	}
+	// End of HasSubject interface implements
+	// HasAuthentication interface implements
+	@Override
+	public UniqueID authenticate(String principal, char[] credentials) throws Exception {
+		if((null == principal) || (null == credentials))
+			throw new Exception("miss authentication data");
+
+		UserRecorder user = userCollection.get(principal);
 		if(null == user || null == user.password)
-			return false;
+			throw new Exception("miss user");
 
-		if(Arrays.equals(credentials, user.password.toCharArray()))
-			return true;
+		if(!Arrays.equals(credentials, user.password.toCharArray()))
+			throw new Exception("wrong credentials");
+		
+		return user.ID;
+	}
+	// End of HasAuthentication interface implements.
+	
+	// HasAuthorization interface implements
+	@RequiresAuthentication
+	@Override
+	public Set<String> getUserRoles(UniqueID id) {
+		return Optional.ofNullable(authorizations.get(id))
+				.orElseGet(()->{authorizations.put(id, new HashSet<>()); return authorizations.get(id);});
+	}
 
-		return false;
+	@Override
+	public UserManagement addRoleSet(String role) {
+		roleSet.add(role);
+		return this;
+	}
+	// End of HasAuthorization interface implements.
+	
+	// Test
+	private static void loadUsers() {
+		for(int index =0 ; index < 100; index++) {
+			String username = String.format("admin%03d@risetek.com", index);
+			UserRecorder user = new UserRecorder(username, "admin");
+			user.setStateEnable(true)
+			    .setDescription(EnumUserDescription.EMAIL, username)
+			    .setRole(EnumRBAC.MAINTANCE);
+			if(index % 2 == 0)
+				user.setDescription(EnumUserDescription.NOTES, "this is a very long long long long long long long "
+						+ "long long long long long long long long long long long long long "
+						+ "long long long long long long long long long long long long long "
+						+ "long long long long long long long long long long long long long "
+						+ "long long long long long long long long long long long long notes");
+			else
+				user.setDescription(EnumUserDescription.NOTES,"this is short notes.");
+			
+		}
+
+		String username = "wangyc@risetek.com";
+		new UserRecorder(username, "gamelan")
+		   .setStateEnable(true)
+		   .setDescription(EnumUserDescription.EMAIL, username)
+		   .setDescription(EnumUserDescription.NOTES, "it's me")
+		   .setRole(EnumRBAC.ADMIN);
 	}
 }

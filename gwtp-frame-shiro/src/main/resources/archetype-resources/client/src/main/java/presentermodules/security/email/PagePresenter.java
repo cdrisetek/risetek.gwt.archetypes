@@ -16,6 +16,7 @@ import ${package}.NameTokens;
 import ${package}.entry.CurrentUser;
 import ${package}.entry.LoggedInGatekeeper;
 import ${package}.root.RootPresenter;
+import ${package}.share.users.EnumUserDescription;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
@@ -55,7 +56,7 @@ public class PagePresenter extends
 
 	@Override
 	public String getOriginEmail() {
-		return user.getAccountAttribute("email");
+		return user.getAccountAttribute(EnumUserDescription.EMAIL.name());
 	}
 
 	@Override
