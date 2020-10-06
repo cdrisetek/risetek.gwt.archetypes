@@ -20,6 +20,7 @@ import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
 import ${package}.server.servlet.LoginServlet;
 import ${package}.server.shiro.MyShiroWebModule;
+import ${package}.server.servlet.OAuthJWTServlet;
 
 /**
  * Don't change this class, Maven-processer-plugin need to override this class for auto load submodules.
@@ -58,7 +59,12 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 		modulesList.add(new ServletModule() {
 			@Override
 			protected void configureServlets() {
+				// For redirect login page to AAA server
+				// AAA server could be local or remote OAuth server.
 				serve("/login").with(LoginServlet.class);
+				// For remote server exchange JWT message with OAuth server.
+				serve("/oauth/jwt").with(OAuthJWTServlet.class);
+
 				serve("/dispatch/*").with(DispatchServiceImpl.class);
 				//shiro filter
 		        filter("/dispatch/*").through(GuiceShiroFilter.class);
