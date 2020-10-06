@@ -79,6 +79,10 @@ git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 
 gwtp-frame-shiro
 ====================
+#### TODO
+* 服务端AotoLoadModule的处理在增加一个新的模块时会失效，开发者必须重新编译整个项目，而不能依赖于jetty的restart过程。
+* 如何实现一种模板配置的方式，通过声明需要的package来组织成初始代码。
+
 #### NOTES
 * client中的module.gwt.xml有<set-configuration-property name="gin.ginjector.modules" value="com.risetek.entry.ClientModule"/> 构建运行时（GWT compiler 运行时）采用google gin进行依赖注入。
 * ClientModule在GWT compiler运行时install各种GinModule。这些被安装的GinModule又会进行其自身领域的依赖注入。
@@ -96,6 +100,12 @@ gwtp-frame-shiro
 * Card需要按照CSS响应式设计方式，当width发生变化的时候，通过变更height来适应外部Panel的width变化。这种单个Card的height变化造成的List布局变化会由InfinityCardList通过调整TOP值消化。
 
 #### Authorization
+
+#### Client handler Exception from Server
+* 服务端执行Action产生的ActionException需要通过ActionExceptionMapper转换成可序列化的ActionException才能通过RPC过程传递到客户端。
+* 客户端调用Action执行服务端程序如果出现异常，会回调onFailuer函数，ServerExceptionHandler帮助对这些服务端异常的通常处理，比如onFailure得到的服务端异常类型是ActionAuthenticationException，那么就前往UnauthorizedPlace，通常这是一个Login界面。
+* 可序列化的ActionException在xxx.share.exception包中。
+* ServerExceptionHandler类在client的utils.ServerExceptionHandler。
 
 Origin Document
 ==================================
