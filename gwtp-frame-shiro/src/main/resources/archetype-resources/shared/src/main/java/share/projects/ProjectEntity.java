@@ -1,12 +1,13 @@
 package ${package}.share.projects;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import ${package}.share.realmgt.RoleEntity;
+import ${package}.share.UniqueID;
 
 public class ProjectEntity implements IsSerializable {
 	public int getId() {
@@ -27,23 +28,24 @@ public class ProjectEntity implements IsSerializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public RoleEntity getRoles() {
+	public Set<String> getRoleSet() {
+		return roleSet;
+	}
+	public void setRoleSet(Set<String> roleSet) {
+		this.roleSet = roleSet;
+	}
+	public Map<UniqueID, Set<String>> getAuthorizations() {
 		return roles;
 	}
-	public void setRoles(RoleEntity roles) {
+	public void setRoles(Map<UniqueID, Set<String>> roles) {
 		this.roles = roles;
 	}
-	public Map<String, RoleEntity> getUserRoles() {
-		return userRoles;
-	}
-	public void setUserRoles(Map<String, RoleEntity> userRoles) {
-		this.userRoles = userRoles;
-	}
 	private int id;
+	// Shoud be Unique
 	@NotNull @Size(max=64)
 	private String name;
 	@Size(max=130)
 	private String note;
-	private RoleEntity roles;
-	private Map<String, RoleEntity> userRoles;
+	private Set<String> roleSet;
+	private Map<UniqueID, Set<String>> roles;
 }
