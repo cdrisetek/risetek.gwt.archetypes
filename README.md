@@ -12,7 +12,7 @@ risetek.archetypes
 * gwtp-frame-shiro: GWTP and Shiro combination
 
 ### 下载并构造本maven包到本地repo中
-* git clone https://github.com/kerongbaby/risetek.archetypes.git
+* git clone https://github.com/cdrisetek/risetek.archetypes.git
 * cd risetek.archetypes && mvn clean install
 
 ### 说明
