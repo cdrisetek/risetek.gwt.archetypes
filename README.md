@@ -3,35 +3,17 @@ risetek.archetypes
 * This is from: https://github.com/tbroyer/gwt-maven-archetypes
 * 在此表达对原作者的敬意，构造本项目的目的只是希望有一个自己需要的组合
 
-### 下载并构造本maven包到本地repo中
-* git clone https://github.com/kerongbaby/risetek.archetypes.git
-* cd risetek.archetypes && mvn clean install
-
-### 构造项目，缺省module名称为App
-```
-mvn archetype:generate -DarchetypeCatalog=local \
- -DarchetypeGroupId=com.risetek.archetypes \
- -DarchetypeVersion=HEAD-SNAPSHOT \
- -DgroupId=com.risetek \
- -DarchetypeArtifactId=modular-webapp
-```
-
-### 构造项目，自定义module名称，比如demo
-```
-mvn archetype:generate -DarchetypeCatalog=local \
- -DarchetypeGroupId=com.risetek.archetypes \
- -DarchetypeVersion=HEAD-SNAPSHOT \
- -DgroupId=com.risetek \
- -DarchetypeArtifactId=modular-webapp \
- -Dmodule=demo
-```
-
-### archtypes
+### Supported archtypes
 * modular-webapp:
 * empty-webapp: GWT基本界面，以及RPC实现的Greeting服务
 * empty-frame: requestFactory
 * empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
+* dagger-guice-rf-activities
+* gwtp-frame-shiro: GWTP and Shiro combination
 
+### 下载并构造本maven包到本地repo中
+* git clone https://github.com/kerongbaby/risetek.archetypes.git
+* cd risetek.archetypes && mvn clean install
 
 ### 说明
 * 如果server代码修改后，jetty没有重新开始（restart）,请检查Eclispe的设置，Project->Build Automatically应该为选中。
@@ -47,8 +29,7 @@ mvn archetype:generate -DarchetypeCatalog=local \
 * 在另一个终端（窗口）中运行: `mvn -Djetty.port=8081 jetty:run -pl server -am -Denv=dev` 或者：`mvn -Djetty.port=8081 jetty:run -pl server -am -P env-dev`
 * Chrome浏览器打开jetty服务的地址，比如：`http://127.0.0.1:8081`，而不是gwt:codeserver的地址
 * 需要注意的是，gwt:codeserver存在退出后没有释放java进程的问题。比如关闭了bash窗口，java进程还存在，而且占用了调试端口，这个时候需要在`任务管理器`里找到这个java进程，手动清除，否则下一次运行gwt:codeserver会存在端口占用问题而无法执行。
-
-### 调试脚本
+* 调试脚本:
 ```
 #!/bin/bash
 set -e
@@ -57,27 +38,34 @@ git-bash.exe -c "mvn jetty:run -pl server -am -Penv-dev" &
 git-bash.exe -c "mvn gwt:codeserver -pl client -am" &
 ```
 
-### 增添新的Place
-* 实现一个Place的扩展
-* ${module}PlaceHistortMapper需要更新，在@WithTokenizers中引入新增的Place对应的class
-* MainActivityMapper需要增加处理该Place活动的代码
-
-### 增添新的requestFactory服务
-### server
+dagger-guice-rf-activities (A combination of dagger, Guice and GWT requestFactory, activities)
+====================
+#### 构造dagger-guice-rf-activities项目，需要输入自定义module名称，比如risetek.demo
+```
+mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes \
+  -DarchetypeVersion=HEAD-SNAPSHOT -DgroupId=com.risetek -DarchetypeArtifactId=dagger-guice-rf-activities
+```
+#### 增添新的requestFactory服务
+#### server
 * 实现Response对应的数据结构（Entity）
 * 实现返回Response的服务
 
-#### shared
+##### shared
 * ${module}Factory中增加对应的服务上下文: RequestContext.
 * ResponseProxy对应于服务端（server）代码中的Entity
 * 实现RequestContext的extends，里面包含服务名，并返回Request<T>，<T>与ResponseProxy相关
 
-### 几个特殊文件的作用
+#### 几个特殊文件的作用
 * (client) AuthAwareRequestTransport.java
 * (server) AjaxAuthenticationFilter.java
 * User.java CurrentUser.java & ServerUser.java
 
-gwtp-frame-shiro
+#### 增添新的Place
+* 实现一个Place的扩展
+* ${module}PlaceHistortMapper需要更新，在@WithTokenizers中引入新增的Place对应的class
+* MainActivityMapper需要增加处理该Place活动的代码
+
+gwtp-frame-shiro (A combination of GWT, GWTP and Shiro)
 ====================
 #### TODO
 * 服务端AotoLoadModule的处理在增加一个新的模块时会失效，开发者必须重新编译整个项目，而不能依赖于jetty的restart过程。
@@ -88,10 +76,11 @@ gwtp-frame-shiro
 * Subject: The currently executing user, called a Subject.
 * Project: 项目
 
-#### 构造gwtp-frame-shiro项目，自定义module名称，比如demo
+#### 构造gwtp-frame-shiro项目，需要输入自定义module名称，比如risetek.tools
 ```
 mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes \
- -DarchetypeVersion=HEAD-SNAPSHOT -DgroupId=com.risetek -DarchetypeArtifactId=gwtp-frame-shiro
+ -DarchetypeArtifactId=gwtp-frame-shiro  \
+ -DarchetypeVersion=HEAD-SNAPSHOT -DgroupId=com.risetek
 ```
 
 #### NOTES
@@ -117,6 +106,18 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * 客户端调用Action执行服务端程序如果出现异常，会回调onFailuer函数，ServerExceptionHandler帮助对这些服务端异常的通常处理，比如onFailure得到的服务端异常类型是ActionAuthenticationException，那么就前往UnauthorizedPlace，通常这是一个Login界面。
 * 可序列化的ActionException在xxx.share.exception包中。
 * ServerExceptionHandler类在client的utils.ServerExceptionHandler。
+
+modular-webapp
+======
+#### 构造项目，自定义module名称，比如demo
+```
+mvn archetype:generate -DarchetypeCatalog=local \
+ -DarchetypeGroupId=com.risetek.archetypes \
+ -DarchetypeVersion=HEAD-SNAPSHOT \
+ -DgroupId=com.risetek \
+ -DarchetypeArtifactId=modular-webapp \
+ -Dmodule=demo
+```
 
 Origin Document
 ==================================
