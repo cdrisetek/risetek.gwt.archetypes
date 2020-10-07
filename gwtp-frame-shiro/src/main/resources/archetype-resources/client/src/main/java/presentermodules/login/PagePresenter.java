@@ -14,7 +14,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
 
@@ -29,7 +29,7 @@ public class PagePresenter extends
 
 	private final String status_loginfailed = "\u767b\u5f55\u5931\u8d25";
 	
-	private final CurrentUser user;
+	private final Subject subject;
     private final PlaceManager placeManager;
 	
     @Title("Login")
@@ -40,12 +40,12 @@ public class PagePresenter extends
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, PlaceManager placeManager, CurrentUser user) {
+			final MyProxy proxy, PlaceManager placeManager, Subject subject) {
 		super(eventBus, view, proxy, RevealType.Root);
 		getView().setUiHandlers(this);
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
 		this.placeManager = placeManager;
-		this.user = user;
+		this.subject = subject;
 		
 		// TODO: get the project for OAuth service.
 	}
@@ -57,14 +57,14 @@ public class PagePresenter extends
 			return;
 		}
 
-		user.Login(username, password, rememberme, project, c->getView().setStatus(status_loginfailed));
+		subject.Login(username, password, rememberme, project, c->getView().setStatus(status_loginfailed));
 	}
 	
 	
 	@Override
 	public void onUserStatusChange() {
 		GWT.log("user status changed by login presenter");
-		if(user.isLogin()) {
+		if(subject.isLogin()) {
 			GWT.log("user had login");
 			placeManager.revealDefaultPlace();
 		}

@@ -16,11 +16,12 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.bindery.PlainMenu;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.presentermodules.users.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
 import ${package}.utils.ServerExceptionHandler;
+import ${package}.share.auth.EnumRBAC;
 import ${package}.share.auth.UserEntity;
 import ${package}.share.users.UserAction;
 import ${package}.entry.LoggedInGatekeeper;
@@ -45,18 +46,18 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public interface MyProxy extends ProxyPlace<PagePresenter> {
 	}
 
-	private final CurrentUser user;
+	private final Subject subject;
 	private final DispatchAsync dispatcher;
 	private final ServerExceptionHandler exceptionHandler;
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, DispatchAsync dispatcher,
-			CurrentUser user, ServerExceptionHandler exceptionHandler) {
+			Subject subject, ServerExceptionHandler exceptionHandler) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
 		this.dispatcher = dispatcher;
 		this.exceptionHandler = exceptionHandler;
-		this.user = user;
+		this.subject = subject;
 	}
 
 	private int subjectOffset = 0;
@@ -157,7 +158,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	@Override
 	public void onUserCreatePlace() {
 		// TODO: check role.
-		if(!user.checkRole("admin")) {
+		if(!subject.checkRole(EnumRBAC.ADMIN)) {
 			getView().alert("you have no privage to create new account");
 			return;
 		}

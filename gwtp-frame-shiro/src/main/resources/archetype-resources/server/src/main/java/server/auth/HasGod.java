@@ -2,7 +2,6 @@ package ${package}.server.auth;
 
 import java.util.Set;
 
-import ${package}.share.UniqueID;
 import ${package}.share.auth.UserEntity;
 
 /**

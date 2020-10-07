@@ -12,11 +12,12 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.bindery.PlainMenu;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.LoggedInGatekeeper;
 import ${package}.presentermodules.projects.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.ui.infinitycard.HasSearch;
+import ${package}.share.auth.EnumRBAC;
 
 @PlainMenu(order = 1010, title = "项目管理", token = TokenNames.projects)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers, HasSearch {
@@ -32,7 +33,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public interface MyProxy extends ProxyPlace<PagePresenter> {
 	}
 
-	private final CurrentUser user;
+	private final Subject subject;
 	public static final Slot<PresenterWidget<?>> CARD_DISPLAY_SLOT = new Slot<>();
 
 	private final ProjectCardPresenterWidget cardPresenter;
@@ -40,10 +41,10 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public PagePresenter(final EventBus eventBus,
 			             final MyView view,
 			             final MyProxy proxy,
-			             final CurrentUser user,
+			             final Subject subject,
 			             final ProjectCardPresenterWidget cardPresenter) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
-		this.user = user;
+		this.subject = subject;
 		this.cardPresenter = cardPresenter;
 		this.cardPresenter.setSearchKeyHandler(this);
 		setInSlot(CARD_DISPLAY_SLOT, cardPresenter);
@@ -52,7 +53,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 
 	@Override
 	public void onCreateProjectPlace() {
-		if(!user.checkRole("admin")) {
+		if(!subject.checkRole(EnumRBAC.ADMIN)) {
 			getView().alert("you have no privage to create new account");
 			return;
 		}

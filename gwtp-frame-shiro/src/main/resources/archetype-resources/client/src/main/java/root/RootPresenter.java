@@ -27,9 +27,6 @@ public class RootPresenter extends Presenter<RootPresenter.MyView, RootPresenter
     public static final NestedSlot SLOT_MenuContent = new NestedSlot();
     public static final NestedSlot SLOT_LeftContent = new NestedSlot();
 
-    private DispatchAsync dispatcher;
-    private final PlaceManager placeManager;
-    
     @ProxyStandard
     @NoGatekeeper
     public interface MyProxy extends Proxy<RootPresenter> {}
@@ -38,8 +35,6 @@ public class RootPresenter extends Presenter<RootPresenter.MyView, RootPresenter
     public RootPresenter(EventBus eventBus, MyView view, MyProxy proxy, 
     		DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy, RevealType.Root);
-        this.dispatcher = dispatcher;
-        this.placeManager = placeManager;
         getView().setUiHandlers(this);
     }
 

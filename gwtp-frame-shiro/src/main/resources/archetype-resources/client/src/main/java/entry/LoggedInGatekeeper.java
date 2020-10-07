@@ -7,15 +7,15 @@ import com.gwtplatform.mvp.client.proxy.Gatekeeper;
 @Singleton
 public class LoggedInGatekeeper implements Gatekeeper {
 	
-	private final CurrentUser user;
+	private final Subject subject;
 
 	@Inject
-	LoggedInGatekeeper(CurrentUser currentUser) {
-		this.user = currentUser;
+	LoggedInGatekeeper(Subject subject) {
+		this.subject = subject;
 	}
 
 	@Override
 	public boolean canReveal() {
-		return user.isLogin();
+		return subject.isLogin();
 	}
 }

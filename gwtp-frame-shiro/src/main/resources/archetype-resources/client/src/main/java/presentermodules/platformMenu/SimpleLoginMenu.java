@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
 import ${package}.utils.Icons;
@@ -23,15 +23,15 @@ import ${package}.share.users.EnumUserDescription;
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
 
-	private final CurrentUser account;
+	private final Subject subject;
 	
 	private FlowPanel accountChooserDetail = new FlowPanel();
 	private Label account_id = new Label();
 
 	@Inject
-	public SimpleLoginMenu(Binder binder, CurrentUser user, EventBus eventBus) {
+	public SimpleLoginMenu(Binder binder, Subject subject, EventBus eventBus) {
 		super(binder);
-		this.account = user;
+		this.subject = subject;
 		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
 
 		accountChooserDetail.setStyleName(style.cfcAccountchooserDetails());
@@ -66,7 +66,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 		b = new Button("\u9000\u51fa\u8d26\u53f7");
 		b.setStyleName(style.cfcProfilebutton());
 		
-		b.addClickHandler(c->{uiHandler.removeMenuPanel(); user.Logout();});
+		b.addClickHandler(c->{uiHandler.removeMenuPanel(); subject.Logout();});
 		accountchooserButton.add(b);
 
 		matIcon.appendChild(new Icons.Login().getElement());
@@ -78,8 +78,8 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public void onAttach() {
 		super.onAttach();
 
-		if(account.isLogin()) {
-			String principal = account.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+		if(subject.isLogin()) {
+			String principal = subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
 			account_id.setText((null == principal)?"unknow":principal);
 		} else
 			account_id.setText("");
@@ -90,7 +90,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	
 	@Override
 	public Panel getMenuPanel() {
-		if(account.isLogin())
+		if(subject.isLogin())
 			return boundingboxMenu;
 		
 		UrlBuilder builder = new UrlBuilder();
@@ -109,15 +109,15 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	@Override
 	public String getTip() {
 
-		if(account.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + account.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+		if(subject.isLogin())
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
 
 		return "\u767b\u5f55\u7528\u6237";
 	}
 
 	@Override
 	public void onUserStatusChange() {
-		if(account.isLogin())
+		if(subject.isLogin())
 			GWT.log("should show login icon");
 		else
 			GWT.log("should show logout icon");

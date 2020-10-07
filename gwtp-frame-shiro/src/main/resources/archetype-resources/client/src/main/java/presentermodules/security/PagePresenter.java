@@ -15,7 +15,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.LoggedInGatekeeper;
 import ${package}.root.RootPresenter;
 import ${package}.share.users.EnumUserDescription;
@@ -33,15 +33,15 @@ public class PagePresenter extends
 	@UseGatekeeper(LoggedInGatekeeper.class)
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 	
-	private final CurrentUser user;
+	private final Subject subject;
 	private final PlaceManager placeManager;
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
-			final CurrentUser user,
+			final Subject subject,
 			final PlaceManager placeManager,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
-		this.user = user;
+		this.subject = subject;
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
 	}
@@ -51,7 +51,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "名称";
-		String principal = user.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+		String principal = subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
 		item.value = (null == principal)?"UNKNOW":principal;
 		items.add(item);
 		
@@ -70,7 +70,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "电子邮件";
-		item.value = user.getAccountAttribute(EnumUserDescription.EMAIL.name());
+		item.value = subject.getAccountAttribute(EnumUserDescription.EMAIL.name());
 		item.link = NameTokens.updateEmail;
 		items.add(item);
 		return items;

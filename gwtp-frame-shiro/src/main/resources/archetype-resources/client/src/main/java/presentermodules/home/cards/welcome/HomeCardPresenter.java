@@ -18,7 +18,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.presentermodules.home.cards.InfoItem;
@@ -32,13 +32,13 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		public void clear();
 	}
 
-	private final CurrentUser user;
+	private final Subject subject;
 	private final PlaceManager placeManager;
 
 	@Inject
-	public HomeCardPresenter(EventBus eventBus, CurrentUser user, MyView view, final MyProxy proxy, PlaceManager placeManager) {
+	public HomeCardPresenter(EventBus eventBus, Subject subject, MyView view, final MyProxy proxy, PlaceManager placeManager) {
 		super(eventBus, view, proxy);
-		this.user = user;
+		this.subject = subject;
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
 		eventBus.addHandler(UserRolesChangeEvent.getType(), new UserRolesChangeEvent.UserRolesChangeHandler() {
@@ -66,9 +66,9 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		List<InfoItem> items = new ArrayList<>();
 		InfoItem item = new InfoItem();
 		item.infoText = "\u767b\u5f55\u72b6\u6001";
-		item.infoTextSecondary = user.isLogin() ? "已登录" : "未登录";
+		item.infoTextSecondary = subject.isLogin() ? "已登录" : "未登录";
 		items.add(item);
-		if (!user.isLogin()) {
+		if (!subject.isLogin()) {
 			item = new InfoItem();
 			item.infoText = "登录后拥有更多操作权限";
 			items.add(item);
@@ -76,7 +76,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";
-			Set<String> roles = user.getRoles();
+			Set<String> roles = subject.getRoles();
 			StringBuffer sb = new StringBuffer();
 			for (String role : roles)
 				sb.append(" " + role);

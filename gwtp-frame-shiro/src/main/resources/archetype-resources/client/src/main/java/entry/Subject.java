@@ -24,13 +24,14 @@ import ${package}.share.UnsecuredSerializableBatchAction.OnException;
 
 import ${package}.share.auth.AuthenticationAction;
 import ${package}.share.auth.AuthorizationAction;
+import ${package}.share.auth.EnumRBAC;
 import ${package}.share.auth.RoleEntity;
 import ${package}.share.auth.SubjectAction;
 import ${package}.share.auth.UserEntity;
 import ${package}.share.users.EnumUserDescription;
 
 @Singleton
-public final class CurrentUser implements AuthorityChangedHandler {
+public final class Subject implements AuthorityChangedHandler {
 	/*
 	 * Subject for this session include authorization information such as roles
 	 * and user information such as descriptions.
@@ -44,7 +45,7 @@ public final class CurrentUser implements AuthorityChangedHandler {
 	private final ServerExceptionHandler exceptionHandler;
 
 	@Inject
-	public CurrentUser(DispatchAsync dispatcher, EventBus eventBus, ServerExceptionHandler exceptionHandler) {
+	public Subject(DispatchAsync dispatcher, EventBus eventBus, ServerExceptionHandler exceptionHandler) {
 		this.dispatcher = dispatcher;
 		this.eventBus = eventBus;
 		this.exceptionHandler = exceptionHandler;
@@ -189,6 +190,13 @@ public final class CurrentUser implements AuthorityChangedHandler {
 			return false;
 		return subjectRoles.contains(role);
 	}
+	
+	public boolean checkRole(EnumRBAC role) {
+		if(null == subjectRoles)
+			return false;
+		return subjectRoles.contains(role.name().toLowerCase());
+	}
+
 	public void resetPassword(String email) {
 		
 	}

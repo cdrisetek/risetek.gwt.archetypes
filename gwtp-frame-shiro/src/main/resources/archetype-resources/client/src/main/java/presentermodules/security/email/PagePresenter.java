@@ -13,7 +13,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.entry.LoggedInGatekeeper;
 import ${package}.root.RootPresenter;
 import ${package}.share.users.EnumUserDescription;
@@ -30,23 +30,23 @@ public class PagePresenter extends
 	@UseGatekeeper(LoggedInGatekeeper.class)
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 	
-	private final CurrentUser user;
+	private final Subject subject;
 	private final PlaceManager placeManager;
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
-			final CurrentUser user,
+			final Subject subject,
 			final PlaceManager placeManager,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
-		this.user = user;
+		this.subject = subject;
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
 	}
 
 	@Override
 	public void changeEmail(String newPassword) {
-		user.changeEmail(newPassword,
+		subject.changeEmail(newPassword,
 				c->{
 					GWT.log("change email:" +c);
 					goContinue();
@@ -56,7 +56,7 @@ public class PagePresenter extends
 
 	@Override
 	public String getOriginEmail() {
-		return user.getAccountAttribute(EnumUserDescription.EMAIL.name());
+		return subject.getAccountAttribute(EnumUserDescription.EMAIL.name());
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class ClientModule extends AbstractPresenterModule {
         install(new RootModule());
         bind(ServerExceptionHandler.class).asEagerSingleton();
     	bind(MyBootstrapper.class).asEagerSingleton();
-        bind(CurrentUser.class).asEagerSingleton();
+        bind(Subject.class).asEagerSingleton();
         bind(LoggedInGatekeeper.class);
     }
 }

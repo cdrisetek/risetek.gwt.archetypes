@@ -12,7 +12,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
-import ${package}.entry.CurrentUser;
+import ${package}.entry.Subject;
 import ${package}.root.RootPresenter;
 
 public class PagePresenter extends
@@ -27,23 +27,23 @@ public class PagePresenter extends
 	@NoGatekeeper
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 	
-	private final CurrentUser user;
+	private final Subject subject;
 	private final PlaceManager placeManager;
 	
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
 			final PlaceManager placeManager,
-			final CurrentUser user,
+			final Subject subject,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
-		this.user = user;
+		this.subject = subject;
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
 	}
 
 	@Override
 	public void resetPassword(String email) {
-		user.resetPassword(email);
+		subject.resetPassword(email);
 	}
 
 	@Override
