@@ -83,6 +83,17 @@ gwtp-frame-shiro
 * 服务端AotoLoadModule的处理在增加一个新的模块时会失效，开发者必须重新编译整个项目，而不能依赖于jetty的restart过程。
 * 如何实现一种模板配置的方式，通过声明需要的package来组织成初始代码。
 
+#### User Subject and Project
+* User: 用户
+* Subject: The currently executing user, called a Subject.
+* Project: 项目
+
+#### 构造gwtp-frame-shiro项目，自定义module名称，比如demo
+```
+mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes \
+ -DarchetypeVersion=HEAD-SNAPSHOT -DgroupId=com.risetek -DarchetypeArtifactId=gwtp-frame-shiro
+```
+
 #### NOTES
 * client中的module.gwt.xml有<set-configuration-property name="gin.ginjector.modules" value="com.risetek.entry.ClientModule"/> 构建运行时（GWT compiler 运行时）采用google gin进行依赖注入。
 * ClientModule在GWT compiler运行时install各种GinModule。这些被安装的GinModule又会进行其自身领域的依赖注入。
@@ -109,29 +120,6 @@ gwtp-frame-shiro
 
 Origin Document
 ==================================
-
-#### 以下是原始文档
-    mvn archetype:generate \
-       -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots/ \
-       -DarchetypeGroupId=net.ltgt.gwt.archetypes \
-       -DarchetypeArtifactId=<artifactId> \
-       -DarchetypeVersion=1.0-SNAPSHOT
-
-where the available `<artifactIds>` are:
-
-* `modular-webapp`
-* `modular-requestfactory`
-* `guice-rf-activities`
-
-This uses the snapshot deployed to Sonatype OSS. Alternatively, and/or if you want to
-hack on / contribute to the archetypes, you can clone and install the project locally:
-
-    git clone https://github.com/tbroyer/gwt-maven-archetypes.git
-    cd gwt-maven-archetypes && mvn clean install
-
-You'll then use the `mvn archetype:generate` command from above, except for the
-`-DarchetypeCatalog` argument which you'll remove, as you now want to use your local
-catalog.
 
 ### Start the development mode
 
