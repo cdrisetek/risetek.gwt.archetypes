@@ -102,6 +102,13 @@
   </dependencyManagement>
 
   <build>
+    <plugins>
+      <plugin>
+        <groupId>net.ltgt.gwt.maven</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <inherited>false</inherited>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
