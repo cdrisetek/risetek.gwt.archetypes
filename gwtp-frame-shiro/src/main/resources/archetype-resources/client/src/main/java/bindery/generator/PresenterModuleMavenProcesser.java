@@ -2,7 +2,6 @@ package ${package}.bindery.generator;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -10,7 +9,7 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
@@ -20,22 +19,23 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import ${package}.entry.ClientModule;
 import ${package}.bindery.AutoLoadPresenterModule;
+import ${package}.entry.ClientModule;
 
-@SupportedSourceVersion(value = SourceVersion.RELEASE_8)
+@SupportedAnnotationTypes("${package}.bindery.AutoLoadPresenterModule")
 public class PresenterModuleMavenProcesser extends AbstractProcessor {
 	private Filer mFiler;
 	private Messager mMessager;
 	private Elements mElementUtils;
 	
 	@Override
-	public Set<String> getSupportedAnnotationTypes() {
-		Set<String> annotations = new LinkedHashSet<>();
-        annotations.add(AutoLoadPresenterModule.class.getCanonicalName());
-        return annotations;
-	}
-	
+    public SourceVersion getSupportedSourceVersion() {
+        if (SourceVersion.latest().compareTo(SourceVersion.RELEASE_8) > 0)
+            return SourceVersion.latest();
+
+        return SourceVersion.RELEASE_8;
+    }	
+
 	@Override
 	public void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);

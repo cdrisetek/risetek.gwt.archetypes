@@ -8,15 +8,15 @@ import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.ActionExceptionMapper;
 import ${package}.share.GetResult;
 import ${package}.share.auth.SubjectAction;
-import ${package}.share.auth.UserEntity;
+import ${package}.share.auth.AccountEntity;
 
-public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResult<UserEntity>> {
+public class SubjectActionHandler implements ActionHandler<SubjectAction, GetResult<AccountEntity>> {
 	@Inject
 	IUserManagement userManagement;
 	
 	@Override
-	public GetResult<UserEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
-		UserEntity userEntity = null;
+	public GetResult<AccountEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
+		AccountEntity userEntity = null;
 
 		// Get current subject associated user entity.
 		if(null == action.users && null == action.password) {
@@ -59,5 +59,5 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 	}
 
 	@Override
-	public void undo(SubjectAction action, GetResult<UserEntity> result, ExecutionContext context) throws ActionException {}
+	public void undo(SubjectAction action, GetResult<AccountEntity> result, ExecutionContext context) throws ActionException {}
 }

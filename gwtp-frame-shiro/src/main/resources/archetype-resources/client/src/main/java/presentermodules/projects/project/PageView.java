@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.share.projects.ProjectEntity;
+import ${package}.share.auth.projects.ProjectEntity;
 
 import gwt.material.design.client.ui.MaterialValueBox;
 

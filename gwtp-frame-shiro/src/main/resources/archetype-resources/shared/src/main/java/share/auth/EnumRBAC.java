@@ -11,5 +11,35 @@ package ${package}.share.auth;
  *
  */
 public enum EnumRBAC {
-	ADMIN, MAINTANCE, OPERATOR, VISITOR, DEVELOPER, USER;
+	ADMIN {
+		@Override
+		public String toString() {
+			return "系统管理";
+		}
+	}, MAINTANCE {
+		@Override
+		public String toString() {
+			return "系统维护";
+		}
+	}, OPERATOR {
+		@Override
+		public String toString() {
+			return "操作";
+		}
+	}, VISITOR {
+		@Override
+		public String toString() {
+			return "访客";
+		}
+	}, DEVELOPER {
+		@Override
+		public String toString() {
+			return "开发";
+		}
+	}, USER {
+		@Override
+		public String toString() {
+			return "用户";
+		}
+	};
 }

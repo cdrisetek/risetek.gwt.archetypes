@@ -11,13 +11,12 @@ import javax.inject.Singleton;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.Action;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import ${package}.entry.AuthorityChangedEvent.AuthorityChangedHandler;
 import ${package}.share.GetResult;
-import ${package}.utils.ServerExceptionHandler;
 import ${package}.share.GetResults;
 import ${package}.share.UnsecuredSerializableBatchAction;
 import ${package}.share.UnsecuredSerializableBatchAction.OnException;
@@ -27,8 +26,9 @@ import ${package}.share.auth.AuthorizationAction;
 import ${package}.share.auth.EnumRBAC;
 import ${package}.share.auth.RoleEntity;
 import ${package}.share.auth.SubjectAction;
-import ${package}.share.auth.UserEntity;
-import ${package}.share.users.EnumUserDescription;
+import ${package}.share.auth.AccountEntity;
+import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.utils.ServerExceptionHandler;
 
 @Singleton
 public final class Subject implements AuthorityChangedHandler {
@@ -74,8 +74,8 @@ public final class Subject implements AuthorityChangedHandler {
 							obj = ((GetResult<?>)obj).getResults();
 							if(obj instanceof RoleEntity)
 								subjectRoles = ((RoleEntity)obj).getRole();
-							else if(obj instanceof UserEntity)
-								subjectDescriptions = ((UserEntity)obj).getDescriptions();
+							else if(obj instanceof AccountEntity)
+								subjectDescriptions = ((AccountEntity)obj).getDescriptions();
 						}
 					});
 
@@ -139,7 +139,7 @@ public final class Subject implements AuthorityChangedHandler {
 	 */
 	public void changePassword(String newPassword, Consumer<String> consumer) {
 		SubjectAction action = new SubjectAction(newPassword);
-		dispatcher.execute(action, new AsyncCallback<GetResult<UserEntity>>() {
+		dispatcher.execute(action, new AsyncCallback<GetResult<AccountEntity>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Notes: When server side change password, it logout subject,
@@ -150,31 +150,31 @@ public final class Subject implements AuthorityChangedHandler {
 			}
 
 			@Override
-			public void onSuccess(GetResult<UserEntity> result) {
+			public void onSuccess(GetResult<AccountEntity> result) {
 				consumer.accept("success");
 			}});
 	}
 
 	public void changeDescription(String key, String value, Consumer<String> consumer) {
-		UserEntity userEntity = new UserEntity();
+		AccountEntity userEntity = new AccountEntity();
 		userEntity.getDescriptions().put(key, value);
 
 		SubjectAction action = new SubjectAction(userEntity);
-		dispatcher.execute(action, new AsyncCallback<GetResult<UserEntity>>() {
+		dispatcher.execute(action, new AsyncCallback<GetResult<AccountEntity>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				exceptionHandler.handler(caught);
 			}
 
 			@Override
-			public void onSuccess(GetResult<UserEntity> result) {
+			public void onSuccess(GetResult<AccountEntity> result) {
 				// TODO: reload subjectDescriptions
 				GWT.log("update " + key + " successed");
 			}});
 	}
 	
 	public void changeEmail(String newEmail, Consumer<String> consumer) {
-		changeDescription(EnumUserDescription.EMAIL.name(), newEmail, consumer);
+		changeDescription(EnumAccount.EMAIL.name(), newEmail, consumer);
 	}
 	
 	public void newAccount(String username, String password) {

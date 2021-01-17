@@ -23,6 +23,7 @@ import ${package}.entry.UserRolesChangeEvent;
 import ${package}.presentermodules.home.cards.InfoCard;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
+import ${package}.share.auth.EnumRBAC;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
@@ -60,6 +61,8 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	}
 
 	private final PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(NameTokens.login).build();
+	private final PlaceRequest securityPlaceRequest = new PlaceRequest.Builder().nameToken(NameTokens.security).build();
+
 	private void updateLoginInfoCard() {
 		getView().clear();
 
@@ -78,11 +81,23 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 			item.infoText = "操作权限";
 			Set<String> roles = subject.getRoles();
 			StringBuffer sb = new StringBuffer();
-			for (String role : roles)
-				sb.append(" " + role);
+			for (String role : roles) {
+				EnumRBAC e = null;
+				try {
+				e = Enum.valueOf(EnumRBAC.class, role.toUpperCase());
+				}catch(Exception ex) {
+					// do nothing.
+				}
+				if(null == e)
+					sb.append(" " + role);
+				else
+					sb.append(" " + e.toString());
+			}
 
 			item.infoTextSecondary = sb.toString();
 			items.add(item);
+
+			getView().addAction("我的账户信息", c->{placeManager.revealPlace(securityPlaceRequest);});
 		}
 
 		getView().updateInfoItems(items);

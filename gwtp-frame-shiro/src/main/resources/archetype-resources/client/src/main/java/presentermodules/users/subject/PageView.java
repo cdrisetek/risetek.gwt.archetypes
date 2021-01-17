@@ -26,9 +26,9 @@ import gwt.material.design.client.ui.MaterialDialog;
 import gwt.material.design.client.ui.MaterialSearch;
 import gwt.material.design.client.ui.MaterialToast;
 import gwt.material.design.client.ui.MaterialValueBox;
-import ${package}.share.auth.UserEntity;
-import ${package}.share.users.EnumUserDescription;
-import ${package}.share.users.UserStateEntity;
+import ${package}.share.auth.AccountEntity;
+import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.share.auth.accounts.AccountStateEntity;
 import ${package}.utils.KeyBoardCode;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
@@ -54,7 +54,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	interface Binder extends UiBinder<HTMLPanel, PageView> {
 	}
 
-	private final ListDataProvider<UserEntity> dataProvider = new ListDataProvider<>();
+	private final ListDataProvider<AccountEntity> dataProvider = new ListDataProvider<>();
 
 	@Inject
 	public PageView(Binder uiBinder) {
@@ -105,16 +105,16 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		closeSubjectCreatePlace();
 	}
 
-	private static void setUserEnable(UserEntity entity, boolean enable) {
-		UserStateEntity state = entity.getState();
+	private static void setUserEnable(AccountEntity entity, boolean enable) {
+		AccountStateEntity state = entity.getState();
 		if(null == state) {
-			state = new UserStateEntity();
+			state = new AccountStateEntity();
 			entity.setState(state);
 		}
 		entity.getState().setEnable(enable);
 	}
 
-	private static void setUserDescription(UserEntity entity, String key, String value) {
+	private static void setUserDescription(AccountEntity entity, String key, String value) {
 		Map<String, String> descriptions = entity.getDescriptions();
 		if(null == descriptions) {
 			descriptions = new HashMap<>();
@@ -125,14 +125,14 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	@UiHandler("btnCommit")
 	void onCommitCreatorPlaceClick(ClickEvent e) {
-		UserEntity subject = new UserEntity();
+		AccountEntity subject = new AccountEntity();
 		setUserEnable(subject, true);
-		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), name.getValue());
-		setUserDescription(subject, EnumUserDescription.EMAIL.name(), email.getValue());
-		setUserDescription(subject, EnumUserDescription.TELPHONE.name(), telphone.getValue());
-		setUserDescription(subject, EnumUserDescription.NOTES.name(), notes.getValue());
+		setUserDescription(subject, EnumAccount.PRINCIPAL.name(), name.getValue());
+		setUserDescription(subject, EnumAccount.EMAIL.name(), email.getValue());
+		setUserDescription(subject, EnumAccount.TELPHONE.name(), telphone.getValue());
+		setUserDescription(subject, EnumAccount.NOTES.name(), notes.getValue());
 
-		Set<UserEntity> subjects = new HashSet<>();
+		Set<AccountEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 		
 		getUiHandlers().onUserCreate(subjects, password.getValue());
@@ -161,11 +161,11 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 	
 	private void maintanceAccountEnable(boolean enable) {
-		UserEntity subject = new UserEntity();
-		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), mname.getValue());
+		AccountEntity subject = new AccountEntity();
+		setUserDescription(subject, EnumAccount.PRINCIPAL.name(), mname.getValue());
 		setUserEnable(subject, enable);
 
-		Set<UserEntity> subjects = new HashSet<>();
+		Set<AccountEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 
 		getUiHandlers().onUserUpdate(subjects);
@@ -181,25 +181,25 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	
 	@UiHandler("btnmCommit")
 	void onCommitMaintancePlaceClick(ClickEvent e) {
-		UserEntity subject = new UserEntity();
+		AccountEntity subject = new AccountEntity();
 		setUserEnable(subject, true);
-		setUserDescription(subject, EnumUserDescription.PRINCIPAL.name(), mname.getValue());
-		setUserDescription(subject, EnumUserDescription.EMAIL.name(), memail.getValue());
-		setUserDescription(subject, EnumUserDescription.TELPHONE.name(), mtelphone.getValue());
-		setUserDescription(subject, EnumUserDescription.NOTES.name(), mnotes.getValue());
+		setUserDescription(subject, EnumAccount.PRINCIPAL.name(), mname.getValue());
+		setUserDescription(subject, EnumAccount.EMAIL.name(), memail.getValue());
+		setUserDescription(subject, EnumAccount.TELPHONE.name(), mtelphone.getValue());
+		setUserDescription(subject, EnumAccount.NOTES.name(), mnotes.getValue());
 
-		Set<UserEntity> subjects = new HashSet<>();
+		Set<AccountEntity> subjects = new HashSet<>();
 		subjects.add(subject);
 
 		getUiHandlers().onUserUpdate(subjects);
 	}
 
 	@Override
-	public void showSubjectMaintancePlace(UserEntity subject) {
-		mname.setValue(subject.getDescriptions().get(EnumUserDescription.PRINCIPAL.name()));
-		memail.setValue(subject.getDescriptions().get(EnumUserDescription.EMAIL.name()));
-		mtelphone.setValue(subject.getDescriptions().get(EnumUserDescription.TELPHONE.name()));
-		mnotes.setValue(subject.getDescriptions().get(EnumUserDescription.NOTES.name()));
+	public void showSubjectMaintancePlace(AccountEntity subject) {
+		mname.setValue(subject.getDescriptions().get(EnumAccount.PRINCIPAL.name()));
+		memail.setValue(subject.getDescriptions().get(EnumAccount.EMAIL.name()));
+		mtelphone.setValue(subject.getDescriptions().get(EnumAccount.TELPHONE.name()));
+		mnotes.setValue(subject.getDescriptions().get(EnumAccount.NOTES.name()));
 		if(subject.getState().isEnable()) {
 			btnmEnable.setDisplay(Display.NONE);
 			btnmDisable.setDisplay(Display.BLOCK);
@@ -264,7 +264,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	@Override
-	public void setSubjects(List<UserEntity> subjects) {
+	public void setSubjects(List<AccountEntity> subjects) {
 		// fill the table space. this is simple way.
 		for (int i = subjects.size(); i <= subjectsDisplay.getPageSize(); i++)
 			subjects.add(null);

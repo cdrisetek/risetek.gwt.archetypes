@@ -1,4 +1,4 @@
-package ${package}.share.projects;
+package ${package}.share.auth.projects;
 
 import java.util.Set;
 
@@ -8,7 +8,7 @@ import ${package}.share.GetResults;
 
 public class ProjectAction extends UnsecuredActionImpl<GetResults<ProjectEntity>> {
 
-	public static enum OP implements IsSerializable { CREATE, READ, UPDATE, DELETE, ENABLE, DISABLE }; 	
+	public static enum OP implements IsSerializable {READ, UPSERT, DELETE, ENABLE};
 	protected ProjectAction() {};
 	
 	/**

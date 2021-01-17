@@ -1,9 +1,9 @@
-package ${package}.share.users;
+package ${package}.share.auth.accounts;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class UserStateEntity implements IsSerializable {
+public class AccountStateEntity implements IsSerializable {
 	public boolean isEnable() {
 		return enable;
 	}

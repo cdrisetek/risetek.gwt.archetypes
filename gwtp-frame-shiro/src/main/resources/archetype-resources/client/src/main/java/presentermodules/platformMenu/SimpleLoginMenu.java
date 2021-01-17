@@ -17,8 +17,8 @@ import ${package}.NameTokens;
 import ${package}.entry.Subject;
 import ${package}.entry.UserRolesChangeEvent;
 import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
+import ${package}.share.auth.accounts.EnumAccount;
 import ${package}.utils.Icons;
-import ${package}.share.users.EnumUserDescription;
 
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
@@ -79,7 +79,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 		super.onAttach();
 
 		if(subject.isLogin()) {
-			String principal = subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+			String principal = subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
 			account_id.setText((null == principal)?"unknow":principal);
 		} else
 			account_id.setText("");
@@ -110,7 +110,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public String getTip() {
 
 		if(subject.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
 
 		return "\u767b\u5f55\u7528\u6237";
 	}

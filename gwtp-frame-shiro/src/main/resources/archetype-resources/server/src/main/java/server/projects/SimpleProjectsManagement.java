@@ -12,8 +12,8 @@ import java.util.Vector;
 import com.google.inject.Singleton;
 import ${package}.server.auth.HasAuthorization;
 import ${package}.share.UniqueID;
-import ${package}.share.projects.ProjectEntity;
-import ${package}.share.users.EnumUserDescription;
+import ${package}.share.auth.projects.ProjectEntity;
+import ${package}.share.auth.accounts.EnumAccount;
 
 @Singleton
 public class SimpleProjectsManagement implements IProjectsManagement {
@@ -43,7 +43,7 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 		public ProjectEntity getSummaryProjectEntity() {
 			ProjectEntity entity = new ProjectEntity();
 			entity.setName(name);
-			Optional.ofNullable(descriptions.get(ID)).ifPresent(m->entity.setNote(m.get(EnumUserDescription.NOTES.name())));
+			Optional.ofNullable(descriptions.get(ID)).ifPresent(m->entity.setNote(m.get(EnumAccount.NOTES.name())));
 			return entity;
 		}
 
@@ -122,14 +122,25 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 		return entities;
 	}
 
+	private void updateProject(Project project, ProjectEntity entity) {
+		Optional.ofNullable(entity.getNote())
+				.ifPresent(note -> Optional.ofNullable(descriptions.get(project.ID))
+						.orElseGet(() -> {descriptions.put(project.ID, new HashMap<>()); return descriptions.get(project.ID);})
+						.put(EnumAccount.NOTES.name(), note));
+
+		Optional.ofNullable(entity.getRoleSet())
+		        .ifPresent(roleSet->project.roleSet = roleSet);
+	}
+
+	private void createProject(ProjectEntity entitiy) {
+		Project project = new Project(entitiy.getName()).append();
+		project.setDescription(EnumAccount.NOTES.name(), entitiy.getNote());
+		// TODO: roleSet or method to update roleSet? account role?
+	}
+
 	@Override
 	public void createProjects(Set<ProjectEntity> entities) {
-		entities.parallelStream().forEach(e->{
-			Project project = new Project(e.getName()).append();
-			project.setDescription(EnumUserDescription.NOTES.name(), e.getNote());
-			// TODO: roleSet or method to update roleSet? account role?
-			}
-		);
+		entities.parallelStream().forEach(e->createProject(e));
 	}
 
 	@Override
@@ -145,15 +156,30 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 					         .addRoleSet("maintance").addRoleSet("viewer").append();
 
 			if(index % 2 == 0) {
-				project.setDescription(EnumUserDescription.NOTES.name(), "This is a long long long long long long long long"
+				project.setDescription(EnumAccount.NOTES.name(), "This is a long long long long long long long long"
 						+ " long long long long long long long long long long long"
 						+ " long long long long long long long long long long long"
 						+ " long long note");
 				project.addRoleSet("admin").addRoleSet("operator").addRoleSet("viewer");
 			} else {
-				project.setDescription(EnumUserDescription.NOTES.name(), "This is a short note");
+				project.setDescription(EnumAccount.NOTES.name(), "This is a short note");
 				project.addRoleSet("operator").addRoleSet("viewer");
 			}
 		}
+	}
+
+	@Override
+	public void updateOrInsert(Set<ProjectEntity> entities) throws Exception {
+		entities.stream().forEach(entity->{
+			String name = entity.getName();
+			Project project = projects.get(name);
+			if(null == project) {
+				// create one
+				createProject(entity);
+			} else {
+				// updates
+				updateProject(project, entity);
+			}
+		});
 	}
 }

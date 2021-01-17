@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.inject.Inject;
-import ${package}.share.projects.ProjectEntity;
+import ${package}.share.auth.projects.ProjectEntity;
 import ${package}.ui.infinitycard.CardInfinityView;
 import ${package}.ui.infinitycard.CardWidget;
 import ${package}.ui.infinitycard.IsCardWidget;

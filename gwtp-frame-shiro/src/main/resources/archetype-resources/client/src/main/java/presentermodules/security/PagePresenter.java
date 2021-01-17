@@ -18,7 +18,7 @@ import ${package}.NameTokens;
 import ${package}.entry.Subject;
 import ${package}.entry.LoggedInGatekeeper;
 import ${package}.root.RootPresenter;
-import ${package}.share.users.EnumUserDescription;
+import ${package}.share.auth.accounts.EnumAccount;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
@@ -51,7 +51,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "名称";
-		String principal = subject.getAccountAttribute(EnumUserDescription.PRINCIPAL.name());
+		String principal = subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
 		item.value = (null == principal)?"UNKNOW":principal;
 		items.add(item);
 		
@@ -70,7 +70,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "电子邮件";
-		item.value = subject.getAccountAttribute(EnumUserDescription.EMAIL.name());
+		item.value = subject.getAccountAttribute(EnumAccount.EMAIL.name());
 		item.link = NameTokens.updateEmail;
 		items.add(item);
 		return items;

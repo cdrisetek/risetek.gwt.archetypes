@@ -1,4 +1,4 @@
-package ${package}.share.projects;
+package ${package}.share.auth.projects;
 
 import java.util.Map;
 import java.util.Set;

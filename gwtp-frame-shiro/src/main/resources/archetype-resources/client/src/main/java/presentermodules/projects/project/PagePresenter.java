@@ -23,8 +23,8 @@ import ${package}.entry.LoggedInGatekeeper;
 import ${package}.presentermodules.projects.TokenNames;
 import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
-import ${package}.share.projects.ProjectAction;
-import ${package}.share.projects.ProjectEntity;
+import ${package}.share.auth.projects.ProjectAction;
+import ${package}.share.auth.projects.ProjectEntity;
 import ${package}.utils.ServerExceptionHandler;
 
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {

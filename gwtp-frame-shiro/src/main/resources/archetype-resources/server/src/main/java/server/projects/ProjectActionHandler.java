@@ -8,8 +8,8 @@ import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.ActionExceptionMapper;
 import ${package}.share.GetResults;
-import ${package}.share.projects.ProjectEntity;
-import ${package}.share.projects.ProjectAction;
+import ${package}.share.auth.projects.ProjectAction;
+import ${package}.share.auth.projects.ProjectEntity;
 
 public class ProjectActionHandler implements ActionHandler<ProjectAction, GetResults<ProjectEntity>> {
 
@@ -20,23 +20,17 @@ public class ProjectActionHandler implements ActionHandler<ProjectAction, GetRes
 	public GetResults<ProjectEntity> execute(ProjectAction action, ExecutionContext context) throws ActionException {
 		try{
 		switch(action.op) {
-		case CREATE:
-			if(null == action.projects)
-				throw new ActionException("no valid datas");
-			management.createProjects(action.projects);
-			break;
 		case READ:
 			// READ projects
 			List<ProjectEntity> projects = management.readProjects(action.projects, action.like, action.offset, action.limit);
 			return new GetResults<ProjectEntity>(projects);
-		case UPDATE:
+		case UPSERT:
+			management.updateOrInsert(action.projects);
 			break;
 		case DELETE:
 			management.deleteProjects(action.projects);
 			break;
 		case ENABLE:
-			break;
-		case DISABLE:
 			break;
 		default:
 			break;

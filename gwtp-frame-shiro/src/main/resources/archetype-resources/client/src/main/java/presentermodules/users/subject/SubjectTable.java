@@ -20,45 +20,45 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import ${package}.share.auth.UserEntity;
-import ${package}.share.users.EnumUserDescription;
+import ${package}.share.auth.AccountEntity;
+import ${package}.share.auth.accounts.EnumAccount;
 
-public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSelected {
+public class SubjectTable extends CellTable<AccountEntity> implements HasSubjectSelected {
 	private static final int DEFAULT_PAGESIZE = 15;
 
-	private static String getPrincipal(UserEntity entity) {
+	private static String getPrincipal(AccountEntity entity) {
 		if(null == entity)
 			return null;
 		if(null == entity.getDescriptions())
 			return null;
-		return entity.getDescriptions().get(EnumUserDescription.PRINCIPAL.name());
+		return entity.getDescriptions().get(EnumAccount.PRINCIPAL.name());
 	}
 
-	private static String getEmail(UserEntity entity) {
+	private static String getEmail(AccountEntity entity) {
 		if(null == entity)
 			return null;
 		if(null == entity.getDescriptions())
 			return null;
-		return entity.getDescriptions().get(EnumUserDescription.EMAIL.name());
+		return entity.getDescriptions().get(EnumAccount.EMAIL.name());
 	}
 
-	private static String getNote(UserEntity entity) {
+	private static String getNote(AccountEntity entity) {
 		if(null == entity)
 			return null;
 		if(null == entity.getDescriptions())
 			return null;
-		return entity.getDescriptions().get(EnumUserDescription.NOTES.name());
+		return entity.getDescriptions().get(EnumAccount.NOTES.name());
 	}
 
-	private static String getTelphone(UserEntity entity) {
+	private static String getTelphone(AccountEntity entity) {
 		if(null == entity)
 			return null;
 		if(null == entity.getDescriptions())
 			return null;
-		return entity.getDescriptions().get(EnumUserDescription.TELPHONE.name());
+		return entity.getDescriptions().get(EnumAccount.TELPHONE.name());
 	}
 	
-	private static boolean getEnable(UserEntity entity) {
+	private static boolean getEnable(AccountEntity entity) {
 		if(null == entity)
 			return false;
 		if(null == entity.getState())
@@ -66,22 +66,22 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		return entity.getState().isEnable();
 	}
 	public SubjectTable() {
-		super(DEFAULT_PAGESIZE, SubjectTableBundle.style, new ProvidesKey<UserEntity>() {
+		super(DEFAULT_PAGESIZE, SubjectTableBundle.style, new ProvidesKey<AccountEntity>() {
 
 			@Override
-			public Object getKey(UserEntity item) {
+			public Object getKey(AccountEntity item) {
 				return getPrincipal(item);
 			}
 		});
 		
 		addStyleName(SubjectTableBundle.style.cellTableStyle().subjectTable());
 
-		CellTableBuilder<UserEntity> tableBuilder = new MyCellTableBuilder(this);
-//		CellTableBuilder<UserEntity> tableBuilder = new DefaultCellTableBuilder<>(this);
+		CellTableBuilder<AccountEntity> tableBuilder = new MyCellTableBuilder(this);
+//		CellTableBuilder<AccountEntity> tableBuilder = new DefaultCellTableBuilder<>(this);
 		setTableBuilder(tableBuilder);
 
 		setSize("100%", "100%");
-		NoSelectionModel<UserEntity> noSelectionModel = new NoSelectionModel<>();
+		NoSelectionModel<AccountEntity> noSelectionModel = new NoSelectionModel<>();
 		noSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
@@ -96,7 +96,7 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		AbstractSubjectEntityColumn nameColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(UserEntity object) {
+			public String getValue(AccountEntity object) {
 				return getPrincipal(object);
 			}
 
@@ -105,7 +105,7 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		AbstractSubjectEntityColumn emailColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(UserEntity object) {
+			public String getValue(AccountEntity object) {
 				return getEmail(object);
 			}
 
@@ -114,7 +114,7 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		AbstractSubjectEntityColumn telphoneColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(UserEntity object) {
+			public String getValue(AccountEntity object) {
 				return getTelphone(object);
 			}
 
@@ -123,7 +123,7 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		AbstractSubjectEntityColumn notesColumn = new AbstractSubjectEntityColumn() {
 
 			@Override
-			public String getValue(UserEntity object) {
+			public String getValue(AccountEntity object) {
 				return getNote(object);
 			}
 
@@ -150,14 +150,14 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 	};
 
 	// ------------- Helper for null rows --------------
-	private abstract class AbstractSubjectEntityColumn extends Column<UserEntity, String> {
+	private abstract class AbstractSubjectEntityColumn extends Column<AccountEntity, String> {
 
 		public AbstractSubjectEntityColumn() {
 			super(new TextCell());
 		}
 
 		@Override
-		public void render(Context context, UserEntity object, SafeHtmlBuilder sb) {
+		public void render(Context context, AccountEntity object, SafeHtmlBuilder sb) {
 			if (object == null)
 				sb.appendHtmlConstant("&nbsp;");
 			else {
@@ -166,15 +166,15 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 		}
 	}
 
-	class MyCellTableBuilder extends DefaultCellTableBuilder<UserEntity> {
+	class MyCellTableBuilder extends DefaultCellTableBuilder<AccountEntity> {
 		SubjectTableBundle.SubjectTableStyleBundle.Style style = SubjectTableBundle.style.cellTableStyle();
 
-		public MyCellTableBuilder(AbstractCellTable<UserEntity> cellTable) {
+		public MyCellTableBuilder(AbstractCellTable<AccountEntity> cellTable) {
 			super(cellTable);
 		}
 
 		@Override
-		public void buildRowImpl(UserEntity rowValue, int absRowIndex) {
+		public void buildRowImpl(AccountEntity rowValue, int absRowIndex) {
 
 			StringBuilder trClasses = new StringBuilder(style.emptytr());
 			// Build the row.
@@ -185,7 +185,7 @@ public class SubjectTable extends CellTable<UserEntity> implements HasSubjectSel
 			// Build the columns.
 			int columnCount = cellTable.getColumnCount();
 			for (int curColumn = 0; curColumn < columnCount; curColumn++) {
-				Column<UserEntity, ?> column = cellTable.getColumn(curColumn);
+				Column<AccountEntity, ?> column = cellTable.getColumn(curColumn);
 				// Create the cell styles.
 				StringBuilder tdClasses = new StringBuilder();
 				// Add class names specific to the cell.

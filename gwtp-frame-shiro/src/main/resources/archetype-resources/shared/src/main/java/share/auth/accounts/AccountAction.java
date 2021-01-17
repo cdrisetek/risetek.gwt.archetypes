@@ -1,20 +1,20 @@
-package ${package}.share.users;
+package ${package}.share.auth.accounts;
 
 import java.util.Set;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.gwtplatform.dispatch.rpc.shared.UnsecuredActionImpl;
 import ${package}.share.GetResults;
-import ${package}.share.auth.UserEntity;
+import ${package}.share.auth.AccountEntity;
 
-public class UserAction extends UnsecuredActionImpl<GetResults<UserEntity>> {
+public class AccountAction extends UnsecuredActionImpl<GetResults<AccountEntity>> {
 
-	public static enum OP implements IsSerializable { CREATE, READ, UPDATE, DELETE, ENABLE, DISABLE }; 	
+	public static enum OP implements IsSerializable {READ, UPSERT, DELETE};
 
-	protected UserAction(){}
+	protected AccountAction(){}
 
 	// List User Entity
-	public UserAction(int offset, int size, String like, long sequence) {
+	public AccountAction(int offset, int size, String like, long sequence) {
 		users = null;
 		password = null;
 		op = OP.READ;
@@ -25,10 +25,10 @@ public class UserAction extends UnsecuredActionImpl<GetResults<UserEntity>> {
 	}
 	
 	// Create a new User.
-	public UserAction(Set<UserEntity> subjects, String password) {
+	public AccountAction(Set<AccountEntity> subjects, String password) {
 		this.users = subjects;
 		this.password = password;
-		this.op = OP.CREATE;
+		this.op = OP.UPSERT;
 		this.offset = 0;
 		this.size = 0;
 		this.like = null;
@@ -36,17 +36,17 @@ public class UserAction extends UnsecuredActionImpl<GetResults<UserEntity>> {
 	}
 
 	// Update User descriptions.
-	public UserAction(Set<UserEntity> subjects) {
+	public AccountAction(Set<AccountEntity> subjects) {
 		this.users = subjects;
 		this.password = null;
-		this.op = OP.UPDATE;
+		this.op = OP.UPSERT;
 		this.offset = 0;
 		this.size = 0;
 		this.like = null;
 		this.sequence = 0;
 	}
 	
-	public UserAction(Set<UserEntity> subjects, String password, OP op, int offset, int size, String like, long sequence) {
+	public AccountAction(Set<AccountEntity> subjects, String password, OP op, int offset, int size, String like, long sequence) {
 		this.users = subjects;
 		this.password = password;
 		this.op = op;
@@ -61,6 +61,6 @@ public class UserAction extends UnsecuredActionImpl<GetResults<UserEntity>> {
 	public int size;
 	public String like;
 	public OP op;
-	public Set<UserEntity> users;
+	public Set<AccountEntity> users;
 	public String password;
 }

@@ -20,10 +20,10 @@ import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.auth.IUserManagement;
 import ${package}.share.UniqueID;
 import ${package}.share.auth.EnumRBAC;
-import ${package}.share.auth.UserEntity;
+import ${package}.share.auth.AccountEntity;
+import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.share.auth.accounts.AccountStateEntity;
 import ${package}.share.exception.ActionUnauthenticatedException;
-import ${package}.share.users.EnumUserDescription;
-import ${package}.share.users.UserStateEntity;
 
 /**
  * 本实现基于内存存储
@@ -45,7 +45,7 @@ public class UserManagement implements IUserManagement {
 		public UserRecorder(String username, String password) {
 			this.username = username;
 			this.password = password;
-			setDescription(EnumUserDescription.PRINCIPAL, username);
+			setDescription(EnumAccount.PRINCIPAL, username);
 			userCollection.put(username, this);
 		}
 
@@ -56,15 +56,15 @@ public class UserManagement implements IUserManagement {
 			userCollection.put(username, this);
 		}
 		
-		public UserEntity getEntity() {
-			UserEntity entity = new UserEntity();
+		public AccountEntity getEntity() {
+			AccountEntity entity = new AccountEntity();
 			entity.setDescriptions(descriptions.get(ID));
 			entity.setState(states.get(ID));
 
 			return entity;
 		}
 
-		public UserRecorder setDescription(EnumUserDescription enumUserDescription, String value) {
+		public UserRecorder setDescription(EnumAccount enumUserDescription, String value) {
 			Map<String, String> description = Optional.ofNullable(descriptions.get(ID))
 					.orElseGet(()->{descriptions.put(ID, new HashMap<>()); return descriptions.get(ID);});
 
@@ -81,8 +81,8 @@ public class UserManagement implements IUserManagement {
 		}
 		
 		public UserRecorder setStateEnable(boolean enable) {
-			UserStateEntity state = Optional.ofNullable(states.get(ID))
-					.orElseGet(()->{states.put(ID, new UserStateEntity()); return states.get(ID);});
+			AccountStateEntity state = Optional.ofNullable(states.get(ID))
+					.orElseGet(()->{states.put(ID, new AccountStateEntity()); return states.get(ID);});
 
 			state.setEnable(enable);
 			return this;
@@ -104,7 +104,7 @@ public class UserManagement implements IUserManagement {
 
 	private final static Map<String, UserRecorder> userCollection = new TreeMap<>();
 	private final static Map<UniqueID, Map<String, String>> descriptions = new HashMap<>();
-	private final static Map<UniqueID, UserStateEntity> states = new HashMap<>();
+	private final static Map<UniqueID, AccountStateEntity> states = new HashMap<>();
 	private final static Map<UniqueID, Set<String>> authorizations = new HashMap<>();
 	
 	// 非 OAuth Client模式下，application需要有Role设定。
@@ -128,15 +128,26 @@ public class UserManagement implements IUserManagement {
 			.anyMatch(author->author
 			 .contains(EnumRBAC.ADMIN.name().toLowerCase())))
 			new UserRecorder("admin", "admin")
-			   .setDescription(EnumUserDescription.NOTES, "this is the only one")
+			   .setDescription(EnumAccount.NOTES, "this is the only one")
 			   .setRole(EnumRBAC.ADMIN);
 	}
 	
 	// @RequiresPermissions("realm:listsubjects")
 	@RequiresRoles(value={"admin", "maintance"}, logical=Logical.OR)
 	@Override
-	public List<UserEntity> readUsers(String like, int offset, int size) throws Exception {
-		List<UserEntity> list = new ArrayList<UserEntity>();
+	public List<AccountEntity> readUsers(Set<AccountEntity> entities, String like, int offset, int size) throws Exception {
+		List<AccountEntity> list = new ArrayList<AccountEntity>();
+		if(null != entities) {
+			entities.stream().forEach(entity->{
+				// TODO: userCollection.get(entity.getDescriptions().get(EnumUserDescription.PRINCIPAL.name())) NULL?
+				Optional.ofNullable(userCollection.get(entity.getDescriptions().get(EnumAccount.PRINCIPAL.name()))).ifPresent(e->{
+					list.add(e.getEntity());
+				});
+				// list.add(userCollection.get(entity.getDescriptions().get(EnumUserDescription.PRINCIPAL.name())).getEntity());
+			});
+			return list;
+		}
+
 		int start = 0;
 		int count = 0;
 		for(UserRecorder user:userCollection.values()) {
@@ -149,7 +160,7 @@ public class UserManagement implements IUserManagement {
 			if(count++ > size)
 				break;
 
-			UserEntity entity = user.getEntity();
+			AccountEntity entity = user.getEntity();
 			entity.setState(states.get(user.ID));
 			list.add(entity);
 		}
@@ -157,11 +168,11 @@ public class UserManagement implements IUserManagement {
 		return list;
 	}
 
-	private UserRecorder getUserRecord(UserEntity entity) {
+	private UserRecorder getUserRecord(AccountEntity entity) {
 		Map<String, String> description = entity.getDescriptions();
 		if(null == description)
 			return null;
-		String principal = description.get(EnumUserDescription.PRINCIPAL.name());
+		String principal = description.get(EnumAccount.PRINCIPAL.name());
 		if(null == principal)
 			return null;
 		return userCollection.get(principal);
@@ -174,11 +185,11 @@ public class UserManagement implements IUserManagement {
 
 	@Override
 	@RequiresRoles("admin")
-	public void createUser(UserEntity user, String password) throws Exception {
+	public void createUser(AccountEntity user, String password) throws Exception {
 		Map<String, String> description = user.getDescriptions();
 		if(null == description)
 			return;
-		String principal = description.get(EnumUserDescription.PRINCIPAL.name());
+		String principal = description.get(EnumAccount.PRINCIPAL.name());
 		if(null == principal)
 			return;
 		
@@ -187,7 +198,7 @@ public class UserManagement implements IUserManagement {
 
 	@Override
 	@RequiresRoles("admin")
-	public void createUser(UserEntity user) throws Exception {
+	public void createUser(AccountEntity user) throws Exception {
 		// TODO: Notice user to change password somehow.
 		String password = "random";
 		createUser(user, password);
@@ -195,7 +206,7 @@ public class UserManagement implements IUserManagement {
 	
 	@Override
 	@RequiresRoles(value={"admin", "maintance"}, logical=Logical.OR)
-	public void setUserState(UserEntity user, UserStateEntity state) throws Exception {
+	public void setUserState(AccountEntity user, AccountStateEntity state) throws Exception {
 		Optional.ofNullable(getUserRecord(user)).ifPresent(u->{
 			states.get(u.ID).setEnable(state.isEnable());
 		});
@@ -204,7 +215,7 @@ public class UserManagement implements IUserManagement {
 	// HasGod interface implement
 	@Override
 	@RequiresRoles("admin")
-	public void updateUsers(Set<UserEntity> users) throws Exception {
+	public void updateUsers(Set<AccountEntity> users) throws Exception {
 		users.stream().forEach(user->{
 
 			Optional.ofNullable(getUserRecord(user)).ifPresent(u->{
@@ -227,7 +238,7 @@ public class UserManagement implements IUserManagement {
 	
 	@Override
 	@RequiresAuthentication
-	public void setUserPassword(UserEntity user, String password) {
+	public void setUserPassword(AccountEntity user, String password) {
 		// TODO: only current user can update himself User Informations.
 	}
 	// End of HasGod interface implement
@@ -243,10 +254,10 @@ public class UserManagement implements IUserManagement {
 	
 	@RequiresAuthentication
 	@Override
-	public UserEntity getSubjectUserEntity() throws Exception {
+	public AccountEntity getSubjectUserEntity() throws Exception {
 		Subject currentUser = SecurityUtils.getSubject();
 		UniqueID id = (UniqueID)currentUser.getPrincipal();
-		UserEntity entity = new UserEntity();
+		AccountEntity entity = new AccountEntity();
 		entity.setDescriptions(descriptions.get(id));
 		return entity;
 	}
@@ -262,7 +273,7 @@ public class UserManagement implements IUserManagement {
 
 		Subject subject = SecurityUtils.getSubject();
 		UniqueID id = (UniqueID)subject.getPrincipal();
-		String username = descriptions.get(id).get(EnumUserDescription.PRINCIPAL.name());
+		String username = descriptions.get(id).get(EnumAccount.PRINCIPAL.name());
 		if(null == username)
 			throw new ActionException("can't find subject user name. this should not happen.");
 		UserRecorder user = userCollection.get(username);
@@ -314,24 +325,24 @@ public class UserManagement implements IUserManagement {
 			String username = String.format("admin%03d@risetek.com", index);
 			UserRecorder user = new UserRecorder(username, "admin");
 			user.setStateEnable(true)
-			    .setDescription(EnumUserDescription.EMAIL, username)
+			    .setDescription(EnumAccount.EMAIL, username)
 			    .setRole(EnumRBAC.MAINTANCE);
 			if(index % 2 == 0)
-				user.setDescription(EnumUserDescription.NOTES, "this is a very long long long long long long long "
+				user.setDescription(EnumAccount.NOTES, "this is a very long long long long long long long "
 						+ "long long long long long long long long long long long long long "
 						+ "long long long long long long long long long long long long long "
 						+ "long long long long long long long long long long long long long "
 						+ "long long long long long long long long long long long long notes");
 			else
-				user.setDescription(EnumUserDescription.NOTES,"this is short notes.");
+				user.setDescription(EnumAccount.NOTES,"this is short notes.");
 			
 		}
 
 		String username = "wangyc@risetek.com";
 		new UserRecorder(username, "gamelan")
 		   .setStateEnable(true)
-		   .setDescription(EnumUserDescription.EMAIL, username)
-		   .setDescription(EnumUserDescription.NOTES, "it's me")
+		   .setDescription(EnumAccount.EMAIL, username)
+		   .setDescription(EnumAccount.NOTES, "it's me")
 		   .setRole(EnumRBAC.ADMIN);
 	}
 }

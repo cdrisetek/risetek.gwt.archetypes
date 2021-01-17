@@ -22,21 +22,21 @@ import ${package}.root.RootPresenter;
 import ${package}.share.GetResults;
 import ${package}.utils.ServerExceptionHandler;
 import ${package}.share.auth.EnumRBAC;
-import ${package}.share.auth.UserEntity;
-import ${package}.share.users.UserAction;
+import ${package}.share.auth.AccountEntity;
+import ${package}.share.auth.accounts.AccountAction;
 import ${package}.entry.LoggedInGatekeeper;
 
 @PlainMenu(order = 1001, title = "用户管理", token = TokenNames.realmgt)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		void setSubjects(List<UserEntity> subjects);
+		void setSubjects(List<AccountEntity> subjects);
 		int getSubjectsCapacity();
 		void upDatePagerStatus(int offset, boolean hasMore);
 		void alert(String message);
 		public void showSubjectCreatePlace();
 		public void closeSubjectCreatePlace();
-		public void showSubjectMaintancePlace(UserEntity subject);
+		public void showSubjectMaintancePlace(AccountEntity subject);
 		public void closeSubjectMaintancePlace();
 	}
 
@@ -78,8 +78,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			offset = 0;
 
 		// read more than require so to determine the end of data.
-		UserAction action = new UserAction(offset, (size + 1), like, sequence++);
-		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
+		AccountAction action = new AccountAction(offset, (size + 1), like, sequence++);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -87,7 +87,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<UserEntity> result) {
+			public void onSuccess(GetResults<AccountEntity> result) {
 				if (result.getResults().size() == 0)
 					return;
 
@@ -107,10 +107,10 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onUserCreate(Set<UserEntity> subjects, String password) {
+	public void onUserCreate(Set<AccountEntity> subjects, String password) {
 		// read more than require so to determine the end of data.
-		UserAction action = new UserAction(subjects, password);
-		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
+		AccountAction action = new AccountAction(subjects, password);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -119,7 +119,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<UserEntity> result) {
+			public void onSuccess(GetResults<AccountEntity> result) {
 				getView().alert("新用户成功创建");
 				getView().closeSubjectCreatePlace();
 				readSubjects(0);
@@ -166,15 +166,15 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onUserMaintancePlace(UserEntity subject) {
+	public void onUserMaintancePlace(AccountEntity subject) {
 		getView().showSubjectMaintancePlace(subject);
 	}
 
 	@Override
-	public void onUserUpdate(Set<UserEntity> subjects) {
+	public void onUserUpdate(Set<AccountEntity> subjects) {
 		// read more than require so to determine the end of data.
-		UserAction action = new UserAction(subjects);
-		dispatcher.execute(action, new AsyncCallback<GetResults<UserEntity>>() {
+		AccountAction action = new AccountAction(subjects);
+		dispatcher.execute(action, new AsyncCallback<GetResults<AccountEntity>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -183,7 +183,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			}
 
 			@Override
-			public void onSuccess(GetResults<UserEntity> result) {
+			public void onSuccess(GetResults<AccountEntity> result) {
 				getView().alert("账户更新成功");
 				getView().closeSubjectMaintancePlace();
 				readSubjects(0);

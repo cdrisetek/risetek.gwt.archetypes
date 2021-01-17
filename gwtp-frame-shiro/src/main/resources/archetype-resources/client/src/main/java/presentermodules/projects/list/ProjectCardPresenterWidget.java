@@ -18,8 +18,8 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest.Builder;
 import ${package}.presentermodules.projects.TokenNames;
 import ${package}.share.GetResults;
-import ${package}.share.projects.ProjectAction;
-import ${package}.share.projects.ProjectEntity;
+import ${package}.share.auth.projects.ProjectAction;
+import ${package}.share.auth.projects.ProjectEntity;
 import ${package}.ui.infinitycard.CardPresenterWidget;
 import ${package}.ui.infinitycard.IsCardWidget;
 import ${package}.utils.ServerExceptionHandler;
@@ -121,7 +121,7 @@ public class ProjectCardPresenterWidget extends CardPresenterWidget<ProjectEntit
 	@Override
 	public void onUpdateCards(Set<IsCardWidget<ProjectEntity>> cards) {
 		Set<ProjectEntity> entities = cards.stream().map(c->c.getEntity()).collect(Collectors.toSet());
-		ProjectAction action = new ProjectAction(entities, ProjectAction.OP.UPDATE, null, 0, 0, 0);
+		ProjectAction action = new ProjectAction(entities, ProjectAction.OP.UPSERT, null, 0, 0, 0);
 		dispatcher.execute(action, new AsyncCallback<GetResults<ProjectEntity>>() {
 
 			@Override
@@ -138,7 +138,7 @@ public class ProjectCardPresenterWidget extends CardPresenterWidget<ProjectEntit
 
 	@Override
 	public void onCreateEntities(Set<ProjectEntity> entities) {
-		ProjectAction action = new ProjectAction(entities, ProjectAction.OP.CREATE, null, 0, 0, 0);
+		ProjectAction action = new ProjectAction(entities, ProjectAction.OP.UPSERT, null, 0, 0, 0);
 		dispatcher.execute(action, new AsyncCallback<GetResults<ProjectEntity>>() {
 
 			@Override

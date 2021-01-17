@@ -2,7 +2,6 @@ package ${package}.server.bindery.generator;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
@@ -24,19 +23,20 @@ import com.google.inject.Module;
 import ${package}.server.AppServletContextListener;
 import ${package}.server.bindery.AutoLoadModule;
 
-@SupportedSourceVersion(value = SourceVersion.RELEASE_8)
+@SupportedAnnotationTypes("${package}.server.bindery.AutoLoadModule")
 public class ModuleMavenProcesser extends AbstractProcessor {
 	private Filer mFiler;
 	private Messager mMessager;
 	private Elements mElementUtils;
 	
 	@Override
-	public Set<String> getSupportedAnnotationTypes() {
-		Set<String> annotations = new LinkedHashSet<>();
-        annotations.add(AutoLoadModule.class.getCanonicalName());
-        return annotations;
-	}
-	
+    public SourceVersion getSupportedSourceVersion() {
+        if (SourceVersion.latest().compareTo(SourceVersion.RELEASE_8) > 0)
+            return SourceVersion.latest();
+
+        return SourceVersion.RELEASE_8;
+    }	
+
 	@Override
 	public void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
