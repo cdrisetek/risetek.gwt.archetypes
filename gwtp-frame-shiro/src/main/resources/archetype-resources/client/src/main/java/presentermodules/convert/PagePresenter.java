@@ -12,11 +12,13 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.NameTokens;
-import ${package}.root.RootPresenter;
 import ${package}.bindery.PlainMenu;
+import ${package}.place.root.RootPresenter;
 import ${package}.utils.Icons;
+import ${package}.share.templates.packages.ConvertPackage;
 
-@PlainMenu(order = 1000, title = "\u7f16\u7801\u8f6c\u6362", token = NameTokens.convert, iconClass = Icons.Convert.class)
+@PlainMenu(order = 1000, title = "\u7f16\u7801\u8f6c\u6362", token = NameTokens.convert,
+           iconClass = Icons.Convert.class, isEnabled = ConvertPackage.isEnabled)
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
 		implements MyUiHandlers {

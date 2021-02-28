@@ -20,7 +20,7 @@ public class ActionExceptionMapper {
 			throw new ActionAuthenticationException();
 		}
 		else if(t instanceof UnauthenticatedException) {
-			throw new ActionUnauthenticatedException();
+			throw new ActionUnauthenticatedException("UnauthenticatedException");
 		}
 		else if(t instanceof UnauthorizedException) {
 				System.out.println("\r\n\r\n\r\n !!!!!\r\n" + t.getMessage() + "\r\n\r\n!!!!\r\n");
@@ -35,7 +35,7 @@ public class ActionExceptionMapper {
 			throw (ActionException)t;
 		}
 		else {
-			throw new ActionException("UnMapped exception:\r\n  class: " + t + "\r\n" + t.getMessage());
+			throw new ActionException("TODO: UnMapped exception:\r\n  class: " + t + "\r\n" + t.getMessage());
 		}
 	}
 }

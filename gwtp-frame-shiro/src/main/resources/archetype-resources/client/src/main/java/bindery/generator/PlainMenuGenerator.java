@@ -75,7 +75,7 @@ public class PlainMenuGenerator extends Generator {
 				for (JClassType Type : types) {
 					PlainMenu menu = Type.getAnnotation(PlainMenu.class);
 
-					if (menu == null)
+					if (menu == null || !menu.isEnabled())
 						continue;
 
 					System.out.println("generate plain menu for:" + pack.getName() + "." + Type.getName());

@@ -15,13 +15,12 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
-import ${package}.entry.UserRolesChangeEvent;
-import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
-import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.entry.SubjectChangeEvent;
+import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
 import ${package}.utils.Icons;
 
 @Singleton
-public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRolesChangeHandler {
+public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectChangeHandler {
 
 	private final Subject subject;
 	
@@ -32,7 +31,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public SimpleLoginMenu(Binder binder, Subject subject, EventBus eventBus) {
 		super(binder);
 		this.subject = subject;
-		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
+		eventBus.addHandler(SubjectChangeEvent.getType(), this);
 
 		accountChooserDetail.setStyleName(style.cfcAccountchooserDetails());
 		
@@ -66,7 +65,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 		b = new Button("\u9000\u51fa\u8d26\u53f7");
 		b.setStyleName(style.cfcProfilebutton());
 		
-		b.addClickHandler(c->{uiHandler.removeMenuPanel(); subject.Logout();});
+		b.addClickHandler(c->{uiHandler.removeMenuPanel(); subject.Logout(); uiHandler.gotoPlace(NameTokens.home);});
 		accountchooserButton.add(b);
 
 		matIcon.appendChild(new Icons.Login().getElement());
@@ -79,7 +78,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 		super.onAttach();
 
 		if(subject.isLogin()) {
-			String principal = subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
+			String principal = subject.getSubjectPrincipal();
 			account_id.setText((null == principal)?"unknow":principal);
 		} else
 			account_id.setText("");
@@ -110,13 +109,13 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements UserRole
 	public String getTip() {
 
 		if(subject.isLogin())
-			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
+			return "\u6253\u5f00\u5e10\u53f7\u9009\u9879:" + subject.getSubjectPrincipal();
 
 		return "\u767b\u5f55\u7528\u6237";
 	}
 
 	@Override
-	public void onUserStatusChange() {
+	public void onSubjectChange() {
 		if(subject.isLogin())
 			GWT.log("should show login icon");
 		else

@@ -15,23 +15,21 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.Action;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import ${package}.entry.AuthorityChangedEvent.AuthorityChangedHandler;
-import ${package}.share.GetResult;
-import ${package}.share.GetResults;
-import ${package}.share.UnsecuredSerializableBatchAction;
-import ${package}.share.UnsecuredSerializableBatchAction.OnException;
-
-import ${package}.share.auth.AuthenticationAction;
-import ${package}.share.auth.AuthorizationAction;
-import ${package}.share.auth.EnumRBAC;
-import ${package}.share.auth.RoleEntity;
-import ${package}.share.auth.SubjectAction;
-import ${package}.share.auth.AccountEntity;
-import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.share.accounts.AccountEntity;
+import ${package}.share.accounts.AuthenticationAction;
+import ${package}.share.accounts.AuthorizationAction;
+import ${package}.share.accounts.AuthorizationEntity;
+import ${package}.share.accounts.EnumAccount;
+import ${package}.share.accounts.HostProjectRBAC;
+import ${package}.share.accounts.SubjectAction;
+import ${package}.share.dispatch.GetResult;
+import ${package}.share.dispatch.GetResults;
+import ${package}.share.dispatch.UnsecuredSerializableBatchAction;
+import ${package}.share.dispatch.UnsecuredSerializableBatchAction.OnException;
 import ${package}.utils.ServerExceptionHandler;
 
 @Singleton
-public final class Subject implements AuthorityChangedHandler {
+public final class Subject {
 	/*
 	 * Subject for this session include authorization information such as roles
 	 * and user information such as descriptions.
@@ -39,6 +37,7 @@ public final class Subject implements AuthorityChangedHandler {
 	 */
 	private volatile Set<String> subjectRoles;
 	private volatile Map<String, String> subjectDescriptions;
+	private volatile String subjectPrincipal;
 
 	private final DispatchAsync dispatcher;
 	private final EventBus eventBus;
@@ -49,7 +48,6 @@ public final class Subject implements AuthorityChangedHandler {
 		this.dispatcher = dispatcher;
 		this.eventBus = eventBus;
 		this.exceptionHandler = exceptionHandler;
-		eventBus.addHandler(AuthorityChangedEvent.getType(), this);
 	}
 	
 	private void doSubjectBatchAction(Consumer<Throwable> failure, Action<?>... actions) {
@@ -62,7 +60,7 @@ public final class Subject implements AuthorityChangedHandler {
 					else
 						exceptionHandler.handler(caught);
 
-					eventBus.fireEvent(UserRolesChangeEvent.INSTANCE);
+					eventBus.fireEvent(SubjectChangeEvent.INSTANCE);
 				}
 
 				@Override
@@ -72,14 +70,15 @@ public final class Subject implements AuthorityChangedHandler {
 						Object obj = entity.getResults();
 						if(obj instanceof GetResult) {
 							obj = ((GetResult<?>)obj).getResults();
-							if(obj instanceof RoleEntity)
-								subjectRoles = ((RoleEntity)obj).getRole();
-							else if(obj instanceof AccountEntity)
+							if(obj instanceof AuthorizationEntity) {
+								subjectRoles = ((AuthorizationEntity)obj).getRole().getRoleSet();
+							} else if(obj instanceof AccountEntity) {
 								subjectDescriptions = ((AccountEntity)obj).getDescriptions();
+								subjectPrincipal = ((AccountEntity)obj).getPrincipal();
+							}
 						}
 					});
-
-					eventBus.fireEvent(UserRolesChangeEvent.INSTANCE);
+					eventBus.fireEvent(SubjectChangeEvent.INSTANCE);
 				};
 			});	
 	}
@@ -94,10 +93,11 @@ public final class Subject implements AuthorityChangedHandler {
 		AuthenticationAction authenAction = 
 				new AuthenticationAction(Arrays.asList(username), password, remember, project);
 
-		AuthorizationAction getMyAuthorizationAction = new AuthorizationAction();
-		SubjectAction getMyUserAction = new SubjectAction();
-		
-		doSubjectBatchAction(failure, authenAction, getMyAuthorizationAction, getMyUserAction);
+		// To read subject roles
+		AuthorizationAction authorizationAction = new AuthorizationAction();
+		// To read subject descriptions
+		SubjectAction subjectAction = new SubjectAction();
+		doSubjectBatchAction(failure, authenAction, authorizationAction, subjectAction);
 	}
     
 	public void Logout() {
@@ -109,23 +109,15 @@ public final class Subject implements AuthorityChangedHandler {
 	}
 
 	public void accountSync(Consumer<String> success, Consumer<Throwable> failure) {
-		AuthorizationAction getMyAuthorizationAction = new AuthorizationAction();
-		SubjectAction getMyUserEntityAction = new SubjectAction();
-
 		subjectRoles = null;
 		subjectDescriptions = null;
 		
-		doSubjectBatchAction(failure, getMyAuthorizationAction, getMyUserEntityAction);
+		doSubjectBatchAction(failure, new AuthorizationAction(), new SubjectAction());
 	}
 	
 	/*
-	 * When Server side throw UnAuthorization Exception, this function be called to synchronize subject.
+	 * TODO: When Server side throw UnAuthorization Exception, this function be called to synchronize subject.
 	 */
-	@Override
-	public void onAuthorityChanged() {
-		accountSync(c->eventBus.fireEvent(UserRolesChangeEvent.INSTANCE), fail->GWT.log("Fail to synchronize subject."));
-	}
-
 	public boolean isLogin() {
 		return null != subjectRoles;
 	}
@@ -191,12 +183,15 @@ public final class Subject implements AuthorityChangedHandler {
 		return subjectRoles.contains(role);
 	}
 	
-	public boolean checkRole(EnumRBAC role) {
+	public boolean checkRole(HostProjectRBAC role) {
 		if(null == subjectRoles)
 			return false;
 		return subjectRoles.contains(role.name().toLowerCase());
 	}
 
+	public String getSubjectPrincipal() {
+		return subjectPrincipal;
+	}
 	public void resetPassword(String email) {
 		
 	}

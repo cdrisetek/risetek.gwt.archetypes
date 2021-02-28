@@ -76,6 +76,10 @@ gwtp-frame-shiro (A combination of GWT, GWTP and Shiro)
 * Subject: The currently executing user, called a Subject.
 * Project: 项目
 
+#### Host Project
+* 项目本身的设定
+* 固定的角色设置，开发者需要在源码级别扩展
+
 #### 构造gwtp-frame-shiro项目，需要输入自定义module名称，比如risetek.tools
 ```
 mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes \
@@ -117,6 +121,18 @@ mvn archetype:generate -DarchetypeCatalog=local \
  -DgroupId=com.risetek \
  -DarchetypeArtifactId=modular-webapp \
  -Dmodule=demo
+```
+
+empty-webapp
+======
+#### 构造项目，自定义module名称，比如demo
+```
+mvn archetype:generate -DarchetypeCatalog=local \
+ -DarchetypeGroupId=com.risetek.archetypes \
+ -DarchetypeVersion=HEAD-SNAPSHOT \
+ -DgroupId=com.risetek \
+ -DarchetypeArtifactId=empty-webapp \
+ -DgroupId=com.risetek
 ```
 
 Origin Document

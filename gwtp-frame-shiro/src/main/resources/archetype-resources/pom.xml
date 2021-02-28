@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-#set( $dollar = '$' )
+#set($dollar = '$')
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
     <gwt.version>2.9.0</gwt.version>
     <gwt-maven.version>1.0.0</gwt-maven.version>
     <gwtp.version>1.6</gwtp.version>
-    <jdk.version>1.8</jdk.version>
-    <jetty.version>9.2.13.v20150730</jetty.version>
+    <jdk.version>11</jdk.version>
+    <jetty.version>9.4.36.v20210114</jetty.version>
     <maven-compiler.version>3.8.1</maven-compiler.version>
     <maven-source.version>3.2.0</maven-source.version>
     <maven-processor.version>4.0-rc1</maven-processor.version>
-    <maven-war.version>3.2.3</maven-war.version>
+    <maven-war.version>3.3.1</maven-war.version>
   </properties>
 
   <dependencyManagement>
@@ -134,7 +134,7 @@
           <extensions>true</extensions>
           <configuration>
             <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
-            <sourceLevel>1.8</sourceLevel>
+            <sourceLevel>${dollar}{jdk.version}</sourceLevel>
             <failOnError>true</failOnError>
             <codeserverArgs>
               <arg>-bindAddress</arg>

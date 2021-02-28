@@ -1,10 +1,10 @@
 package ${package}.presentermodules.home.cards.welcome;
 
 import com.google.inject.Inject;
-import ${package}.presentermodules.home.cards.InfoCard;
+import ${package}.presentermodules.home.cards.BaseHomeCardView;
 import ${package}.utils.Icons;
 
-public class HomeCardView extends InfoCard<MyUiHandlers> implements
+public class HomeCardView extends BaseHomeCardView<MyUiHandlers> implements
 		HomeCardPresenter.MyView {
 
 	@Inject

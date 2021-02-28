@@ -14,9 +14,10 @@
 
   <properties>
     <webappDirectory>${dollar}{project.build.directory}/${dollar}{project.build.finalName}</webappDirectory>
-    <shiro.version>1.4.0</shiro.version>
+    <shiro.version>1.6.0</shiro.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
-    <commons-logging.version>1.1.1</commons-logging.version>
+    <commons-logging.version>1.2</commons-logging.version>
+    <slf4j.version>1.7.26</slf4j.version>
   </properties>
 
   <dependencies>
@@ -30,23 +31,29 @@
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
+     <groupId>com.google.inject.extensions</groupId>
+     <artifactId>guice-servlet</artifactId>
+    </dependency>
+    <dependency>
+     <groupId>javax.servlet</groupId>
+     <artifactId>javax.servlet-api</artifactId>
+     <scope>provided</scope>
+    </dependency>
+
+<!-- 
+    <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-jndi</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-servlet</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
+ -->
+
+<!-- 
     <dependency>
      <groupId>org.hibernate</groupId>
      <artifactId>hibernate-validator</artifactId>
      <version>${dollar}{hibernate-validator.version}</version>
     </dependency>    
+ -->
     <dependency>
      <groupId>org.apache.shiro</groupId>
      <artifactId>shiro-guice</artifactId>
@@ -60,15 +67,20 @@
     <dependency>
      <groupId>commons-logging</groupId>
      <artifactId>commons-logging</artifactId>
-     <version>${commons-logging.version}</version>
+     <version>${dollar}{commons-logging.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>org.slf4j</groupId>
+     <artifactId>slf4j-simple</artifactId>
+     <version>${dollar}{slf4j.version}</version>
     </dependency>
     <dependency>
      <groupId>com.google.gwt</groupId>
      <artifactId>gwt-servlet</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.gwtplatform</groupId>
-      <artifactId>gwtp-dispatch-rpc-server-guice</artifactId>
+     <groupId>com.gwtplatform</groupId>
+     <artifactId>gwtp-dispatch-rpc-server-guice</artifactId>
     </dependency>
   </dependencies>
 
@@ -116,6 +128,24 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <packagingExcludes>
+            <!-- XXX: GWTP invoke gwt-user which do not used by server side -->
+            WEB-INF/lib/gwt-user-*.jar,
+            <!-- XXX: Guice had pack it, why? -->
+            WEB-INF/lib/guice-multibindings-*.jar,
+            <!-- XXX: Shiro-core had pack it, why? -->
+            WEB-INF/lib/shiro-cache-*.jar,
+            WEB-INF/lib/shiro-event-*.jar,
+            WEB-INF/lib/shiro-config-*.jar,
+            WEB-INF/lib/shiro-lang-*.jar,
+            WEB-INF/lib/shiro-crypto-*.jar,
+            META-INF/**,
+          </packagingExcludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

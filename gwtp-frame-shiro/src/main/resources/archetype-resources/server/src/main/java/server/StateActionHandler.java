@@ -6,9 +6,9 @@ import java.util.Vector;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.share.GetResults;
 import ${package}.share.container.StateAction;
 import ${package}.share.container.StateEntity;
+import ${package}.share.dispatch.GetResults;
 
 public class StateActionHandler implements ActionHandler<StateAction, GetResults<StateEntity>> {
 	@Override

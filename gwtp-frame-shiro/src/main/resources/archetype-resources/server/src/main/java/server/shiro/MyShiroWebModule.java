@@ -18,9 +18,8 @@ public class MyShiroWebModule extends ShiroWebModule {
 
 	protected void configureShiroWeb() {
     	bindRealm().to(MyAuthorizingRealm.class).asEagerSingleton();
-    	
         bindConstant().annotatedWith(Names.named("shiro.globalSessionTimeout")).to(30000L);
         bindConstant().annotatedWith(Names.named("securityManager.rememberMeManager.cipherKey")).to("risetek");
-//        addFilterChain("/gwtRequest", MyAUTHC);
+        // NOTE: AppServletContextListener configure handlers for filters.
     }
 }

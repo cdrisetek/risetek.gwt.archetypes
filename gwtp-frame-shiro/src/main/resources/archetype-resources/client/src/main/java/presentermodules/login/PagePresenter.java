@@ -15,12 +15,12 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
-import ${package}.entry.UserRolesChangeEvent;
-import ${package}.entry.UserRolesChangeEvent.UserRolesChangeHandler;
+import ${package}.entry.SubjectChangeEvent;
+import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
-		implements MyUiHandlers, UserRolesChangeHandler {
+		implements MyUiHandlers, SubjectChangeHandler {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		public void setStatus(String status);
@@ -40,10 +40,10 @@ public class PagePresenter extends
 
 	@Inject
 	public PagePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, PlaceManager placeManager, Subject subject) {
+			final MyProxy proxy, PlaceManager placeManager, final Subject subject) {
 		super(eventBus, view, proxy, RevealType.Root);
 		getView().setUiHandlers(this);
-		eventBus.addHandler(UserRolesChangeEvent.getType(), this);
+		eventBus.addHandler(SubjectChangeEvent.getType(), this);
 		this.placeManager = placeManager;
 		this.subject = subject;
 		
@@ -51,22 +51,28 @@ public class PagePresenter extends
 	}
 
 	@Override
-	public void Login(String username, String password, boolean rememberme, String project) {
+	public void Login(String username, String password, boolean rememberme) {
 		if(null == username || username.isEmpty() || null == password || password.isEmpty()) {
 			getView().setStatus(status_loginfailed);
 			return;
 		}
-
+		
+		String project = placeManager.getCurrentPlaceRequest().getParameter("project", null);
+		
 		subject.Login(username, password, rememberme, project, c->getView().setStatus(status_loginfailed));
 	}
 	
 	
 	@Override
-	public void onUserStatusChange() {
-		GWT.log("user status changed by login presenter");
+	public void onSubjectChange() {
+		GWT.log("Subject state changed");
 		if(subject.isLogin()) {
-			GWT.log("user had login");
-			placeManager.revealDefaultPlace();
+			if(placeManager.getHierarchyDepth() > 0
+				&& /* don't stay in login page */ 
+				!NameTokens.login.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
+				placeManager.revealCurrentPlace();
+			} else
+				placeManager.revealDefaultPlace();
 		}
 		else
 			GWT.log("user is logout");

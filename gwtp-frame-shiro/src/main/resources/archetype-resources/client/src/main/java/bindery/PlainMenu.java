@@ -15,4 +15,5 @@ public @interface PlainMenu {
 	String title();
 	Class<? extends Icon> iconClass() default Icon.class;
 	int order();
+	boolean isEnabled() default true;
 }

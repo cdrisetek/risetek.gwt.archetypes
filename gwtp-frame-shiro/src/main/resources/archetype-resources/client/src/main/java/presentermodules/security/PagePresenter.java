@@ -16,9 +16,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
+import ${package}.place.root.RootPresenter;
 import ${package}.entry.LoggedInGatekeeper;
-import ${package}.root.RootPresenter;
-import ${package}.share.auth.accounts.EnumAccount;
+import ${package}.share.accounts.EnumAccount;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
@@ -51,7 +51,7 @@ public class PagePresenter extends
 		List<informationItem> items = new Vector<>();
 		informationItem item = new informationItem();
 		item.key = "名称";
-		String principal = subject.getAccountAttribute(EnumAccount.PRINCIPAL.name());
+		String principal = subject.getSubjectPrincipal();
 		item.value = (null == principal)?"UNKNOW":principal;
 		items.add(item);
 		

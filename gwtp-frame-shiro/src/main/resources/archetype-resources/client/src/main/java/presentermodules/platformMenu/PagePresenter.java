@@ -13,11 +13,11 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import ${package}.root.RevealDefaultLinkColumnHandler;
-import ${package}.root.RootPresenter;
+import ${package}.place.root.RevealMenuEventHandler;
+import ${package}.place.root.RootPresenter;
 
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> 
-	implements MyUiHandlers, RevealDefaultLinkColumnHandler {
+	implements MyUiHandlers, RevealMenuEventHandler {
     public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
     	void removeMenuPanel();
     	void installRightMenu(AbstractPlatformBarMenu... menus);
@@ -69,7 +69,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	
 	@ProxyEvent
 	@Override
-	public void onRevealDefaultLinkColumn(RevealDefaultLinkColumnEvent event) {
+	public void onRevealDefaultLinkColumn(RevealMenuEvent event) {
 		if(isVisible())
 			return;
 

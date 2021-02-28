@@ -21,10 +21,10 @@ public class MyBootstrapper implements Bootstrapper {
     	this.subject = subject;
         this.placeManager = placeManager;
 
-        eventBus.addHandler(UserRolesChangeEvent.getType(), new UserRolesChangeEvent.UserRolesChangeHandler() {
+        eventBus.addHandler(SubjectChangeEvent.getType(), new SubjectChangeEvent.SubjectChangeHandler() {
 
 			@Override
-			public void onUserStatusChange() {
+			public void onSubjectChange() {
 				placeManager.revealCurrentPlace();				
 			}
         	
@@ -33,7 +33,7 @@ public class MyBootstrapper implements Bootstrapper {
 
     @Override
     public void onBootstrap() {
-    	// TODO: ErrorPlace
-    	subject.accountSync(c->placeManager.revealCurrentPlace(), failure->GWT.log("sync account failure"));
+    	subject.accountSync(c->placeManager.revealCurrentPlace(), 
+    			failure->GWT.log("subject synchronzie failured on bootstrap"));
     }
 }

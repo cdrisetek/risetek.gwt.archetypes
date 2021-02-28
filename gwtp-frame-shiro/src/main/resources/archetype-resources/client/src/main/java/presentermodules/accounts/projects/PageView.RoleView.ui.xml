@@ -1,0 +1,37 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@external card-action row material-label material-icons gwt-Label;
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+.card-slot .card-action {background: rgba(160,160,160,0.05);}
+.card-slot .card-action button {font-size: 1.2rem;}
+.card-slot .card-action .row {margin-bottom: 0px;}
+.card-slot .material-label {margin: 10px 20px;}
+.role-chip {display: flex; margin: 20px; border: 1px solid #C0C0C0; border-radius: 3px; padding: 20px; flex-flow: wrap;
+ min-height: 100px; align-items: center; width: 100%; z-index: 300;}
+.role-chip .gwt-Label {margin: 2px 5px; border: 1px solid #A0A0A0; border-radius: 3px;
+ padding: 5px 10px; cursor: pointer; background: rgba(100,150,250,0.1);}
+.role-input-container {margin: 10px 20px; max-width: mult(CELL_WIDTH, 2);}
+.box-role-description {z-index: 200; font-size: 2rem; color: rgba(100, 100, 100, 0.2); position: absolute; width: 100%; text-align: center; padding: 30px;}
+.box-role-container {display: flex; min-height: 100px; align-items: center; justify-content: center; text-align: center;}
+</ui:style>
+
+<m:MaterialCard styleName='{style.card-slot}'>
+ <m:MaterialCardContent>
+  <m:MaterialCardTitle text="设置角色" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+  <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
+  <g:HTMLPanel styleName='{style.box-role-container}'>
+   <g:HTMLPanel styleName='{style.box-role-description}'>项目设定的角色</g:HTMLPanel>
+   <m:MaterialRow styleName='{style.role-chip}' ui:field='panelRoles' />
+  </g:HTMLPanel>
+  <m:MaterialLabel text="角色名称最终以大写字符。"/>
+  <m:MaterialLabel text="角色名称可以用':'分割，以表达层次关系。比如：SC:CD:HEADER:ADMIN"/>
+  <m:MaterialRow styleName='{style.role-input-container}'>
+   <m:MaterialTextBox placeholder="新建角色名称" ui:field="tbRole" type="TEXT" maxLength="50"/>
+  </m:MaterialRow>
+ </m:MaterialCardContent>
+</m:MaterialCard>
+</ui:UiBinder>

@@ -10,10 +10,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <gin.version>2.1.2</gin.version>
-    <gwt.version>2.8.2</gwt.version>
+    <gin.version>3.0.0</gin.version>
+    <gwt.version>2.9.0</gwt.version>
+    <gwt-maven.version>1.0.0</gwt-maven.version>
     <jdk.version>1.8</jdk.version>
     <jetty.version>9.2.13.v20150730</jetty.version>
+    <maven-compiler.version>3.8.1</maven-compiler.version>
+    <maven-source.version>3.2.0</maven-source.version>
   </properties>
 
   <dependencyManagement>
@@ -44,16 +47,13 @@
         <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
         <inherited>false</inherited>
-        <configuration>
-          <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
-        </configuration>
       </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>${dollar}{maven-compiler.version}</version>
           <configuration>
             <source>${dollar}{jdk.version}</source>
             <target>${dollar}{jdk.version}</target>
@@ -70,16 +70,22 @@
         <plugin>
           <groupId>net.ltgt.gwt.maven</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>1.0-rc-10</version>
+          <version>${dollar}{gwt-maven.version}</version>
           <extensions>true</extensions>
           <configuration>
+            <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
             <sourceLevel>1.8</sourceLevel>
             <failOnError>true</failOnError>
+            <codeserverArgs>
+              <arg>-bindAddress</arg>
+              <arg>0.0.0.0</arg>
+            </codeserverArgs>
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${dollar}{maven-source.version}</version>
           <executions>
             <execution>
               <id>attach-sources</id>
@@ -95,11 +101,6 @@
               <include>**/**</include>
             </includes>
           </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.tomcat.maven</groupId>
-          <artifactId>tomcat7-maven-plugin</artifactId>
-          <version>2.2</version>
         </plugin>
       </plugins>
     </pluginManagement>

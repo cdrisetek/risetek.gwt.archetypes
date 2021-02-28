@@ -1,16 +1,14 @@
 package ${package}.presentermodules.home.cards.welcome;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
@@ -19,35 +17,15 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
-import ${package}.entry.UserRolesChangeEvent;
-import ${package}.presentermodules.home.cards.InfoCard;
+import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
-import ${package}.share.auth.EnumRBAC;
+import ${package}.share.accounts.HostProjectRBAC;
+import ${package}.share.templates.Project;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
-	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		public InfoCard<?> updateInfoItems(List<InfoItem> items);
-		public InfoCard<?> addAction(String title, ClickHandler handler);
-		public void clear();
-	}
-
-	private final Subject subject;
-	private final PlaceManager placeManager;
-
-	@Inject
-	public HomeCardPresenter(EventBus eventBus, Subject subject, MyView view, final MyProxy proxy, PlaceManager placeManager) {
-		super(eventBus, view, proxy);
-		this.subject = subject;
-		this.placeManager = placeManager;
-		getView().setUiHandlers(this);
-		eventBus.addHandler(UserRolesChangeEvent.getType(), new UserRolesChangeEvent.UserRolesChangeHandler() {
-			@Override
-			public void onUserStatusChange() {
-				updateLoginInfoCard();
-			}
-		});
+	public interface MyView extends IHomeCardView, HasUiHandlers<MyUiHandlers> {
 	}
 
 	@ProxyStandard
@@ -55,9 +33,16 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	public interface MyProxy extends Proxy<HomeCardPresenter> {
 	}
 
-	@Override
-	protected void onReveal() {
-		updateLoginInfoCard();
+	private final Subject subject;
+	private final PlaceManager placeManager;
+
+	@Inject
+	public HomeCardPresenter(final EventBus eventBus, final Subject subject, 
+			final MyView view, final MyProxy proxy, final PlaceManager placeManager) {
+		super(eventBus, view, proxy);
+		this.subject = subject;
+		this.placeManager = placeManager;
+		getView().setUiHandlers(this);
 	}
 
 	private final PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(NameTokens.login).build();
@@ -75,16 +60,16 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 			item = new InfoItem();
 			item.infoText = "登录后拥有更多操作权限";
 			items.add(item);
-			getView().addAction("用户登录", c->{placeManager.revealPlace(placeRequest);});
+			getView().addAction("用户登录", c->{placeManager.revealPlace(placeRequest, false);});
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";
 			Set<String> roles = subject.getRoles();
 			StringBuffer sb = new StringBuffer();
 			for (String role : roles) {
-				EnumRBAC e = null;
+				${package}.share.accounts.HostProjectRBAC e = null;
 				try {
-				e = Enum.valueOf(EnumRBAC.class, role.toUpperCase());
+				e = Enum.valueOf(HostProjectRBAC.class, role);
 				}catch(Exception ex) {
 					// do nothing.
 				}
@@ -97,6 +82,11 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 			item.infoTextSecondary = sb.toString();
 			items.add(item);
 
+			item = new InfoItem();
+			item.infoText = "项目";
+			item.infoTextSecondary = Project.name;
+			items.add(item);
+			
 			getView().addAction("我的账户信息", c->{placeManager.revealPlace(securityPlaceRequest);});
 		}
 
@@ -106,6 +96,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	@ProxyEvent
 	@Override
 	public void onRevealHomeCard(RevealHomeCardEvent event) {
+		updateLoginInfoCard();
 		event.getConsumer().accept(this, 2 /* order */);
 	}
 }

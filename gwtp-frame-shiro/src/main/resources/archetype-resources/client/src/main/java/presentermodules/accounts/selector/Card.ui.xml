@@ -1,0 +1,75 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:r='urn:import:${package}.ui.infinitycard'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true">
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
+@def CELL_WIDTH 160px;
+@def MAX_WIDTH mult(CELL_WIDTH, 5);
+@def MIN_WIDTH mult(CELL_WIDTH, 4);
+@def BOX_SHADOW eval("${package}.resource.Resources.getBoxShadow()");
+
+.card-container {
+max-width: MAX_WIDTH;
+margin: 0 auto;
+padding: 10px 0px;
+display: block;
+box-sizing:border-box;
+}
+
+.card-body {
+display: inline-flex;
+width: 100%;
+border-radius: 3px;
+margin: 0px;
+padding: 0px;
+background-color: transparent;
+box-shadow: BOX_SHADOW;
+cursor: pointer;
+}
+
+.card-content {margin: 0px; padding: 10px; width: 100%; display: inline-flex;}
+
+.card-name, .card-email, .card-tel, .card-note {
+margin: 2px;
+width: mult(CELL_WIDTH, 2);
+min-width: mult(CELL_WIDTH, 2);
+word-wrap: normal;
+overflow: hidden;
+text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+}
+.card-note {width: 100%;min-width: mult(CELL_WIDTH, 2);}
+
+.card-name::before, .card-email::before, .card-tel::before, .card-note::before {
+font-weight:bold;
+margin-right: 10px;
+font-size: 1.2em;
+color: COLOR_TONE;
+}
+
+.card-name::before {content: "\8d26\6237:";}
+.card-email::before {content: "\90ae\4ef6:";}
+.card-tel::before {content: "\7535\8bdd:";}
+.card-note::before {content: "\5907\6ce8:";}
+
+@media only screen and (max-width: 800px) {
+ .card-body { min-width: MIN_WIDTH; }
+ .card-content { display: block; }
+ .card-note { width: 100%; }
+}
+
+.style.card-content-left-panel {width: mult(CELL_WIDTH, 2); min-width: mult(CELL_WIDTH, 2);}
+</ui:style>
+<r:CardPanel ui:field="cardPanel" styleName="{style.card-container}">
+<div class="{style.card-body}">
+  <div class="{style.card-content}">
+   <g:HTMLPanel styleName='{style.card-content-left-panel}'>
+    <g:HTML styleName="{style.card-name}" ui:field="name" />
+    <g:HTML styleName="{style.card-email}" ui:field="email" />
+    <g:HTML styleName="{style.card-tel}" ui:field="telphone" />
+   </g:HTMLPanel>
+   <g:HTML styleName="{style.card-note}" ui:field="note" />
+ </div>
+</div>
+</r:CardPanel>
+</ui:UiBinder>

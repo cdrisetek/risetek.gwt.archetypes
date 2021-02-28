@@ -1,5 +1,7 @@
 package ${package}.presentermodules.home;
 
+import java.util.ArrayList;
+
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -11,23 +13,24 @@ import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import ${package}.bindery.PlainMenu;
-import ${package}.utils.Icons;
 import ${package}.NameTokens;
-import ${package}.root.RootPresenter;
+import ${package}.bindery.PlainMenu;
+import ${package}.entry.SubjectChangeEvent;
+import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
+import ${package}.place.root.RootPresenter;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
+import ${package}.utils.Icons;
 
 @PlainMenu(order = 0, title = "\u9996\u9875", token = NameTokens.home, iconClass = Icons.Home.class)
-public class PagePresenter extends
-		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
-		implements MyUiHandlers {
+public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
+		                   implements MyUiHandlers, SubjectChangeHandler {
 	
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
+		void bindSlot(Slot<?> slot, int index);
+		int getCloumnSize();
 	}
 
-	public static final Slot<PresenterWidget<?>> SLOT_CARD0 = new Slot<>();
-	public static final Slot<PresenterWidget<?>> SLOT_CARD1 = new Slot<>();
-	public static final Slot<PresenterWidget<?>> SLOT_CARD2 = new Slot<>();
+	private final ArrayList<Slot<PresenterWidget<?>>> list = new ArrayList<>();
 
 	@ProxyStandard
 	@NameToken(NameTokens.home)
@@ -39,19 +42,23 @@ public class PagePresenter extends
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
+		eventBus.addHandler(SubjectChangeEvent.getType(), this);
 
-		fireEvent(new RevealHomeCardEvent((p, o) -> {
-			switch(o % 3) {
-			case 0:
-				addToSlot(SLOT_CARD0, p);
-				break;
-			case 1:
-				addToSlot(SLOT_CARD1, p);
-				break;
-			case 2:
-				addToSlot(SLOT_CARD2, p);
-				break;
-			}
-		}));
+		for(int i=0; i<getView().getCloumnSize(); i++) {
+			Slot<PresenterWidget<?>> slot = new Slot<>();
+			getView().bindSlot(slot, i);
+			list.add(slot);
+		}
+		fireRevealHomeCardEvent();
+	}
+
+	private void fireRevealHomeCardEvent() {
+		fireEvent(new RevealHomeCardEvent((p, o) -> addToSlot(list.get(o % 3), p)));
+	}
+	
+	@Override
+	public void onSubjectChange() {
+		list.forEach(s -> clearSlot(s));
+		fireRevealHomeCardEvent();
 	}
 }

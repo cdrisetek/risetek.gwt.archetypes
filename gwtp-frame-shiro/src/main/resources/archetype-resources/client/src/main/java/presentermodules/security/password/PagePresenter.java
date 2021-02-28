@@ -13,8 +13,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
+import ${package}.place.root.RootPresenter;
 import ${package}.entry.LoggedInGatekeeper;
-import ${package}.root.RootPresenter;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>

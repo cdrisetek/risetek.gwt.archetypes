@@ -1,0 +1,63 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@external card-action material-label gwt-Label;
+.card-slot .material-label {margin: 10px 20px;}
+.card-slot .card-action {border-bottom: 1px solid rgba(160,160,160,0.2); background: rgba(160,160,160,0.05);}
+.card-slot .card-action a {border: 1px solid rgba(160,160,160,0.2); padding: 8px 20px;}
+.selected-account::before, .selected-project::before {font-weight:bold; margin-right: 10px; font-size: 1.2em;}
+.selected-account::before {content: "\9009\62e9\7684\8d26\6237:";}
+.selected-project::before {content: "\9009\62e9\7684\9879\76ee:";}
+.role-chip {display: flex; margin: 20px; border: 1px solid #C0C0C0; border-radius: 3px; padding: 20px; flex-flow: wrap;
+ min-height: 100px; align-items: center; width: 100%; z-index: 300;}
+.role-chip .gwt-Label {margin: 2px 5px; border: 1px solid #A0A0A0; border-radius: 3px;
+ padding: 5px 10px; cursor: pointer; background: rgba(100,150,250,0.1);}
+.box-role-description {z-index: 200; font-size: 2rem; color: rgba(100, 100, 100, 0.2); position: absolute; width: 100%; text-align: center; padding: 30px;}
+.box-role-container {display: flex; min-height: 100px; align-items: center; justify-content: center; text-align: center;}
+.role-chip, .role-chip-provider {display: flex; margin: 20px; border: 1px solid #C0C0C0; border-radius: 3px; padding: 20px; flex-flow: wrap;  min-height: 100px;
+align-items: center; width: 100%; z-index: 300;}
+.role-chip-provider .gwt-Label  { background: rgba(100,250,150,0.1);}
+</ui:style>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
+   <m:MaterialLabel text="每一个账户都具有本地服务的基本授权，比如浏览并修改该账户的基本信息。"/>
+   <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色" />
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field='accountSelect' textColor='BLUE' text="选择账户" iconType="BLUR_CIRCULAR"/>
+   <m:MaterialLink ui:field='accountCreate' textColor='BLUE' text="创建账户" iconType="CONTACT_MAIL"/>
+  </m:MaterialCardAction>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="选择的账户" textColor='BLUE' iconType="ACCOUNT_BOX" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="设置账户信息，需要先行选择账户。"/>
+   <m:MaterialLabel text="修改已经选择好的账户信息。" />
+  <m:MaterialLabel text="指派选择的账户在本地项目的角色。" />
+   </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field='accountSet' textColor='BLUE' text="设置账户" iconType="BUILD" enabled='false'/>
+   <m:MaterialChip ui:field='selectedAccount' styleName='{style.selected-account}' margin="4"
+                   visible="false" backgroundColor="BLUE" textColor="WHITE" float="RIGHT"/>
+  </m:MaterialCardAction>
+  
+  <m:MaterialCardContent ui:field='rolesContent' visible='false'>
+   <m:MaterialCardTitle text="角色" textColor='BLUE' iconType="GROUP_WORK" iconPosition="RIGHT"/>
+   
+  <g:HTMLPanel styleName='{style.box-role-container}'>
+   <g:HTMLPanel styleName='{style.box-role-description}'>账户设定的角色</g:HTMLPanel>
+   <m:MaterialRow styleName='{style.role-chip}' ui:field='panelRoles' />
+  </g:HTMLPanel>
+   
+   <m:MaterialLabel text="修改已经选择好的账户信息。" />
+
+  <g:HTMLPanel styleName='{style.box-role-container}'>
+   <g:HTMLPanel styleName='{style.box-role-description}'>项目可分配的角色</g:HTMLPanel>
+   <m:MaterialRow styleName='{style.role-chip} {style.role-chip-provider}' ui:field='hostProjectRoles' />
+  </g:HTMLPanel>
+
+  </m:MaterialCardContent>  
+ </m:MaterialCard>
+</ui:UiBinder>

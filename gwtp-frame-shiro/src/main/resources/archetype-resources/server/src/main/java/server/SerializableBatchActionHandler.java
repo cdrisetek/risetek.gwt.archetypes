@@ -8,10 +8,10 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.rpc.shared.Action;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.share.GetResult;
-import ${package}.share.GetResults;
-import ${package}.share.UnsecuredSerializableBatchAction;
-import ${package}.share.UnsecuredSerializableBatchAction.OnException;
+import ${package}.share.dispatch.GetResult;
+import ${package}.share.dispatch.GetResults;
+import ${package}.share.dispatch.UnsecuredSerializableBatchAction;
+import ${package}.share.dispatch.UnsecuredSerializableBatchAction.OnException;
 
 public class SerializableBatchActionHandler implements ActionHandler<UnsecuredSerializableBatchAction,
 		GetResults<GetResult<? extends IsSerializable>>> {

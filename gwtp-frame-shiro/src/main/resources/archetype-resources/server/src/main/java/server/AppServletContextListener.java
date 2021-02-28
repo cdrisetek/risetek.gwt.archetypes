@@ -18,6 +18,7 @@ import com.google.inject.Module;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
+import ${package}.server.accounts.IAccountManagement;
 import ${package}.server.servlet.LoginServlet;
 import ${package}.server.shiro.MyShiroWebModule;
 import ${package}.server.servlet.OAuthJWTServlet;
@@ -39,6 +40,13 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+		Injector injector = (Injector) servletContext.getAttribute(Injector.class.getName());
+		if(null != injector) {
+			// TODO: callback? or inject?
+			IAccountManagement accountManagement = injector.getInstance(IAccountManagement.class);
+			if(null != accountManagement)
+				accountManagement.shutdown();
+		}
 		super.contextDestroyed(servletContextEvent);
 	}
 	

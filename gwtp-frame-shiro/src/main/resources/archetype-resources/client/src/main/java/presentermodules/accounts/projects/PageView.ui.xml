@@ -1,0 +1,16 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+</ui:style>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' width='100%'>
+  <m:MaterialLink ui:field='lnkGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="项目" />
+ </m:MaterialNavBar>
+ <g:HTMLPanel ui:field='slot'/>
+</g:HTMLPanel>
+</ui:UiBinder>
