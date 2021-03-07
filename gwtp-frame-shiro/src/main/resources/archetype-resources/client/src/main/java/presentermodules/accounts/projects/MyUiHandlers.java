@@ -28,5 +28,5 @@ interface MyUiHandlers extends UiHandlers {
 	void getProjectRoles(BiConsumer<String, Set<String>> role);
 	void getRoles(BiConsumer<String, String> names, BiConsumer<Set<String>, Set<String>> roleSet);
 	
-	void checkDuplicate(String value, Consumer<ProjectValidate> state);
+	void checkValidate(String value, Consumer<ProjectValidate> state);
 }

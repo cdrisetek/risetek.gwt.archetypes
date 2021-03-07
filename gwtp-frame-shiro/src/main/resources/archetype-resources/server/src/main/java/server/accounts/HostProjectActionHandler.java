@@ -3,8 +3,8 @@ package ${package}.server.accounts;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.share.accounts.HostProjectAction;
-import ${package}.share.accounts.HostProjectEntity;
+import ${package}.share.accounts.hosts.HostProjectAction;
+import ${package}.share.accounts.hosts.HostProjectEntity;
 import ${package}.share.dispatch.GetResult;
 import ${package}.share.templates.Project;
 

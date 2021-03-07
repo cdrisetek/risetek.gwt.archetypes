@@ -1,8 +1,6 @@
 package ${package}.presentermodules.security;
 
-import java.util.List;
-import java.util.Vector;
-
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -15,17 +13,18 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
+import ${package}.entry.LoggedInGatekeeper;
 import ${package}.entry.Subject;
 import ${package}.place.root.RootPresenter;
-import ${package}.entry.LoggedInGatekeeper;
-import ${package}.share.accounts.EnumAccount;
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
 		implements MyUiHandlers {
 	
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		public void showInformation();
+		void showAccountView();
+		void showPasswordView();
+		void showEmailView();
 	}
 
 	@ProxyCodeSplit
@@ -47,33 +46,8 @@ public class PagePresenter extends
 	}
 
 	@Override
-	public List<informationItem> getSecurityInformation() {
-		List<informationItem> items = new Vector<>();
-		informationItem item = new informationItem();
-		item.key = "名称";
-		String principal = subject.getSubjectPrincipal();
-		item.value = (null == principal)?"UNKNOW":principal;
-		items.add(item);
-		
-		item = new informationItem();
-		item.key = "密码";
-		item.value = "******";
-		item.link = NameTokens.updatePassword;
-		
-		items.add(item);
-		
-		return items;
-	}
-
-	@Override
-	public List<informationItem> getContactInformation() {
-		List<informationItem> items = new Vector<>();
-		informationItem item = new informationItem();
-		item.key = "电子邮件";
-		item.value = subject.getAccountAttribute(EnumAccount.EMAIL.name());
-		item.link = NameTokens.updateEmail;
-		items.add(item);
-		return items;
+	public void onReveal() {
+		getView().showAccountView();
 	}
 
 	@Override
@@ -86,5 +60,45 @@ public class PagePresenter extends
                 .with("continue", NameTokens.security)
                 .build();
 		placeManager.revealPlace(placeRequest);
+	}
+
+	private final PlaceRequest backPlace = new PlaceRequest.Builder().nameToken(NameTokens.home).build();
+	@Override
+	public void onGoBackPlace() {
+		placeManager.revealPlace(backPlace);
+	}
+
+	@Override
+	public String getSecurityInformation(String key) {
+		if(null == key)
+			return subject.getSubjectPrincipal();
+		return subject.getAccountAttribute(key);
+	}
+
+	@Override
+	public void showPasswordView() {
+		getView().showPasswordView();
+	}
+
+	@Override
+	public void showEmailView() {
+		getView().showEmailView();
+	}
+
+	@Override
+	public void updateEmail(String value) {
+		subject.changeEmail(value, c->{
+					GWT.log("change email:" +c);
+					getView().showAccountView();
+					}
+				);
+	}
+
+	@Override
+	public void updatePassword(String value) {
+		subject.changePassword(value, c->{
+			if(c.equals("success"))
+				getView().showAccountView();
+		});
 	}
 }

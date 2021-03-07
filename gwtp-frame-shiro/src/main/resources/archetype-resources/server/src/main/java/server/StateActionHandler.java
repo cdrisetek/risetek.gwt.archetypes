@@ -3,14 +3,26 @@ package ${package}.server;
 import java.util.List;
 import java.util.Vector;
 
+import javax.inject.Inject;
+
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
+import ${package}.server.accounts.IAccountManagement;
+import ${package}.server.accounts.projects.IProjectsManagement;
+import ${package}.server.accounts.roles.IRoleManagement;
 import ${package}.share.container.StateAction;
 import ${package}.share.container.StateEntity;
 import ${package}.share.dispatch.GetResults;
 
 public class StateActionHandler implements ActionHandler<StateAction, GetResults<StateEntity>> {
+	@Inject
+	private IAccountManagement accountManagement;
+	@Inject
+	private IProjectsManagement projectManagement;
+	@Inject
+	private IRoleManagement roleManagement;
+	
 	@Override
 	public GetResults<StateEntity> execute(StateAction action,
 			ExecutionContext context) throws ActionException {
@@ -41,6 +53,24 @@ public class StateActionHandler implements ActionHandler<StateAction, GetResults
 		state.setType(3);
 		states.add(state);
 		
+		state = new StateEntity();
+		state.setTitle("Accounts Management");
+		state.setMessage(accountManagement.provider());
+		state.setType(3);
+		states.add(state);
+
+		state = new StateEntity();
+		state.setTitle("Roles Management");
+		state.setMessage(roleManagement.provider());
+		state.setType(3);
+		states.add(state);
+
+		state = new StateEntity();
+		state.setTitle("Projects Management");
+		state.setMessage(projectManagement.provider());
+		state.setType(3);
+		states.add(state);
+
 		return new GetResults<StateEntity>(states);
 	}
 

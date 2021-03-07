@@ -1,58 +1,199 @@
 package ${package}.presentermodules.security;
 
-import java.util.List;
-
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import ${package}.presentermodules.security.MyUiHandlers.informationItem;
-import ${package}.presentermodules.security.ui.InformationItemPanel;
-import ${package}.presentermodules.security.ui.InformationPanel;
+import com.gwtplatform.mvp.client.presenter.slots.Slot;
+import ${package}.share.accounts.EnumAccount;
+import ${package}.utils.SheetField;
+import ${package}.utils.SheetField.TYPE;
+
+import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialValueBox;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		PagePresenter.MyView {
 
-	interface Binder extends UiBinder<HTMLPanel, PageView> {}
-	
-	@UiField Panel listPanel;
+	interface Binder extends UiBinder<Widget, PageView> {}
+	private final Slot<PresenterWidget<?>> SLOT = new Slot<>();
+
+	@UiField Panel panelSlot;
 	
 	@Inject
-	public PageView(Binder uiBinder) {
+	public PageView(final Binder uiBinder,
+	                final PasswordView passwordView,
+	                final EmailView emailView,
+			        final AccountView accountView
+			) {
 		initWidget(uiBinder.createAndBindUi(this));
+
+		this.passwordView = passwordView;
+		this.emailView = emailView;
+		this.accountView = accountView;
+		bindSlot(SLOT, panelSlot);
+
+		Scheduler.get().scheduleDeferred(() -> {
+			assert null != getUiHandlers() : "null uiHandlers.";
+			this.passwordView.setUiHandlers(getUiHandlers());
+			this.emailView.setUiHandlers(getUiHandlers());
+			this.accountView.setUiHandlers(getUiHandlers());
+		});
 	}
 
-	private Composite infoPanel(String infoTitle, List<informationItem> items) {
-		InformationPanel i = new InformationPanel();
-		i.setTitle(infoTitle);
+	@UiHandler("btnGoback")
+	public void onGoback(ClickEvent e) {
+		if(accountView.asWidget().isAttached())
+			getUiHandlers().onGoBackPlace();
+		else
+			setInSlot(SLOT, accountView);
+	}
 
-		for(informationItem item:items) {
-			InformationItemPanel a = new InformationItemPanel();
-			a.setKey(item.key);
-			a.setValue(item.value);
-			if(null != item.link) {
-				a.hasLink();
-				a.addClickHandler(c->{getUiHandlers().update(item.link);});
-			}
+	@Override
+	public void showPasswordView() {
+		setInSlot(SLOT, passwordView);
+	}
+	
+	static class PasswordView extends ViewWithUiHandlers<MyUiHandlers> {
+		interface Binder extends UiBinder<Widget, PasswordView> {}
+		@UiField MaterialValueBox<String> boxPassword, boxPassword2;
+		@UiField MaterialButton btnCommit;
+		private final SheetField fields;
 
-			i.add(a);
+		@Inject
+		public PasswordView(final EventBus eventBus, final Binder uiBinder) {
+			initWidget(uiBinder.createAndBindUi(this));
+			(fields = new SheetField.Builder(boxPassword).minLength(4).build())
+			.nextField(boxPassword2).set(isStop -> {
+				if(!boxPassword.getValue().equals(boxPassword2.getValue())) {
+					boxPassword2.setFocus(true);
+	    			btnCommit.setEnabled(false);
+					isStop.accept(true);
+				} else {
+	    			btnCommit.setEnabled(true);
+					isStop.accept(false);
+				}
+    		}).checkKeyPress().build()
+			.nextField(btnCommit).build();
 		}
 
-		return i;
+		@UiHandler("btnCommit")
+		public void onCommitClick(ClickEvent e) {
+			getUiHandlers().updatePassword(boxPassword.getValue());
+		}
+
+		@UiHandler("boxPassword")
+		void onPasswordFocus(FocusEvent e) {
+			fields.validate(boxPassword);
+		}
+
+		@UiHandler("boxPassword2")
+		void onPassword2Focus(FocusEvent e) {
+			fields.validate(boxPassword2);
+		}
+
+		@Override
+		public void onAttach() {
+			btnCommit.setEnabled(false);
+			boxPassword.clear();
+			boxPassword2.clear();
+			boxPassword.setFocus(true);
+		}
 	}
+	private final PasswordView passwordView;
+
 	
 	@Override
-	public void onAttach() {
-		showInformation();
+	public void showEmailView() {
+		setInSlot(SLOT, emailView);
 	}
 	
-	@Override
-	public void showInformation() {
-		listPanel.clear();
-		listPanel.add(infoPanel("个人资料", getUiHandlers().getSecurityInformation()));
-		listPanel.add(infoPanel("联系信息", getUiHandlers().getContactInformation()));
+	static class EmailView extends ViewWithUiHandlers<MyUiHandlers> {
+		interface Binder extends UiBinder<Widget, EmailView> {}
+		@UiField MaterialValueBox<String> boxEmail;
+		@UiField MaterialButton btnCommit;
+		private final SheetField fields;
+
+		@Inject
+		public EmailView(final EventBus eventBus, final Binder uiBinder) {
+			initWidget(uiBinder.createAndBindUi(this));
+			
+			Element e = boxEmail.getValueBoxBase().getElement(); 
+			e.setAttribute("spellcheck", "false");
+			e.setAttribute("autocapitalize", "off");
+			e.setAttribute("autocomplete", "off");
+			e.setAttribute("AutoCompleteType", "Disabled");
+			e.setAttribute("autocorrect", "off");
+			
+			(fields = new SheetField.Builder(boxEmail).type(TYPE.EMAIL).minLength(1).checkKeyPress().set(isStoped->{
+				// here we go, the field had validate by EMAIL pattern and not empty, so it is validation.
+				btnCommit.setEnabled(true);
+				isStoped.accept(false);
+			}).build())
+			.nextField(btnCommit).build();
+		}
+
+		@UiHandler("btnCommit")
+		public void onCommitClick(ClickEvent e) {
+			getUiHandlers().updateEmail(boxEmail.getValue());
+		}
+
+		@UiHandler("btnCommit")
+		void onCommitFocus(FocusEvent e) {
+			fields.validate(btnCommit);
+		}
+		
+		@Override
+		public void onAttach() {
+			boxEmail.setText(getUiHandlers().getSecurityInformation(EnumAccount.EMAIL.name()));
+//			boxEmail.clear();
+			btnCommit.setEnabled(false);
+			boxEmail.setFocus(true);
+			boxEmail.select();
+		}
 	}
+	private final EmailView emailView;
+
+	@Override
+	public void showAccountView() {
+		setInSlot(SLOT, accountView);
+	}
+	
+	static class AccountView extends ViewWithUiHandlers<MyUiHandlers> {
+		interface Binder extends UiBinder<Widget, AccountView> {}
+
+		@UiField Label labAccount, labEmail;
+	
+		@Inject
+		public AccountView(final EventBus eventBus, final Binder uiBinder) {
+			initWidget(uiBinder.createAndBindUi(this));
+		}
+
+		@UiHandler("btnPassword")
+		public void onPasswordClick(ClickEvent e) {
+			getUiHandlers().showPasswordView();
+		}
+
+		@UiHandler("btnEmail")
+		public void onEmailClick(ClickEvent e) {
+			getUiHandlers().showEmailView();
+		}
+
+		@Override
+		public void onAttach() {
+			labAccount.setText(getUiHandlers().getSecurityInformation(null /* for principal */));
+			labEmail.setText(getUiHandlers().getSecurityInformation(EnumAccount.EMAIL.name()));
+		}
+	}
+	private final AccountView accountView;
 }

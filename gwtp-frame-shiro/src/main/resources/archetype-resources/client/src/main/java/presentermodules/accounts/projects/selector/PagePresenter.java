@@ -27,8 +27,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	@ProxyCodeSplit
 	@NameToken(TokenNames.projects)
 	@UseGatekeeper(LoggedInGatekeeper.class)
-	public interface MyProxy extends ProxyPlace<PagePresenter> {
-	}
+	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 
 	public static final Slot<PresenterWidget<?>> SLOT = new Slot<>();
 

@@ -8,9 +8,8 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -25,6 +24,7 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import ${package}.presentermodules.accounts.projects.MyUiHandlers.ProjectValidate;
 import ${package}.share.accounts.projects.EnumProject;
+import ${package}.utils.SheetField;
 
 import gwt.material.design.client.base.MaterialWidget;
 import gwt.material.design.client.ui.MaterialButton;
@@ -38,7 +38,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	interface Binder extends UiBinder<Widget, PageView> {}
 	private final Slot<PresenterWidget<?>> SLOT = new Slot<>();
-	@UiField HTMLPanel slot;
+	@UiField HTMLPanel panelSlot;
 	@Inject
 	public PageView(final EventBus eventBus,
 			        final Binder uiBinder,
@@ -51,7 +51,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		this.editView = editView;
 		this.roleView = roleView;
 		this.projectView = projectView;
-		bindSlot(SLOT, slot);
+		bindSlot(SLOT, panelSlot);
 		Scheduler.get().scheduleDeferred(()-> {
 			assert(null != getUiHandlers());
 			this.createView.setUiHandlers(getUiHandlers());
@@ -66,7 +66,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		MaterialToast.fireToast(message);
 	}
 
-	@UiHandler("lnkGoback")
+	@UiHandler("btnGoback")
 	public void onGobackClick(ClickEvent e) {
 		if(projectView.asWidget().isAttached()) {
 			getUiHandlers().onGoBackPlace();
@@ -76,76 +76,81 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	static class CreateView extends ViewWithUiHandlers<MyUiHandlers> {
-		@UiField HTMLPanel boxValidate, iconChecking, iconValidate, iconInvalidate;
+		@UiField HTMLPanel panelValidate, iconChecking, iconValidate, iconInvalidate;
 		interface Binder extends UiBinder<Widget, CreateView> {}
+		private final SheetField fields;
 		@Inject
 		public CreateView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
-	        name.add(boxValidate);
-	        name.addKeyUpHandler(e -> {
-	        	if(e.getNativeKeyCode() == KeyCodes.KEY_ENTER)
-	        		notes.setFocus(true);
-        		getUiHandlers().checkDuplicate(name.getValue(), state -> {
-        			setAccountValidateState(state);
-        		});
-	        });
+	        boxName.add(panelValidate);
+			boxName.getValueBoxBase().getElement().setAttribute("spellcheck", "false");
+
+			// Build validation chain.
+			(fields = new SheetField.Builder(boxName).set(isStop -> {
+    			getUiHandlers().checkValidate(boxName.getValue(), (state) -> {
+        			setValidateState(state);
+        			if(state == ProjectValidate.CHECKING)
+        				return;
+        			if(state == ProjectValidate.VALIDATE)
+        				isStop.accept(false);
+        			else {
+        				btnCommit.setEnabled(false);
+        				isStop.accept(true);
+        			}});
+        	}).checkKeyPress().build())
+	        .nextField(boxNotes).build();
 		}
 		
-		private boolean integrateCheck() {
-    		return true;
-		}
-
 		@UiField MaterialButton btnCommit;
-		@UiField MaterialValueBox<String> name, notes;
+		@UiField MaterialValueBox<String> boxName, boxNotes;
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
-			if(!integrateCheck())
-				return;
 			Map<String, String> descriptions = new HashMap<>();
-			Optional.ofNullable(notes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
+			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
 			
-			getUiHandlers().createProject(name.getValue(), descriptions);
+			getUiHandlers().createProject(boxName.getValue(), descriptions);
 		}
-		
-		@UiHandler("name")
-		public void onNameBlur(BlurEvent e) {
-    		getUiHandlers().checkDuplicate(name.getValue(), state -> setAccountValidateState(state));
+
+		@UiHandler("boxNotes")
+		void onNotesFocus(FocusEvent e) {
+			fields.validate(boxNotes);
 		}
 		
 		@Override
 		protected void onAttach() {
 			super.onAttach();
-			name.clear();
-			boxValidate.clear();
-			notes.clear();
+			panelValidate.clear();
+			boxName.clear();
+			boxNotes.clear();
+			boxName.setFocus(true);
+
 			Scheduler.get().scheduleDeferred(() -> {
-				name.setFocus(true);
 				// Set Icon box as the same height as input box to stay center. 
-		        boxValidate.getElement().getStyle().setWidth(name.asValueBoxBase().getOffsetHeight(), Unit.PX);
-		        boxValidate.getElement().getStyle().setHeight(name.asValueBoxBase().getOffsetHeight(), Unit.PX);
+		        panelValidate.getElement().getStyle().setWidth(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
+		        panelValidate.getElement().getStyle().setHeight(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
 			});
 		}
 		
-		private void setAccountValidateState(ProjectValidate state) {
-			boxValidate.clear();
+		private void setValidateState(ProjectValidate state) {
+			panelValidate.clear();
 			switch(state) {
 			case EMPTY:
 				GWT.log("ProjectValidate empty");
 				btnCommit.setEnabled(false);
 				break;
 			case CHECKING:
-       			boxValidate.add(iconChecking);
+       			panelValidate.add(iconChecking);
 				break;
 			case VALIDATE:
-       			boxValidate.add(iconValidate);
+       			panelValidate.add(iconValidate);
 				btnCommit.setEnabled(true);
 				break;
 			case INVALIDATE:
-       			boxValidate.add(iconInvalidate);
+       			panelValidate.add(iconInvalidate);
 				break;
 			default:
-				GWT.log("AccountValidate: " + state + " not handler");
+				GWT.log("ProjectValidate: " + state + " not handler");
 				break;
 			}
 		}
@@ -164,17 +169,16 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			initWidget(uiBinder.createAndBindUi(this));
 		}
 		
-		@UiField MaterialValueBox<String> name, notes;
+		@UiField MaterialValueBox<String> boxName, boxNotes;
 		@UiField MaterialButton btnEnable, btnDisable;
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
-			// TODO: check valid
 			Map<String, String> descriptions = new HashMap<>();
-			Optional.ofNullable(notes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
+			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
 			if(btnEnable.isEnabled()) descriptions.put(EnumProject.STATUS.name(), "disable");
 			
-			getUiHandlers().updateProject(name.getValue(), descriptions);
+			getUiHandlers().updateProject(boxName.getValue(), descriptions);
 		}
 		
 		@UiHandler("btnEnable")
@@ -197,8 +201,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			super.onAttach();
 
 			getUiHandlers().getProject((name, descriptions) -> {
-				this.name.setValue(name);
-				notes.setValue(descriptions.get(EnumProject.NOTES.name()));
+				boxName.setValue(name);
+				boxNotes.setValue(descriptions.get(EnumProject.NOTES.name()));
 				String status = descriptions.get(EnumProject.STATUS.name());
 				boolean s = "disable".equals(status);
 				toggleStatus(!s);
@@ -219,7 +223,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			initWidget(uiBinder.createAndBindUi(this));
 		}
 		
-		@UiField MaterialValueBox<String> tbRole;
+		@UiField MaterialValueBox<String> boxRole;
 		@UiField MaterialRow panelRoles;
 
 		private String project;
@@ -239,10 +243,10 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			}
 		}
 
-		@UiHandler("tbRole")
+		@UiHandler("boxRole")
 		public void onValueChange(ValueChangeEvent<?> e) {
-			roleSet.add(tbRole.getValue().toUpperCase());
-			tbRole.clear();
+			roleSet.add(boxRole.getValue().toUpperCase());
+			boxRole.clear();
 			getUiHandlers().updateProjectRoleSet(project, roleSet);
 			render();
 		}
@@ -255,7 +259,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 				project = name;
 				roleSet = roles;
 				render();
-				Scheduler.get().scheduleDeferred(() -> tbRole.setFocus(true));
+				Scheduler.get().scheduleDeferred(() -> boxRole.setFocus(true));
 			});
 		}
 	}
@@ -271,38 +275,38 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		public ProjectView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
 		}
-		@UiField MaterialLink projectSet, projectRole;
-		@UiField MaterialChip selectedAccount, selectedProject;
-		@UiField Label bgAccountRoles, bgProjectRoles;
-		@UiField MaterialWidget rolesContent, bxAccountRoles, bxProjectRoles;
+		@UiField MaterialLink btnProjectSet, btnProjectRole;
+		@UiField MaterialChip labSelectedAccount, labSelectedProject;
+		@UiField Label labAccountRoles, labProjectRoles;
+		@UiField MaterialWidget panelRolesContent, panelAccountRoles, panelProjectRoles;
 
-		@UiHandler("accountSelect")
+		@UiHandler("btnAccountSelect")
 		void onAccountSelect(ClickEvent e) {
 			getUiHandlers().onAccountSelect();
 		}
 
-		@UiHandler("projectCreate")
+		@UiHandler("btnProjectCreate")
 		void onProjectCreate(ClickEvent e) {
 			getUiHandlers().onProjectCreate();
 		}
 
-		@UiHandler("projectSelect")
+		@UiHandler("btnProjectSelect")
 		void onProjectSelect(ClickEvent e) {
 			getUiHandlers().onProjectSelect();
 		}
 
-		@UiHandler("projectSet")
+		@UiHandler("btnProjectSet")
 		void onProjectSet(ClickEvent e) {
 			getUiHandlers().onProjectEdit();
 		}
 
-		@UiHandler("projectRole")
+		@UiHandler("btnProjectRole")
 		void onProjectRole(ClickEvent e) {
 			getUiHandlers().onProjectRole();
 		}
 
 		private void render() {
-			bxAccountRoles.clear();
+			panelAccountRoles.clear();
 			for(String role:accountRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
@@ -310,12 +314,12 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 					accountRoleSet.remove(l.getText());
 					projectRoleSet.add(l.getText());
 					render();
-					getUiHandlers().grantAccountRoles(selectedAccount.getValue(), selectedProject.getValue(), accountRoleSet);
+					getUiHandlers().grantAccountRoles(labSelectedAccount.getValue(), labSelectedProject.getValue(), accountRoleSet);
 				});
-				bxAccountRoles.add(chip);
+				panelAccountRoles.add(chip);
 			}
 
-			bxProjectRoles.clear();
+			panelProjectRoles.clear();
 			for(String role:projectRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
@@ -323,9 +327,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 					accountRoleSet.add(l.getText());
 					projectRoleSet.remove(l.getText());
 					render();
-					getUiHandlers().grantAccountRoles(selectedAccount.getValue(), selectedProject.getValue(), accountRoleSet);
+					getUiHandlers().grantAccountRoles(labSelectedAccount.getValue(), labSelectedProject.getValue(), accountRoleSet);
 				});
-				bxProjectRoles.add(chip);
+				panelProjectRoles.add(chip);
 			}
 		}
 
@@ -335,16 +339,16 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		protected void onAttach() {
 			super.onAttach();
 
-			rolesContent.setVisible(false);
+			panelRolesContent.setVisible(false);
 			getUiHandlers().getRoles((account, project) -> {
-				selectedAccount.setValue(account);
-				selectedAccount.setVisible((null != account && !account.isEmpty()));
-				bgAccountRoles.setText("账户["+ account + "]设定的角色");
-				selectedProject.setValue(project);
-				selectedProject.setVisible((null != project && !project.isEmpty()));
-				bgProjectRoles.setText("项目["+ project + "]可分配的角色");
-				projectSet.setEnabled((null != project && !project.isEmpty()));
-				projectRole.setEnabled((null != project && !project.isEmpty()));
+				labSelectedAccount.setValue(account);
+				labSelectedAccount.setVisible((null != account && !account.isEmpty()));
+				labAccountRoles.setText("账户["+ account + "]设定的角色");
+				labSelectedProject.setValue(project);
+				labSelectedProject.setVisible((null != project && !project.isEmpty()));
+				labProjectRoles.setText("项目["+ project + "]可分配的角色");
+				btnProjectSet.setEnabled((null != project && !project.isEmpty()));
+				btnProjectRole.setEnabled((null != project && !project.isEmpty()));
 			}, (accountRoles, projectRoles) -> {
 				accountRoleSet = accountRoles;
 				projectRoleSet = projectRoles;
@@ -353,7 +357,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 				for(String s:accountRoleSet)
 					projectRoleSet.remove(s);
 
-				rolesContent.setVisible(true);
+				panelRolesContent.setVisible(true);
 				render();
 			});
 		}

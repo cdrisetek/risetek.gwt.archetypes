@@ -8,4 +8,6 @@ public interface IProjectsManagement {
 	// Management functions
 	List<ProjectEntity> readProjects(Set<ProjectEntity> projects, String like, int offset, int limit);
 	void updateOrInsert(Set<ProjectEntity> entities) throws Exception;
+
+	String provider();
 }

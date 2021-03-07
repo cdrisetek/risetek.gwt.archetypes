@@ -20,8 +20,8 @@ import ${package}.share.accounts.AuthenticationAction;
 import ${package}.share.accounts.AuthorizationAction;
 import ${package}.share.accounts.AuthorizationEntity;
 import ${package}.share.accounts.EnumAccount;
-import ${package}.share.accounts.HostProjectRBAC;
 import ${package}.share.accounts.SubjectAction;
+import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.dispatch.GetResult;
 import ${package}.share.dispatch.GetResults;
 import ${package}.share.dispatch.UnsecuredSerializableBatchAction;
@@ -149,7 +149,7 @@ public final class Subject {
 
 	public void changeDescription(String key, String value, Consumer<String> consumer) {
 		AccountEntity userEntity = new AccountEntity();
-		userEntity.getDescriptions().put(key, value);
+		userEntity.setDescription(key, value);
 
 		SubjectAction action = new SubjectAction(userEntity);
 		dispatcher.execute(action, new AsyncCallback<GetResult<AccountEntity>>() {
@@ -162,6 +162,7 @@ public final class Subject {
 			public void onSuccess(GetResult<AccountEntity> result) {
 				// TODO: reload subjectDescriptions
 				GWT.log("update " + key + " successed");
+				consumer.accept("success");
 			}});
 	}
 	
@@ -186,7 +187,7 @@ public final class Subject {
 	public boolean checkRole(HostProjectRBAC role) {
 		if(null == subjectRoles)
 			return false;
-		return subjectRoles.contains(role.name().toLowerCase());
+		return subjectRoles.contains(role.name());
 	}
 
 	public String getSubjectPrincipal() {

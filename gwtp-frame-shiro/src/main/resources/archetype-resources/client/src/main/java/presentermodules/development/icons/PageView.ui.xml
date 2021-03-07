@@ -1,0 +1,48 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@def CELL_WIDTH 160px;
+.container {width: 100%;}
+.nav-container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+.icons-container {margin: 10px 20px;}
+.icons-container svg {width: 24px; height: 24px;}
+.icons-container ul {list-style-type: none; list-style-image: none;}
+.icons-container li {
+ float: left;
+ margin: 15px 13px;
+ width: 100px;
+ height: 105px;
+ text-align: center;
+ position: relative;
+ overflow: visible;
+ border: 1px dashed transparent;
+ border-radius: 5px;
+}
+.icons-container li:hover {background: rgba(0, 0, 100, 0.04);}
+
+.icons-container li span {
+ display: block;
+ width: 100%;
+ height: 20px;
+ line-height: 20px;
+ color: #666;
+ font-size: 12px;
+ text-align: center;
+ margin-top: 15px;
+ overflow: hidden;
+ white-space: nowrap;
+ text-overflow: ellipsis;
+}    
+</ui:style>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' styleName='{style.nav-container}'>
+  <m:MaterialLink ui:field='btnGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="图标" />
+ </m:MaterialNavBar>
+ <g:HTMLPanel styleName='{style.icons-container}'>
+ <ul ui:field='panelSlot'/>
+ </g:HTMLPanel>
+</g:HTMLPanel>
+</ui:UiBinder>

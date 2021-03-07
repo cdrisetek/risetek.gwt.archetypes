@@ -17,7 +17,6 @@
     <shiro.version>1.6.0</shiro.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
     <commons-logging.version>1.2</commons-logging.version>
-    <slf4j.version>1.7.26</slf4j.version>
   </properties>
 
   <dependencies>
@@ -72,7 +71,6 @@
     <dependency>
      <groupId>org.slf4j</groupId>
      <artifactId>slf4j-simple</artifactId>
-     <version>${dollar}{slf4j.version}</version>
     </dependency>
     <dependency>
      <groupId>com.google.gwt</groupId>

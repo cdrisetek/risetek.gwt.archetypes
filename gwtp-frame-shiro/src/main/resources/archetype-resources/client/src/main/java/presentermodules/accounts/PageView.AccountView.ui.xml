@@ -28,8 +28,8 @@ align-items: center; width: 100%; z-index: 300;}
    <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色" />
   </m:MaterialCardContent>
   <m:MaterialCardAction>
-   <m:MaterialLink ui:field='accountSelect' textColor='BLUE' text="选择账户" iconType="BLUR_CIRCULAR"/>
-   <m:MaterialLink ui:field='accountCreate' textColor='BLUE' text="创建账户" iconType="CONTACT_MAIL"/>
+   <m:MaterialLink ui:field='btnAccountSelect' textColor='BLUE' text="选择账户" iconType="BLUR_CIRCULAR"/>
+   <m:MaterialLink ui:field='btnAccountCreate' textColor='BLUE' text="创建账户" iconType="CONTACT_MAIL"/>
   </m:MaterialCardAction>
   <m:MaterialCardContent>
    <m:MaterialCardTitle text="选择的账户" textColor='BLUE' iconType="ACCOUNT_BOX" iconPosition="RIGHT"/>
@@ -38,12 +38,12 @@ align-items: center; width: 100%; z-index: 300;}
   <m:MaterialLabel text="指派选择的账户在本地项目的角色。" />
    </m:MaterialCardContent>
   <m:MaterialCardAction>
-   <m:MaterialLink ui:field='accountSet' textColor='BLUE' text="设置账户" iconType="BUILD" enabled='false'/>
-   <m:MaterialChip ui:field='selectedAccount' styleName='{style.selected-account}' margin="4"
+   <m:MaterialLink ui:field='btnAccountSet' textColor='BLUE' text="设置账户" iconType="BUILD" enabled='false'/>
+   <m:MaterialChip ui:field='labSelectedAccount' styleName='{style.selected-account}' margin="4"
                    visible="false" backgroundColor="BLUE" textColor="WHITE" float="RIGHT"/>
   </m:MaterialCardAction>
   
-  <m:MaterialCardContent ui:field='rolesContent' visible='false'>
+  <m:MaterialCardContent ui:field='panelRolesContent' visible='false'>
    <m:MaterialCardTitle text="角色" textColor='BLUE' iconType="GROUP_WORK" iconPosition="RIGHT"/>
    
   <g:HTMLPanel styleName='{style.box-role-container}'>
@@ -55,7 +55,7 @@ align-items: center; width: 100%; z-index: 300;}
 
   <g:HTMLPanel styleName='{style.box-role-container}'>
    <g:HTMLPanel styleName='{style.box-role-description}'>项目可分配的角色</g:HTMLPanel>
-   <m:MaterialRow styleName='{style.role-chip} {style.role-chip-provider}' ui:field='hostProjectRoles' />
+   <m:MaterialRow styleName='{style.role-chip} {style.role-chip-provider}' ui:field='panelProjectRoles' />
   </g:HTMLPanel>
 
   </m:MaterialCardContent>  

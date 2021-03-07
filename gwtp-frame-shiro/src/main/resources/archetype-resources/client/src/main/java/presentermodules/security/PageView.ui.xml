@@ -1,59 +1,16 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 <ui:style gss="true">
-.containerStyle {
-width:			100%;
-height:			100%;
-position: relative;
-display: flex;
-flex-direction: column;
-flex: 0 1 auto;
-min-height: 0;
-}
-.infoLists {
-width:          840px;
-margin:         0px auto;
-}
-
-.headerpad {
-padding-top: 24px;
-}
-
-.headerTitle {
-font-size: 1.75rem;
-font-weight: 400;
-line-height: 2.25rem;
--webkit-hyphens: auto;
-hyphens: auto;
-word-break: break-word;
-word-wrap: break-word;
-color: #202124;
-margin: 0 0 8px 0;
-padding: 0;
-text-align: center;
-}
-
-.headerDescript {
-letter-spacing: .00625em;
-font-size: 1rem;
-font-weight: 400;
-line-height: 1.5rem;
--webkit-hyphens: auto;
-hyphens: auto;
-word-break: break-word;
-word-wrap: break-word;
-color: #5f6368;
-text-align: center;
-}
-
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
 </ui:style>
-	
-<g:HTMLPanel styleName='{style.containerStyle}'>
- <g:HTMLPanel styleName="{style.infoLists}" ui:field="listPanel">
-  <header class="{style.headerpad}">
-   <div class="{style.headerTitle}">账户信息</div>
-   <div class="{style.headerDescript}">您在服务中使用的基本信息</div>
-  </header>
- </g:HTMLPanel>>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' width='100%'>
+  <m:MaterialLink ui:field='btnGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="账户信息" />
+ </m:MaterialNavBar>
+ <g:HTMLPanel ui:field='panelSlot'/>
 </g:HTMLPanel>
 </ui:UiBinder>

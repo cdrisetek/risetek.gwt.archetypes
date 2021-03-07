@@ -16,6 +16,8 @@
 .box-rotate {transform-origin: 50% 50%; animation: rotate 0.5s linear infinite;}
 @keyframes rotate{0%{transform: rotate(0);} 100%{transform: rotate(360deg);}}
 .box-section {border: 1px solid #C0C0C0; border-radius: 3px; margin: 0 0 10px 0;}
+.card-action button {opacity:0.5;}
+.card-action button:focus {opacity:1;}
 </ui:style>
 
 <g:HTMLPanel>
@@ -27,20 +29,20 @@
   </m:MaterialRow>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="新建账户要求长度至少为4，并且不能与已经存在的账户同名。"/>
-  <m:MaterialTextBox placeholder="选择一个不重复的项目名称" ui:field="name" styleName='{style.ui-field}' iconType="PERSON" type="TEXT" maxLength="30"/>
+  <m:MaterialTextBox ui:field="boxName" placeholder="选择一个不重复的项目名称" styleName='{style.ui-field}' iconType="PERSON" type="TEXT" maxLength="30"/>
   </g:HTMLPanel>
    <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色。"/>
-  <m:MaterialTextBox placeholder="可选的项目注释" ui:field="notes" styleName='{style.ui-field}' iconType="NOTE" type="TEXT" maxLength="200"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="可选的项目注释" styleName='{style.ui-field}' iconType="NOTE" type="TEXT" maxLength="200"/>
  </m:MaterialCardContent>
  <m:MaterialCardAction>
   <m:MaterialRow>
-  <m:MaterialButton margin="8" text="确定添加" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD" enabled="false" 
-                    float="RIGHT" size="LARGE" iconPosition="RIGHT" ui:field="btnCommit"/>
+  <m:MaterialButton ui:field="btnCommit" margin="8" text="确定添加" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD"
+                    enabled="false" float="RIGHT" size="LARGE" iconPosition="RIGHT"/>
   </m:MaterialRow>
  </m:MaterialCardAction>
 </m:MaterialCard>
 <div class='{style.ui-hidden-icons}'>
- <g:HTMLPanel ui:field='boxValidate' styleName='{style.ui-account-validate}' />
+ <g:HTMLPanel ui:field='panelValidate' styleName='{style.ui-account-validate}' />
  <g:HTMLPanel ui:field='iconChecking' styleName='{style.box-rotate}'><m:MaterialIcon iconType="REFRESH" /></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconValidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CHECK" iconColor="GREEN"/></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconInvalidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CLEAR" iconColor="RED"/></g:HTMLPanel>

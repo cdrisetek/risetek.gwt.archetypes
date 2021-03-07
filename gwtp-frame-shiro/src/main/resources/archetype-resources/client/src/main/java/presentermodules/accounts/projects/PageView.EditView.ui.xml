@@ -10,28 +10,30 @@
 .card-slot .card-action button {font-size: 1.2rem;}
 .card-slot .card-action .row {margin-bottom: 0px;}
 .card-slot .material-label {margin: 10px 20px;}
+.card-action button {opacity:0.5;}
+.card-action button:focus {opacity:1;}
 </ui:style>
 
 <m:MaterialCard styleName='{style.card-slot}'>
  <m:MaterialCardContent>
   <m:MaterialCardTitle text="设置" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
   <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
-  <m:MaterialTextBox placeholder="项目" ui:field="name" iconType="PERSON" type="TEXT" readOnly="true"
-                       maxLength="30"/>
+  <m:MaterialTextBox ui:field="boxName" placeholder="项目" iconType="PERSON" type="TEXT" readOnly="true"
+                     maxLength="30"/>
   <m:MaterialLabel text="项目注释是可选的，请简短明确描述。注释包含在项目搜索的关键字中。"/>
-  <m:MaterialTextBox placeholder="备注" ui:field="notes" iconType="NOTE" type="TEXT"
-                       maxLength="200"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="备注" iconType="NOTE" type="TEXT"
+                     maxLength="200"/>
  </m:MaterialCardContent>
  <m:MaterialRow>
-    <m:MaterialButton margin="8" text="启用项目" waves="LIGHT" textColor="WHITE"
-                      iconType="SENTIMENT_SATISFIED" iconPosition="LEFT" ui:field="btnEnable"/>
-    <m:MaterialButton margin="8" text="停用项目" waves="LIGHT" textColor="WHITE"
-                      iconType="SENTIMENT_DISSATISFIED" iconPosition="LEFT" ui:field="btnDisable"/>
+    <m:MaterialButton ui:field="btnEnable" margin="8" text="启用项目" waves="LIGHT" textColor="WHITE"
+                      iconType="SENTIMENT_SATISFIED" iconPosition="LEFT"/>
+    <m:MaterialButton ui:field="btnDisable" margin="8" text="停用项目" waves="LIGHT" textColor="WHITE"
+                      iconType="SENTIMENT_DISSATISFIED" iconPosition="LEFT"/>
  </m:MaterialRow>
  <m:MaterialCardAction>
   <m:MaterialRow>
-  <m:MaterialButton margin="8" text="确定更新" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD"
-                    float="RIGHT" size="LARGE" iconPosition="RIGHT" ui:field="btnCommit"/>
+  <m:MaterialButton ui:field="btnCommit" margin="8" text="确定更新" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" size="LARGE" iconPosition="RIGHT"/>
   </m:MaterialRow>
  </m:MaterialCardAction>
 </m:MaterialCard>

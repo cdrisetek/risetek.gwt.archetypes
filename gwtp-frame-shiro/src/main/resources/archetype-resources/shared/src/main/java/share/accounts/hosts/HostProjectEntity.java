@@ -1,4 +1,4 @@
-package ${package}.share.accounts;
+package ${package}.share.accounts.hosts;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

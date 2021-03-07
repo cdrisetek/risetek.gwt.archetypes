@@ -13,10 +13,14 @@ public class AccountEntity implements IsSerializable {
 		this.descriptions = descriptions;
 	}
 
-	public void setDescription(EnumAccount attr, String value) {
+	public void setDescription(String key, String value) {
 		if(null == descriptions)
 			descriptions = new HashMap<>();
-		descriptions.put(attr.name(), value);
+		descriptions.put(key, value);
+	}
+
+	public void setDescription(EnumAccount attr, String value) {
+		setDescription(attr.name(), value);
 	}
 
 	public String getDescription(EnumAccount attr) {

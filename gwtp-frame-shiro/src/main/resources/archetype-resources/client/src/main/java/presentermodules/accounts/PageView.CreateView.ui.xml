@@ -16,6 +16,8 @@
 .box-rotate {transform-origin: 50% 50%; animation: rotate 0.5s linear infinite;}
 @keyframes rotate{0%{transform: rotate(0);} 100%{transform: rotate(360deg);}}
 .box-section {border: 1px solid #C0C0C0; border-radius: 3px; margin: 0 0 10px 0;}
+.card-action button {opacity:0.5;}
+.card-action button:focus {opacity:1;}
 </ui:style>
 
 <g:HTMLPanel>
@@ -27,28 +29,28 @@
   </m:MaterialRow>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="新建账户要求长度至少为4，并且不能与已经存在的账户同名。"/>
-  <m:MaterialTextBox placeholder="账户" ui:field="name" styleName='{style.ui-field}' iconType="PERSON" type="TEXT" maxLength="30"/>
+  <m:MaterialTextBox ui:field="boxName" placeholder="账户" styleName='{style.ui-field}' iconType="PERSON" type="TEXT" maxLength="30"/>
   </g:HTMLPanel>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="密码长度不能小于4个字符。"/>
-  <m:MaterialTextBox placeholder="密码" ui:field="password" styleName='{style.ui-field}' iconType="VPN_KEY" type="PASSWORD" maxLength="40"/>
-  <m:MaterialTextBox placeholder="密码验证" ui:field="password2" styleName='{style.ui-field}' iconType="YOUTUBE_SEARCHED_FOR" type="PASSWORD" maxLength="40"/>
+  <m:MaterialTextBox ui:field="boxPassword" placeholder="密码" styleName='{style.ui-field}' iconType="VPN_KEY" type="PASSWORD" maxLength="40"/>
+  <m:MaterialTextBox ui:field="boxPassword2" placeholder="密码验证" styleName='{style.ui-field}' iconType="YOUTUBE_SEARCHED_FOR" type="PASSWORD" maxLength="40"/>
   </g:HTMLPanel>
-  <m:MaterialTextBox placeholder="邮件" ui:field="email" styleName='{style.ui-field}' iconType="EMAIL" type="EMAIL" maxLength="40"/>
-  <ma:inputmask.AbstractInputMask ui:field="telphone" styleName='{style.ui-field}' type="TEL" iconType="CALL"
+  <m:MaterialTextBox ui:field="boxEmail" placeholder="邮件" styleName='{style.ui-field}' iconType="EMAIL" type="EMAIL" maxLength="40"/>
+  <ma:inputmask.AbstractInputMask ui:field="boxTelphone" styleName='{style.ui-field}' type="TEL" iconType="CALL"
                        fieldType="DEFAULT" placeholder="eg: 139-0000-0001"
                        mask="000-0000-0000" clearOnKeyUp="true"/>
-  <m:MaterialTextBox placeholder="备注" ui:field="notes" styleName='{style.ui-field}' iconType="NOTE" type="TEXT" maxLength="200"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="备注" styleName='{style.ui-field}' iconType="NOTE" type="TEXT" maxLength="200"/>
  </m:MaterialCardContent>
  <m:MaterialCardAction>
   <m:MaterialRow>
-  <m:MaterialButton margin="8" text="确定添加" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD" enabled="false" 
-                    float="RIGHT" size="LARGE" iconPosition="RIGHT" ui:field="btnCommit"/>
+  <m:MaterialButton ui:field="btnCommit" margin="8" text="确定添加" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD"
+                    enabled="false" float="RIGHT" size="LARGE" iconPosition="RIGHT"/>
   </m:MaterialRow>
  </m:MaterialCardAction>
 </m:MaterialCard>
 <div class='{style.ui-hidden-icons}'>
- <g:HTMLPanel ui:field='boxValidate' styleName='{style.ui-account-validate}' />
+ <g:HTMLPanel ui:field='panelValidate' styleName='{style.ui-account-validate}' />
  <g:HTMLPanel ui:field='iconChecking' styleName='{style.box-rotate}'><m:MaterialIcon iconType="REFRESH" /></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconValidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CHECK" iconColor="GREEN"/></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconInvalidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CLEAR" iconColor="RED"/></g:HTMLPanel>

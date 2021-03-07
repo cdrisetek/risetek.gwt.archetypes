@@ -21,6 +21,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		String getSearchKey();
+		void bindSlot(Slot<PresenterWidget<?>> slot);
 	}
 
 	@ProxyCodeSplit
@@ -39,6 +40,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			             final SelectorWidget cardPresenter) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
+		getView().bindSlot(SLOT);
 		this.placeManager = placeManager;
 		this.cardPresenter = cardPresenter;
 		cardPresenter.selectedConsumer = c-> {

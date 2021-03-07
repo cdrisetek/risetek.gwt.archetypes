@@ -25,12 +25,12 @@
   <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
   <g:HTMLPanel styleName='{style.box-role-container}'>
    <g:HTMLPanel styleName='{style.box-role-description}'>项目设定的角色</g:HTMLPanel>
-   <m:MaterialRow styleName='{style.role-chip}' ui:field='panelRoles' />
+   <m:MaterialRow ui:field='panelRoles' styleName='{style.role-chip}'/>
   </g:HTMLPanel>
   <m:MaterialLabel text="角色名称最终以大写字符。"/>
   <m:MaterialLabel text="角色名称可以用':'分割，以表达层次关系。比如：SC:CD:HEADER:ADMIN"/>
   <m:MaterialRow styleName='{style.role-input-container}'>
-   <m:MaterialTextBox placeholder="新建角色名称" ui:field="tbRole" type="TEXT" maxLength="50"/>
+   <m:MaterialTextBox ui:field="boxRole" placeholder="新建角色名称" type="TEXT" maxLength="50"/>
   </m:MaterialRow>
  </m:MaterialCardContent>
 </m:MaterialCard>

@@ -42,6 +42,11 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
     @Override
+    public void onAttach() {
+    	txtSearch.close();
+    }
+
+    @Override
     public void bindSlot(Slot<PresenterWidget<?>> slot) {
     	bindSlot(slot, this.slot);
     }

@@ -12,18 +12,16 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.server.Permissions;
 import ${package}.server.accounts.roles.IRoleManagement;
 import ${package}.share.accounts.AccountEntity;
 import ${package}.share.accounts.EnumAccount;
-import ${package}.share.accounts.HostProjectRBAC;
+import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.exception.ActionUnauthenticatedException;
 
 /**
@@ -36,7 +34,7 @@ import ${package}.share.exception.ActionUnauthenticatedException;
  *
  */
 @Singleton
-public class SimpleAccountManagement extends Permissions implements IAccountManagement, ISubjectManagement {
+public class SimpleAccountManagement implements IAccountManagement, ISubjectManagement {
 	private final IAuthorizingHandler authorizing;
 	private final IRoleManagement roleManagement;
 	@Inject
@@ -48,7 +46,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 			String username = String.format("admin%03d@risetek.com", index);
 			AccountRecord user = new AccountRecord(username, "admin")
 					               .set(EnumAccount.EMAIL, username)
-					               .setRole(HostProjectRBAC.MAINTANCE);
+					               .setRole(HostProjectRBAC.GUEST);
 			if(index % 2 == 0)
 				user.set(EnumAccount.NOTES, "this is a very long long long long long long long "
 						+ "long long long long long long long long long long long long long "
@@ -64,7 +62,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 		new AccountRecord(username, "gamelan")
 		   .set(EnumAccount.EMAIL, username)
 		   .set(EnumAccount.NOTES, "it's me")
-		   .setRole(HostProjectRBAC.ADMIN).setRole(HostProjectRBAC.DEVELOPER);
+		   .setRole(HostProjectRBAC.DEVELOPER).setRole(HostProjectRBAC.GUEST);
 		
 		// TODO: If no one have admin role, we create admin for this project as default.
 	}
@@ -91,6 +89,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 	}
 	
 	@RequiresAuthentication
+	@RequiresPermissions("subject:update")
 	@Override
 	public void setSubjectPassword(String password) throws ActionException {
 		if(null == password || password.isEmpty()) {
@@ -108,7 +107,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 		if(null == user)
 			throw new ActionException("can't find subject user. this should not happen.");
 
-		user.password = password;
+		user.password = authorizing.encryptRealmPassword(password);
 		
 		// Logout and force user login with new password again.
 		subject.logout();
@@ -147,10 +146,10 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 			return this;
 		}
 
-		AccountRecord setRole(HostProjectRBAC enumRBAC) {
-			Set<String> roles = roleManagement.getRoleSet(username, null /* default local project */);
-			roles.add(enumRBAC.name());
-			roleManagement.setRoleSet(username, null /* default local project */, roles);
+		AccountRecord setRole(HostProjectRBAC role) {
+			Set<HostProjectRBAC> roles = roleManagement.getRoleSet(username);
+			roles.add(role);
+			roleManagement.setRoleSet(username, roles);
 			return this;
 		}
 		
@@ -169,8 +168,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 	private final static Map<Object, AccountRecord> accountSTORE = new TreeMap<>();
 	private final static Map<Object, Map<String, String>> descriptionSTORE = new HashMap<>();
 	
-	// @RequiresPermissions("realm:listsubjects")
-	@RequiresRoles(value={"ADMIN", "maintance"}, logical=Logical.OR)
+	@RequiresPermissions("accounts:read")
 	@Override
 	public List<AccountEntity> readAccounts(Set<AccountEntity> entities, String like, int offset, int size) throws Exception {
 		List<AccountEntity> list = new ArrayList<AccountEntity>();
@@ -181,14 +179,14 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 		}
 
 		int start = 0, count = 0;
-		for(AccountRecord user:accountSTORE.values()) {
+		for(AccountRecord account:accountSTORE.values()) {
+			if(!account.isLike(like) || start++ < offset)
+				continue;
+
 			if(count++ >= size)
 				break;
 
-			if(!user.isLike(like) || start++ < offset)
-				continue;
-
-			AccountEntity entity = user.getEntity();
+			AccountEntity entity = account.getEntity();
 			list.add(entity);
 		}
 
@@ -201,9 +199,8 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 	// email进行二次确认？
 
 	@Override
-	@RequiresRoles("ADMIN")
+	@RequiresPermissions("accounts:create")
 	public void createAccount(AccountEntity accountEntity, String password) throws Exception {
-		requiresPermission(Permission.CREATE_ACCOUNT);
 		String principal = accountEntity.getPrincipal();
 		if(null == principal)
 			return;
@@ -213,7 +210,7 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 
 	// HasGod interface implement
 	@Override
-	@RequiresRoles("ADMIN")
+	@RequiresPermissions("accounts:update")
 	public void updateAccounts(Set<AccountEntity> users) throws Exception {
 		users.stream().forEach(user -> {
 			Optional.ofNullable(accountSTORE.get(user.getPrincipal())).ifPresent(u -> {
@@ -243,5 +240,10 @@ public class SimpleAccountManagement extends Permissions implements IAccountMana
 	@Override
 	public void shutdown() {
 		System.out.println("Shutdown AccountManagement, if have Database connections, unlock it.");
+	}
+
+	@Override
+	public String provider() {
+		return "Memory based SimpleAccountManagement";
 	}
 }

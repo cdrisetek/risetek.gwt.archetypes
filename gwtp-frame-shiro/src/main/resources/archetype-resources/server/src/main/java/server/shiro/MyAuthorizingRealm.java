@@ -1,6 +1,7 @@
 package ${package}.server.shiro;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
@@ -28,6 +29,7 @@ import ${package}.server.accounts.roles.IRoleManagement;
 import ${package}.share.accounts.AuthenticationAction;
 import ${package}.share.accounts.AuthorizationAction;
 import ${package}.share.accounts.AuthorizationEntity;
+import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.accounts.roles.RoleEntity;
 import ${package}.share.dispatch.GetNoResult;
 import ${package}.share.dispatch.GetResult;
@@ -65,10 +67,13 @@ public class MyAuthorizingRealm extends AuthorizingRealm implements IAuthorizing
 		if (pc == null || null == pc.getPrimaryPrincipal())
 			throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-		Subject subject = SecurityUtils.getSubject();
-		Object project = subject.getSession().getAttribute("project");
-		authorizationInfo.setRoles(roleManagement.getRoleSet(pc.getPrimaryPrincipal(), project));
-//		authorizationInfo.addStringPermission("realm:list");
+		// Subject subject = SecurityUtils.getSubject();
+		// Object project = subject.getSession().getAttribute("project");
+		Set<HostProjectRBAC> roles = roleManagement.getRoleSet(pc.getPrimaryPrincipal());
+		Set<String> permissions = roles.stream().flatMap(r -> r.permissions().stream()).collect(Collectors.toSet());
+		// TODO: we use roles?
+		authorizationInfo.setRoles(roles.stream().map(r -> r.name()).collect(Collectors.toSet()));
+		authorizationInfo.addStringPermissions(permissions);
 		return authorizationInfo;
 	}
 

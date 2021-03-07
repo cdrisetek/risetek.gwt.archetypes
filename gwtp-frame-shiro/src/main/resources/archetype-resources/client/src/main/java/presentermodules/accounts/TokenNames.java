@@ -6,6 +6,7 @@ public class TokenNames {
     public static final String accounts = "/accounts";
     public static final String projects = "/projects";
     public static final String project = "/project";
+    public static final String icons = "/icons";
 
     public static final String select = "select";
     public static final String selectProject = "selectp";

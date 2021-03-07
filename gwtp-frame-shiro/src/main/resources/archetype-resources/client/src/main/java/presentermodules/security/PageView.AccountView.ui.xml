@@ -1,0 +1,134 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true">
+@def CELL_WIDTH 160px;
+
+@defmixin displayflex() {
+ display: -webkit-box;
+ display: -moz-box;
+ display: -ms-flexbox;
+ display: -webkit-flex;
+ display: flex;
+}
+
+.kv-container {width: 100%; cursor: pointer; border-top: 1px solid #dadce0;}
+
+.kv-block {
+display: block;
+position: relative;
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+will-change: transform,opacity;
+outline: none;
+overflow: hidden;
+padding: 15px 24px;
+height: 100%;
+text-decoration: none;
+}
+
+.kv-block:hover {background-color: rgba(0,0,0,.04);}
+
+.kv-flex {
+-webkit-box-align: center;
+box-align: center;
+-webkit-align-items: center;
+align-items: center;
+@mixin displayflex();
+}
+
+.kv-key, .kv-value {
+margin-right: 24px; padding-top: 4px;
+box-align: center;
+-webkit-box-align: center;
+-webkit-align-items: center;
+align-items: center;
+}
+.kv-key {
+-webkit-flex-basis: CELL_WIDTH;
+flex-basis: CELL_WIDTH;
+}
+
+.kv-value {
+-webkit-box-flex: 1; box-flex: 1; -webkit-flex-grow: 1; flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1;
+-webkit-flex-basis:328px;
+-ms-flex-preferred-size:328px;
+flex-basis:328px;
+}
+
+.kv-key-value {
+@mixin displayflex();
+
+-webkit-box-flex: 1; box-flex: 1; -webkit-flex-grow: 1; flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1;
+-webkit-flex-basis: 0;
+flex-basis: 0;
+
+-webkit-box-align: stretch;
+box-align: stretch;
+-webkit-align-items: stretch;
+align-items: stretch;
+
+-webkit-flex-wrap: wrap;
+flex-wrap: wrap;    
+
+letter-spacing: .00625em;
+font-size: 1rem;
+font-weight: 400;
+line-height: 1.5rem;
+-webkit-hyphens: auto;
+hyphens: auto;
+word-break: break-word;
+word-wrap: break-word;
+color: #202124;
+margin: 0;
+padding: 0;
+width: 100%;
+}
+</ui:style>
+
+<g:HTMLPanel>
+ <m:MaterialCard>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="个人资料" textColor='BLUE' iconType="PORTRAIT" iconPosition="RIGHT"/>
+  
+   <g:HTMLPanel styleName="{style.kv-container} {style.kv-block}">
+    <div class="{style.kv-flex}">
+     <div class="{style.kv-key-value}">
+      <div class="{style.kv-key}">名称</div>
+      <g:Label ui:field="labAccount" styleName="{style.kv-value}"></g:Label>
+     </div>
+    </div>
+   </g:HTMLPanel>
+   <g:FocusPanel ui:field='btnPassword'>
+    <g:HTMLPanel styleName="{style.kv-container} {style.kv-block}">
+     <div class="{style.kv-flex}">
+      <div class="{style.kv-key-value}">
+       <div class="{style.kv-key}">密码</div>
+       <div class="{style.kv-value}">******</div>
+      </div>
+	  <m:MaterialIcon iconType="FORWARD"/>
+     </div>
+    </g:HTMLPanel>
+   </g:FocusPanel>
+
+  </m:MaterialCardContent> 
+ </m:MaterialCard>
+
+ <m:MaterialCard>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="联系信息" textColor='BLUE' iconType="EMAIL" iconPosition="RIGHT"/>
+   <g:FocusPanel ui:field='btnEmail'>
+    <g:HTMLPanel styleName="{style.kv-container} {style.kv-block}">
+     <div class="{style.kv-flex}">
+      <div class="{style.kv-key-value}">
+       <div class="{style.kv-key}">电子邮件</div>
+       <g:Label ui:field='labEmail' styleName="{style.kv-value}"></g:Label>
+      </div>
+  	 <m:MaterialIcon iconType="FORWARD"/>
+    </div>
+   </g:HTMLPanel>
+  </g:FocusPanel>
+  </m:MaterialCardContent>
+ </m:MaterialCard>
+
+</g:HTMLPanel>
+</ui:UiBinder>

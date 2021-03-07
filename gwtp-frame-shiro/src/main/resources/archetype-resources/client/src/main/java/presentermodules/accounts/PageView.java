@@ -23,6 +23,7 @@ import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import ${package}.presentermodules.accounts.MyUiHandlers.AccountValidate;
 import ${package}.share.accounts.EnumAccount;
 import ${package}.utils.SheetField;
+import ${package}.utils.SheetField.TYPE;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCardContent;
@@ -35,7 +36,7 @@ import gwt.material.design.client.ui.MaterialValueBox;
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
 	interface Binder extends UiBinder<Widget, PageView> {}
 	private final Slot<PresenterWidget<?>> SLOT = new Slot<>();
-	@UiField HTMLPanel slot;
+	@UiField HTMLPanel panelSlot;
 	@Inject
 	public PageView(final EventBus eventBus,
 			        final Binder uiBinder,
@@ -46,7 +47,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		this.accountView = accountView;
 		this.createView = createView;
 		this.editView = editView;
-		bindSlot(SLOT, slot);
+		bindSlot(SLOT, panelSlot);
 		Scheduler.get().scheduleDeferred(()-> {
 			assert(null != getUiHandlers());
 			this.accountView.setUiHandlers(getUiHandlers());
@@ -60,7 +61,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		MaterialToast.fireToast(message);
 	}
 
-	@UiHandler("lnkGoback")
+	@UiHandler("btnGoback")
 	public void onGobackClick(ClickEvent e) {
 		if(accountView.asWidget().isAttached()) {
 			getUiHandlers().onGoBackPlace();
@@ -70,131 +71,116 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	static class CreateView extends ViewWithUiHandlers<MyUiHandlers> {
-		@UiField HTMLPanel boxValidate, iconChecking, iconValidate, iconInvalidate;
+		@UiField HTMLPanel panelValidate, iconChecking, iconValidate, iconInvalidate;
 		@UiField MaterialButton btnCommit;
-		@UiField MaterialValueBox<String> name, password, password2, email, telphone, notes;
+		@UiField MaterialValueBox<String> boxName, boxPassword, boxPassword2, boxEmail, boxTelphone, boxNotes;
 		interface Binder extends UiBinder<Widget, CreateView> {}
 
-		private final SheetField sfHeader;
+		private final SheetField fieldHeader;
 		@Inject
 		public CreateView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
 			// Used to hold icons to indicate account name verification status.
-			name.add(boxValidate);
+			boxName.add(panelValidate);
+			boxName.getValueBoxBase().getElement().setAttribute("spellcheck", "false");
 
-			sfHeader = new SheetField.Builder(name).set(stayPoint -> {
-    			getUiHandlers().checkValidate(name.getValue(), (state) -> {
-        			setAccountValidateState(state);
+			// Build validation chain.
+			(fieldHeader = new SheetField.Builder(boxName).set(isStop -> {
+    			getUiHandlers().checkValidate(boxName.getValue(), (state) -> {
+        			setValidateState(state);
         			if(state == AccountValidate.CHECKING)
         				return;
         			if(state == AccountValidate.VALIDATE)
-        				stayPoint.accept(false);
+        				isStop.accept(false);
         			else {
-        				name.setFocus(true);
         				btnCommit.setEnabled(false);
-        				stayPoint.accept(true);
+        				isStop.accept(true);
         			}});
-        	}).doValidator().build();
-
-			sfHeader.nextBuilder(password).set(stayPoint -> {
-				if(!isPasswordValid()) {
-					password.setFocus(true);
-					stayPoint.accept(true);
-				} else
-					stayPoint.accept(false);
-	        }).build().nextBuilder(password2).set(stayPoint -> {
-				if(!password.getValue().equals(password2.getValue())) {
-					password2.setFocus(true);
-					stayPoint.accept(true);
+        	}).checkKeyPress().build())
+			.nextField(boxPassword).minLength(4).build()
+			.nextField(boxPassword2).set(isStop -> {
+				if(!boxPassword.getValue().equals(boxPassword2.getValue())) {
+					boxPassword2.setFocus(true);
+					isStop.accept(true);
 				} else {
 	    			btnCommit.setEnabled(true);
-					stayPoint.accept(false);
+					isStop.accept(false);
 				}
     		}).build()
-	        .nextBuilder(email).build()
-	        .nextBuilder(telphone).build()
-	        .nextBuilder(notes).build()
-	        .nextBuilder(btnCommit).build();
-		}
-
-		private boolean isPasswordValid() {
-			if(password.getValue().isEmpty())
-				return false;
-			
-			if(password.getValue().length() < 4)
-				return false;
-			return true;
-		}
-
-		private void check(Widget target) {
-			sfHeader.nestedCheck(target);
+	        .nextField(boxEmail).type(TYPE.EMAIL).build()
+	        .nextField(boxTelphone).type(TYPE.TELPHONE).build()
+	        .nextField(boxNotes).build()
+	        .nextField(btnCommit).build();
 		}
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
 			Map<String, String> descriptions = new HashMap<>();
-			Optional.ofNullable(email.getValue()).ifPresent(v->descriptions.put(EnumAccount.EMAIL.name(), v));
-			Optional.ofNullable(telphone.getValue()).ifPresent(v->descriptions.put(EnumAccount.TELPHONE.name(), v));
-			Optional.ofNullable(notes.getValue()).ifPresent(v->descriptions.put(EnumAccount.NOTES.name(), v));
+			Optional.ofNullable(boxEmail.getValue()).ifPresent(v->descriptions.put(EnumAccount.EMAIL.name(), v));
+			Optional.ofNullable(boxTelphone.getValue()).ifPresent(v->descriptions.put(EnumAccount.TELPHONE.name(), v));
+			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumAccount.NOTES.name(), v));
 			
-			getUiHandlers().createAccount(name.getValue(), password.getValue(), descriptions);
+			getUiHandlers().createAccount(boxName.getValue(), boxPassword.getValue(), descriptions);
 		}
 		
-		@UiHandler("password")
+		@UiHandler("boxPassword")
 		void onPasswordFocus(FocusEvent e) {
-			check(password);
+			fieldHeader.validate(boxPassword);
 		}
 
-		@UiHandler("password2")
+		@UiHandler("boxPassword2")
 		void onPassword2Focus(FocusEvent e) {
-			check(password2);
+			fieldHeader.validate(boxPassword2);
 		}
 
-		@UiHandler("email")
+		@UiHandler("boxEmail")
 		void onEmailFocus(FocusEvent e) {
-			check(email);
+			fieldHeader.validate(boxEmail);
 		}
 
-		@UiHandler("telphone")
+		@UiHandler("boxTelphone")
 		void onTelphoneFocus(FocusEvent e) {
-			check(telphone);
+			fieldHeader.validate(boxTelphone);
 		}
 
-		@UiHandler("notes")
+		@UiHandler("boxNotes")
 		void onNotesFocus(FocusEvent e) {
-			check(notes);
+			fieldHeader.validate(boxNotes);
 		}
 		
 		@Override
 		protected void onAttach() {
 			super.onAttach();
-			name.clear();
-			boxValidate.clear();
-			password.clear();
-			password2.clear();
-			notes.clear();
+			panelValidate.clear();
+			boxName.clear();
+			boxPassword.clear();
+			boxPassword2.clear();
+			boxEmail.clear();
+			boxNotes.clear();
+			btnCommit.setEnabled(false);
+	        boxName.setFocus(true);
+			
 			Scheduler.get().scheduleDeferred(() -> {
 				// Set Icon box as the same height as input box to stay center. 
-		        boxValidate.getElement().getStyle().setWidth(name.asValueBoxBase().getOffsetHeight(), Unit.PX);
-		        boxValidate.getElement().getStyle().setHeight(name.asValueBoxBase().getOffsetHeight(), Unit.PX);
-		        name.setFocus(true);
+		        panelValidate.getElement().getStyle().setWidth(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
+		        panelValidate.getElement().getStyle().setHeight(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
 			});
 		}
 		
-		private void setAccountValidateState(AccountValidate state) {
-			boxValidate.clear();
+		private void setValidateState(AccountValidate state) {
+			panelValidate.clear();
 			switch(state) {
 			case UNKNOWN:
 				btnCommit.setEnabled(false);
 				break;
 			case CHECKING:
-       			boxValidate.add(iconChecking);
+       			panelValidate.add(iconChecking);
 				break;
 			case VALIDATE:
-       			boxValidate.add(iconValidate);
+       			panelValidate.add(iconValidate);
 				break;
 			case INVALIDATE:
-       			boxValidate.add(iconInvalidate);
+       			panelValidate.add(iconInvalidate);
 				break;
 			default:
 				assert false;
@@ -214,26 +200,41 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		@Inject
 		public EditView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
-			sfHeader = new SheetField.Builder(email).build();
-	        sfHeader.nextBuilder(telphone).build()
-	        .nextBuilder(notes).build()
-	        .nextBuilder(btnCommit).build();
+			// Build validation chain.
+			(fieldHeader = new SheetField.Builder(boxEmail).type(TYPE.EMAIL).build())
+	        .nextField(boxTelphone).type(TYPE.TELPHONE).build()
+	        .nextField(boxNotes).build()
+	        .nextField(btnCommit).build();
 		}
 		
-		@UiField MaterialValueBox<String> name, email, telphone, notes;
+		@UiField MaterialValueBox<String> boxName, boxEmail, boxTelphone, boxNotes;
 		@UiField MaterialButton btnEnable, btnDisable, btnCommit;
-		private final SheetField sfHeader;
+		private final SheetField fieldHeader;
+
+		@UiHandler("boxEmail")
+		void onEmailFocus(FocusEvent e) {
+			fieldHeader.validate(boxEmail);
+		}
+
+		@UiHandler("boxTelphone")
+		void onTelphoneFocus(FocusEvent e) {
+			fieldHeader.validate(boxTelphone);
+		}
+
+		@UiHandler("boxNotes")
+		void onNotesFocus(FocusEvent e) {
+			fieldHeader.validate(boxNotes);
+		}
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
-			// TODO: check valid
 			Map<String, String> descriptions = new HashMap<>();
-			Optional.ofNullable(email.getValue()).ifPresent(v->descriptions.put(EnumAccount.EMAIL.name(), v));
-			Optional.ofNullable(telphone.getValue()).ifPresent(v->descriptions.put(EnumAccount.TELPHONE.name(), v));
-			Optional.ofNullable(notes.getValue()).ifPresent(v->descriptions.put(EnumAccount.NOTES.name(), v));
+			Optional.ofNullable(boxEmail.getValue()).ifPresent(v->descriptions.put(EnumAccount.EMAIL.name(), v));
+			Optional.ofNullable(boxTelphone.getValue()).ifPresent(v->descriptions.put(EnumAccount.TELPHONE.name(), v));
+			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumAccount.NOTES.name(), v));
 			descriptions.put(EnumAccount.STATUS.name(), btnEnable.isEnabled()?"disable":null);
 			
-			getUiHandlers().updateAccount(name.getValue(), descriptions);
+			getUiHandlers().updateAccount(boxName.getValue(), descriptions);
 		}
 		
 		@UiHandler("btnEnable")
@@ -254,15 +255,15 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		@Override
 		protected void onAttach() {
 			getUiHandlers().getAccount((name, descriptions) -> {
-				this.name.setValue(name);
-				email.setValue(descriptions.get(EnumAccount.EMAIL.name()));
-				telphone.setValue(descriptions.get(EnumAccount.TELPHONE.name()));
-				notes.setValue(descriptions.get(EnumAccount.NOTES.name()));
+				boxName.setValue(name);
+				boxEmail.setValue(descriptions.get(EnumAccount.EMAIL.name()));
+				boxTelphone.setValue(descriptions.get(EnumAccount.TELPHONE.name()));
+				boxNotes.setValue(descriptions.get(EnumAccount.NOTES.name()));
 				String status = descriptions.get(EnumAccount.STATUS.name());
 				boolean s = null != status && status.equals("disable");
 				toggleStatus(!s);
 				Scheduler.get().scheduleDeferred(() -> {
-					email.setFocus(true);
+					boxEmail.setFocus(true);
 				});
 			});
 		}
@@ -281,24 +282,24 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			initWidget(uiBinder.createAndBindUi(this));
 		}
 		
-		@UiField MaterialChip selectedAccount;
-		@UiField MaterialLink accountSet;
+		@UiField MaterialChip labSelectedAccount;
+		@UiField MaterialLink btnAccountSet;
 		
-		@UiField MaterialRow panelRoles, hostProjectRoles;
-		@UiField MaterialCardContent rolesContent;
-		private Set<String> accountRoles, projectRoles;
+		@UiField MaterialRow panelRoles, panelProjectRoles;
+		@UiField MaterialCardContent panelRolesContent;
+		private Set<String> accountRoleSet, projectRoleSet;
 		
-		@UiHandler("accountSelect")
+		@UiHandler("btnAccountSelect")
 		void onAccountSelect(ClickEvent e) {
 			getUiHandlers().onAccountSelect();
 		}
 
-		@UiHandler("accountCreate")
+		@UiHandler("btnAccountCreate")
 		void onAccountCreate(ClickEvent e) {
 			getUiHandlers().onAccountCreate();
 		}
 
-		@UiHandler("accountSet")
+		@UiHandler("btnAccountSet")
 		void onAccountSet(ClickEvent e) {
 			getUiHandlers().onAccountEdit();
 		}
@@ -306,31 +307,31 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		private void updateRoles() {
 			renderAccountRoles();
 			renderHostProjectRoles();
-			getUiHandlers().updateAccountRoles(accountRoles);
+			getUiHandlers().updateAccountRoles(accountRoleSet);
 		}
 		
 		private void renderHostProjectRoles() {
-			hostProjectRoles.clear();
-			for(String role:projectRoles) {
+			panelProjectRoles.clear();
+			for(String role:projectRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
 					Label l = (Label) e.getSource();
-					accountRoles.add(l.getText());
-					projectRoles.remove(l.getText());
+					accountRoleSet.add(l.getText());
+					projectRoleSet.remove(l.getText());
 					updateRoles();
 				});
-				hostProjectRoles.add(chip);
+				panelProjectRoles.add(chip);
 			}
 		}
 
 		private void renderAccountRoles() {
 			panelRoles.clear();
-			for(String role:accountRoles) {
+			for(String role:accountRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
 					Label l = (Label) e.getSource();
-					accountRoles.remove(l.getText());
-					projectRoles.add(l.getText());
+					accountRoleSet.remove(l.getText());
+					projectRoleSet.add(l.getText());
 					updateRoles();
 				});
 				panelRoles.add(chip);
@@ -340,18 +341,18 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		@Override
 		protected void onAttach() {
 			getUiHandlers().getAccountRoles((name) -> {
-				selectedAccount.setValue(name);
-				selectedAccount.setVisible((null != name && !name.isEmpty()));
-				accountSet.setEnabled((null != name && !name.isEmpty()));
+				labSelectedAccount.setValue(name);
+				labSelectedAccount.setVisible((null != name && !name.isEmpty()));
+				btnAccountSet.setEnabled((null != name && !name.isEmpty()));
 			}, (roles, projectRoles) -> {
-				accountRoles = roles;
-				this.projectRoles = projectRoles;
+				accountRoleSet = roles;
+				projectRoleSet = projectRoles;
 
-				boolean visible = (null != this.projectRoles) && (!this.projectRoles.isEmpty());
-				rolesContent.setVisible(visible);
+				boolean visible = (null != projectRoleSet) && (!projectRoleSet.isEmpty());
+				panelRolesContent.setVisible(visible);
 
-				for(String s:accountRoles)
-					this.projectRoles.remove(s);
+				for(String s:accountRoleSet)
+					projectRoleSet.remove(s);
 				renderAccountRoles();
 				renderHostProjectRoles();
 			});

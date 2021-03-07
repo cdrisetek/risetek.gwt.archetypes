@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import com.google.inject.Singleton;
 import ${package}.server.accounts.roles.IRoleManagement;
 import ${package}.share.accounts.projects.EnumProject;
@@ -91,8 +93,10 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 			
 			return this;
 		}
-	}	
+	}
+
 	@Override
+	@RequiresPermissions("projects:read")
 	public List<ProjectEntity> readProjects(Set<ProjectEntity> requires, String like, int offset, int limit) {
 		List<ProjectEntity> entities = new Vector<>();
 
@@ -106,12 +110,12 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 		int start = 0, count = 0;
 		for(ProjectRecord project:projectSTORE.values()) {
 			ProjectEntity entity = project.getProjectEntity();
-			if(count++ >= limit)
-				break;
-
 			if(!project.isLike(like) || start++ < offset)
 				continue;
 			
+			if(count++ >= limit)
+				break;
+
 			entities.add(entity);
 		}
 
@@ -119,6 +123,7 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 	}
 
 	@Override
+	@RequiresPermissions("projects:create,update")
 	public void updateOrInsert(Set<ProjectEntity> entities) throws Exception {
 		entities.stream().forEach(entity -> {
 			// ensure project exist.
@@ -150,5 +155,10 @@ public class SimpleProjectsManagement implements IProjectsManagement {
 				  .ifPresent(m -> m.entrySet().stream().forEach(e -> description.remove(e.getKey())));
 			});
 		});
+	}
+
+	@Override
+	public String provider() {
+		return "Memory based SimpleProjectsManagement";
 	}
 }

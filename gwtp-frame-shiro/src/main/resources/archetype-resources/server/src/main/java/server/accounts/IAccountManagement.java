@@ -12,4 +12,6 @@ public interface IAccountManagement {
 	
 	void createAccount(AccountEntity user, String password) throws Exception;
 	void shutdown();
+
+	String provider();
 }

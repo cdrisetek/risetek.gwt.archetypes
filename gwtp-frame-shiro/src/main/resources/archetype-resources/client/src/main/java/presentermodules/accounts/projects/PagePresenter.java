@@ -108,7 +108,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 
 	private long sequence;
 	@Override
-	public void checkDuplicate(String value, Consumer<ProjectValidate> checker) {
+	public void checkValidate(String value, Consumer<ProjectValidate> checker) {
 		if(null == value || value.isEmpty())
 			checker.accept(ProjectValidate.EMPTY);
 		else if(value.length() > 4) {

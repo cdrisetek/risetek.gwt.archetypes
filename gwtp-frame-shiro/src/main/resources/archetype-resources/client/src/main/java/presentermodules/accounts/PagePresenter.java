@@ -27,7 +27,7 @@ import ${package}.entry.LoggedInGatekeeper;
 import ${package}.place.root.RootPresenter;
 import ${package}.share.accounts.AccountAction;
 import ${package}.share.accounts.AccountEntity;
-import ${package}.share.accounts.HostProjectRBAC;
+import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.accounts.roles.RoleAction;
 import ${package}.share.accounts.roles.RoleEntity;
 import ${package}.share.dispatch.GetResult;
@@ -72,7 +72,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	private final PlaceRequest accountSelectPlace = new PlaceRequest.Builder().nameToken(TokenNames.accounts)
-			                                           .with(TokenNames.selector, getProxy().getNameToken()).build();
+                                                       .with(TokenNames.selector, getProxy().getNameToken() /* called from me */)
+                                                       .build();
 	@Override
 	public void onAccountSelect() {
 		placeManager.revealPlace(accountSelectPlace, false);
@@ -196,7 +197,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			public void onSuccess(GetResult<RoleEntity> result) {
 				if(action.sequence < sequence)
 					GWT.log("find action delayed");
-				Set<String> projectRoles = Arrays.asList(HostProjectRBAC.values()).stream().map(HostProjectRBAC::name).collect(Collectors.toSet());
+				Set<String> projectRoles = Arrays.asList(HostProjectRBAC.values()).stream()
+						                         .map(HostProjectRBAC::name).collect(Collectors.toSet());
 				name.accept(selectedAccount);
 				roles.accept(result.getResults().getRoleSet(), projectRoles);
 			}
@@ -221,7 +223,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			public void onSuccess(GetResult<RoleEntity> result) {
 				if(action.sequence < sequence)
 					GWT.log("find action delayed");
-				getView().Message("roles updates");
+				getView().Message("roles updated");
 			}
 		});
 	}

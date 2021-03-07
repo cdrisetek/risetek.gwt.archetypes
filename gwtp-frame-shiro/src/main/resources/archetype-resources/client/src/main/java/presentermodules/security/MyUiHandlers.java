@@ -1,17 +1,17 @@
 package ${package}.presentermodules.security;
 
-import java.util.List;
-
 import com.gwtplatform.mvp.client.UiHandlers;
 
 interface MyUiHandlers extends UiHandlers {
-	public List<informationItem> getSecurityInformation();
-	public List<informationItem> getContactInformation();
-	public void update(String name);
+	void onGoBackPlace();
+
+	void showPasswordView();
+	void showEmailView();
+
+	void updateEmail(String value);
+	void updatePassword(String value);
+
+	String getSecurityInformation(String key);
 	
-	public class informationItem {
-		String key;
-		String value;
-		String link;
-	}
+	void update(String name);
 }

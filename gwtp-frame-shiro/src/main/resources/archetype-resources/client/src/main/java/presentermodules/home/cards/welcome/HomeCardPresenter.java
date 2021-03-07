@@ -20,7 +20,7 @@ import ${package}.entry.Subject;
 import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
-import ${package}.share.accounts.HostProjectRBAC;
+import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.templates.Project;
 
 public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
@@ -67,7 +67,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 			Set<String> roles = subject.getRoles();
 			StringBuffer sb = new StringBuffer();
 			for (String role : roles) {
-				${package}.share.accounts.HostProjectRBAC e = null;
+				HostProjectRBAC e = null;
 				try {
 				e = Enum.valueOf(HostProjectRBAC.class, role);
 				}catch(Exception ex) {
