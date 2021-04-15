@@ -15,7 +15,11 @@ public class AuthenticationActionHandler implements ActionHandler<Authentication
 
 	@Override
 	public GetNoResult execute(AuthenticationAction action, ExecutionContext context) throws ActionException {
-		return authorizing.doAuthenticationAction(action);
+		try {
+			return authorizing.doAuthenticationAction(action);
+		} catch(ActionException e) {
+			return null;
+		}
 	}
 
 	@Override

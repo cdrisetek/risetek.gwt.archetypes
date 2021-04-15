@@ -7,7 +7,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
@@ -30,7 +30,7 @@ public class RootPresenter extends Presenter<RootPresenter.MyView, RootPresenter
     public static final NestedSlot SLOT_MenuContent = new NestedSlot();
     public static final NestedSlot SLOT_LeftContent = new NestedSlot();
 
-    @ProxyStandard
+	@ProxyCodeSplit
     @NoGatekeeper
     public interface MyProxy extends Proxy<RootPresenter> {}
 

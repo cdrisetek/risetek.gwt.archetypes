@@ -1,25 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
  xmlns:m='urn:import:gwt.material.design.client.ui'>
-<ui:style gss="true">
-@external card-action material-label gwt-Label;
-.card-slot .material-label {margin: 10px 20px;}
-.card-slot .card-action {border-bottom: 1px solid rgba(160,160,160,0.2); background: rgba(160,160,160,0.05);}
-.card-slot .card-action a {border: 1px solid rgba(160,160,160,0.2); padding: 8px 20px;}
-.selected-account::before, .selected-project::before {font-weight:bold; margin-right: 10px; font-size: 1.2em;}
-.selected-account::before {content: "\9009\62e9\7684\8d26\6237:";}
-.selected-project::before {content: "\9009\62e9\7684\9879\76ee:";}
-
-.role-chip {display: flex; margin: 20px; border: 1px solid #C0C0C0; border-radius: 3px; padding: 20px; flex-flow: wrap;
- min-height: 100px; align-items: center; width: 100%; z-index: 300;}
-.role-chip .gwt-Label {margin: 2px 5px; border: 1px solid #A0A0A0; border-radius: 3px;
- padding: 5px 10px; cursor: pointer; background: rgba(100,150,250,0.1);}
-.box-role-description {z-index: 200; font-size: 2rem; color: rgba(100, 100, 100, 0.2); position: absolute; width: 100%; text-align: center; padding: 30px;}
-.box-role-container {display: flex; min-height: 100px; align-items: center; justify-content: center; text-align: center;}
-.role-chip, .role-chip-provider {display: flex; margin: 20px; border: 1px solid #C0C0C0; border-radius: 3px; padding: 20px; flex-flow: wrap;  min-height: 100px;
-align-items: center; width: 100%; z-index: 300;}
-.role-chip-provider .gwt-Label { background: rgba(100,250,150,0.1);}
-</ui:style>
+<ui:style gss="true" src="../style.gss"/>
 
 <m:MaterialCard styleName='{style.card-slot}'>
   <m:MaterialCardContent>

@@ -1,6 +1,6 @@
 package ${package}.presentermodules.login;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.Window.Location;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -24,7 +24,6 @@ public class PagePresenter extends
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		public void setStatus(String status);
-		public void setAccountOperatorActive(boolean enable);
 	}
 
 	private final String status_loginfailed = "\u767b\u5f55\u5931\u8d25";
@@ -39,8 +38,11 @@ public class PagePresenter extends
 	public interface MyProxy extends ProxyPlace<PagePresenter> {}
 
 	@Inject
-	public PagePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, PlaceManager placeManager, final Subject subject) {
+	public PagePresenter(final EventBus eventBus,
+			final MyView view,
+			final MyProxy proxy,
+			final PlaceManager placeManager,
+			final Subject subject) {
 		super(eventBus, view, proxy, RevealType.Root);
 		getView().setUiHandlers(this);
 		eventBus.addHandler(SubjectChangeEvent.getType(), this);
@@ -50,6 +52,11 @@ public class PagePresenter extends
 		// TODO: get the project for OAuth service.
 	}
 
+	@Override
+	public void onReveal() {
+		Location.replace("/oauth/login");
+	}
+	
 	@Override
 	public void Login(String username, String password, boolean rememberme) {
 		if(null == username || username.isEmpty() || null == password || password.isEmpty()) {
@@ -65,17 +72,15 @@ public class PagePresenter extends
 	
 	@Override
 	public void onSubjectChange() {
-		GWT.log("Subject state changed");
-		if(subject.isLogin()) {
-			if(placeManager.getHierarchyDepth() > 0
-				&& /* don't stay in login page */ 
-				!NameTokens.login.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-				placeManager.revealCurrentPlace();
-			} else
-				placeManager.revealDefaultPlace();
-		}
-		else
-			GWT.log("user is logout");
+		if(!subject.isLogin())
+			return;
+		
+		if(placeManager.getHierarchyDepth() > 0
+			&& /* don't stay in login page */ 
+			!NameTokens.login.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
+			placeManager.revealCurrentPlace();
+		} else
+			placeManager.revealDefaultPlace();
 	}
 
 	@Override

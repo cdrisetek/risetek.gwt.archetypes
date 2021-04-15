@@ -52,7 +52,6 @@
 		overflow: hidden;
 		position: relative;
 		text-align: center;
-		-webkit-tap-highlight-color: transparent;
 		width: 48px;
 		z-index: 0;
 		}

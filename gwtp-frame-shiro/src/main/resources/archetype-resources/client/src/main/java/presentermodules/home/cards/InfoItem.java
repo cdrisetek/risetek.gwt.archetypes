@@ -1,6 +1,8 @@
 package ${package}.presentermodules.home.cards;
 
+import java.util.List;
+
 public class InfoItem {
    	public String infoText;
-   	public String infoTextSecondary;
+   	public List<String> infoTextSecondary;
 }

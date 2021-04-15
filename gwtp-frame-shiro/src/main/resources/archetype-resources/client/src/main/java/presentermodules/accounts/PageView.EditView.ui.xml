@@ -2,18 +2,7 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
  xmlns:ma='urn:import:gwt.material.design.addins.client'
  xmlns:m='urn:import:gwt.material.design.client.ui'>
-<ui:style gss="true">
-@external gwt-Button gwt-HTML card-action material-label;
-@def CELL_WIDTH 160px;
-.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
-.card-slot .material-label {margin: 10px 20px;}
-.card-slot .card-action {background: rgba(160,160,160,0.05);}
-.card-slot .card-action button {font-size: 1.2rem;}
-.card-slot .card-action .row {margin-bottom: 0px;}
-.ui-field {margin: 30px 40px 0 40px; min-width: 320px;}
-.card-action button {opacity:0.5;}
-.card-action button:focus {opacity:1;}
-</ui:style>
+<ui:style gss="true" src="style.gss"/>
 
 <m:MaterialCard styleName='{style.card-slot}'>
  <m:MaterialCardContent>
@@ -22,15 +11,15 @@
   <m:MaterialTextBox placeholder="账户" ui:field="boxName" iconType="PERSON" type="TEXT" readOnly="true"
                      maxLength="30"/>
 
-  <m:MaterialTextBox ui:field="boxEmail" placeholder="邮件" styleName='{style.ui-field}'
+  <m:MaterialTextBox ui:field="boxEmail" placeholder="邮件" styleName='{style.card-row}'
                      iconType="EMAIL" type="EMAIL" maxLength="40"/>
-  <ma:inputmask.AbstractInputMask ui:field="boxTelphone" styleName='{style.ui-field}' type="TEL"
+  <ma:inputmask.AbstractInputMask ui:field="boxTelphone" styleName='{style.card-row}' type="TEL"
                      iconType="CALL" fieldType="DEFAULT" placeholder="eg: 139-0000-0001"
                      mask="000-0000-0000" clearOnKeyUp="true"/>
-  <m:MaterialTextBox ui:field="boxNotes" placeholder="备注" styleName='{style.ui-field}'
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="备注" styleName='{style.card-row}'
                      iconType="NOTE" type="TEXT" maxLength="200"/>
  </m:MaterialCardContent>
-  <m:MaterialRow styleName='{style.ui-field}'>
+  <m:MaterialRow styleName='{style.card-row}'>
     <m:MaterialButton ui:field="btnEnable" margin="8" text="账户启用" waves="LIGHT" textColor="WHITE"
                       iconType="SENTIMENT_SATISFIED" iconPosition="LEFT"/>
     <m:MaterialButton ui:field="btnDisable" margin="8" text="账户停用" waves="LIGHT" textColor="WHITE"

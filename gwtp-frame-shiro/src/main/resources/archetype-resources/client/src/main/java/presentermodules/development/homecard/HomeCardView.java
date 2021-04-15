@@ -9,6 +9,6 @@ public class HomeCardView extends BaseHomeCardView<MyUiHandlers> implements
 
 	@Inject
 	public HomeCardView() {
-		setTitle("开发者乐园", Icons.compassIcon());
+		setTitle("开发者乐园", Icons.aboutIcon());
 	}
 }

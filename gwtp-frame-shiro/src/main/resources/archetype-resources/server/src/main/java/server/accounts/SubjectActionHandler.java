@@ -2,13 +2,16 @@ package ${package}.server.accounts;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import ${package}.server.ActionExceptionMapper;
 import ${package}.share.accounts.AccountEntity;
 import ${package}.share.accounts.SubjectAction;
 import ${package}.share.dispatch.GetResult;
+import ${package}.share.exception.ActionUnauthorizedException;
 
 /**
  * Update Logined user information by himself. such as password.
@@ -21,27 +24,20 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 	
 	@Override
 	public GetResult<AccountEntity> execute(SubjectAction action, ExecutionContext context) throws ActionException {
+		Subject subject = SecurityUtils.getSubject();
 		AccountEntity entity = null;
 
 		// Get current subject associated user entity.
-		if(null == action.account && null == action.password) {
-			try {
-				entity = subjectManagement.getSubjectEntity();
-			} catch (Exception e) {
-				ActionExceptionMapper.handler(e);
-			}
-		}
+		if(null == action.account && null == action.password)
+			entity = subjectManagement.getSubjectEntity();
 		
 		// Change or reset current subject associated user password.
 		// If action.password is not null but is empty means reset password.
 		else if(null == action.account && null != action.password) {
-			try {
-				subjectManagement.setSubjectPassword(action.password);
-			} catch (Exception e) {
-				// This will throw a ActionUnauthenticatedException which is serializable
-				// to Client and handler by client.
-				ActionExceptionMapper.handler(e);
-			}
+			if(!subject.isPermitted("subject:update"))
+				throw new ActionUnauthorizedException("permission: update subject");
+				
+			subjectManagement.setSubjectPassword(action.password);
 		}
 
 		// Register new user.

@@ -2,30 +2,25 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
  xmlns:m='urn:import:gwt.material.design.client.ui'>
 
- <ui:style gss="true">
-  @def ITEM_HEIGHT 80px;
-  @def INTERACTIVE_WIDHT 330px;
-  @def INTERACTIVE_HEIGHT 40px;
-  @def LOGIN_BG_PADDING 30px;
+<ui:style gss="true">
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
+@def COLOR_MAIN eval("${package}.resource.Resources.getMainColor()");
+@def CELL_WIDTH 160px;
 
-  .lg-container {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  }
+.lg-container {
+ display: -webkit-flex;
+ -webkit-flex-direction: column;
+ display: flex;
+ flex-direction: column;
+ position: relative;
+ color: COLOR_TONE;
+ height: 100%;
+}
+.lg-container input {font-size: 1.4rem;}
 
- .lg-container input {
-  font-size: 1.5rem;
- }
+.lg-container .lg-center {display: block; margin: 0 auto;padding: 0px; background-color: COLOR_MAIN; width: mult(CELL_WIDTH, 2.5);}
 
- .lg-container:before, .lg-container:after {
+.lg-container:before, .lg-container:after, .lg-center:before, .lg-center:after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-box-flex: 1;
@@ -34,81 +29,42 @@
   flex-grow: 1;
   content: '';
   display: block;
-  }
+}
 
-  .lg-center {
-  display: block;
-  margin: 0 auto;
-  }
+.lg-container .lg-content {padding: 0px; margin: 30px 20px 0;}
+.lg-container .it-container {padding: 10px 5px;}
+</ui:style>
 
-  .lg-center:before, .lg-center:after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
-  content: '';
-  display: block;
-  }
+<g:HTMLPanel styleName="{style.lg-container}">
+ <m:MaterialCard styleName='{style.lg-center}'>
+  <m:MaterialCardContent>
+    <m:MaterialRow>
+     <m:MaterialColumn grid="l12 s12" paddingLeft="20" paddingRight="20">
+      <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
+     </m:MaterialColumn>
+    </m:MaterialRow>
+    <g:HTMLPanel styleName='{style.lg-content}'>
+     <m:MaterialTextBox ui:field="boxAccount" styleName="{style.it-container}" placeholder="账户" maxLength="20"
+       iconType="PERSON" type="TEXT" fieldType="DEFAULT" />
 
-  .lg-background {
-  width: add(
-  LOGIN_BG_PADDING, /* padding left */
-  LOGIN_BG_PADDING, /* padding right */
-  INTERACTIVE_WIDHT
-  );
-  padding: 0px;
-  margin: 0px;
-  }
+     <m:MaterialTextBox ui:field="boxPassword" placeholder="密码" maxLength="30"
+       iconType="VPN_KEY" type="PASSWORD" fieldType="DEFAULT" styleName="{style.it-container}" />
 
-  .lg-content {
-  padding: 10px 0px 0px 0px;
-  width: INTERACTIVE_WIDHT;
-  margin: 0px auto;
-  }
+     <m:MaterialButton ui:field="btnLogin" text="登录" waves="DEFAULT" textColor="WHITE"
+       iconType="SEND" width="100%" />
+    </g:HTMLPanel>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialCheckBox ui:field="remembeme" text="自动登录" value="false"/>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
 
-  .it-container {
-  width: 100%;
-  height: ITEM_HEIGHT;
-  }
- </ui:style>
-
- <g:HTMLPanel styleName="{style.lg-container}">
-  <div class='{style.lg-center}'>
-   <div class='{style.lg-background}'>
-    <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5">
-     <m:MaterialCardContent textColor="LIGHT_BLUE">
-      <m:MaterialRow>
-       <m:MaterialColumn grid="l12 s12" paddingLeft="20" paddingRight="20">
-        <m:MaterialCardTitle text="登录" iconType="LOCK_OPEN" iconPosition="RIGHT" />
-       </m:MaterialColumn>
-      </m:MaterialRow>
-      <g:HTMLPanel styleName='{style.lg-content}'>
-       <m:MaterialTextBox class="{style.it-container}" placeholder="账户" maxLength="20"
-          ui:field="username" iconType="PERSON" type="TEXT" fieldType="DEFAULT" />
-
-       <m:MaterialTextBox placeholder="密码" maxLength="30"
-          ui:field="password" iconType="VPN_KEY" type="PASSWORD"
-          fieldType="DEFAULT" class="{style.it-container}" />
-
-       <m:MaterialButton text="登录" waves="DEFAULT" textColor="WHITE"
-                         ui:field="loginButton" iconType="SEND" width="100%" />
-      </g:HTMLPanel>
-      </m:MaterialCardContent>
-      <m:MaterialCardAction>
-       <m:MaterialCheckBox text="自动登录" value="true" ui:field="remembeme"/>
-      </m:MaterialCardAction>
-    </m:MaterialCard>
-
-    <m:MaterialCard backgroundColor="BLUE_GREY_LIGHTEN_5" ui:field="accountop">
-     <m:MaterialCardAction>
-      <m:MaterialLink text="注册新用户" textColor="BLACK" ui:field="newAccount" iconType="OPEN_IN_NEW"/>
-      <m:MaterialLink text="忘记密码" textColor="BLACK" ui:field="forget" iconType="PORTRAIT"/>
-     </m:MaterialCardAction>
-    </m:MaterialCard>
-   </div>
-  </div>
- </g:HTMLPanel>
+ <m:MaterialCard ui:field="panelAccounEx" visible="false">
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field="newAccount" text="注册新用户" textColor="BLACK" iconType="OPEN_IN_NEW"/>
+   <m:MaterialLink ui:field="forget" text="忘记密码" textColor="BLACK" iconType="PORTRAIT"/>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+</g:HTMLPanel>
 
 </ui:UiBinder>

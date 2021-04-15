@@ -15,6 +15,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.Action;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import ${package}.share.accounts.AccountAction;
 import ${package}.share.accounts.AccountEntity;
 import ${package}.share.accounts.AuthenticationAction;
 import ${package}.share.accounts.AuthorizationAction;
@@ -44,7 +45,9 @@ public final class Subject {
 	private final ServerExceptionHandler exceptionHandler;
 
 	@Inject
-	public Subject(DispatchAsync dispatcher, EventBus eventBus, ServerExceptionHandler exceptionHandler) {
+	public Subject(final DispatchAsync dispatcher,
+			final EventBus eventBus,
+			final ServerExceptionHandler exceptionHandler) {
 		this.dispatcher = dispatcher;
 		this.eventBus = eventBus;
 		this.exceptionHandler = exceptionHandler;
@@ -55,6 +58,7 @@ public final class Subject {
 			new AsyncCallback<GetResults<GetResult<? extends IsSerializable>>>() {
 				@Override
 				public void onFailure(Throwable caught) {
+					resetSubject();
 					if(null != failure)
 						failure.accept(caught);
 					else
@@ -66,6 +70,7 @@ public final class Subject {
 				@Override
 				public void onSuccess(GetResults<GetResult<?>> result) {
 					List<GetResult<?>> results = result.getResults();
+					resetSubject();
 					results.forEach(entity -> {
 						Object obj = entity.getResults();
 						if(obj instanceof GetResult) {
@@ -78,6 +83,9 @@ public final class Subject {
 							}
 						}
 					});
+					if(null == subjectPrincipal && null != failure)
+						failure.accept(new Throwable("login failed"));
+					GWT.log("subject changed");
 					eventBus.fireEvent(SubjectChangeEvent.INSTANCE);
 				};
 			});	
@@ -87,39 +95,43 @@ public final class Subject {
 	 * Login function send Authentication data to server, then get authorization data and user data from server.
 	 */
 	public void Login(String username, String password, boolean remember, String project, Consumer<Throwable> failure) {
-		subjectRoles = null;
-		subjectDescriptions = null;
-
+		resetSubject();
 		AuthenticationAction authenAction = 
 				new AuthenticationAction(Arrays.asList(username), password, remember, project);
 
-		// To read subject roles
-		AuthorizationAction authorizationAction = new AuthorizationAction();
-		// To read subject descriptions
-		SubjectAction subjectAction = new SubjectAction();
-		doSubjectBatchAction(failure, authenAction, authorizationAction, subjectAction);
+		doSubjectBatchAction(failure,
+				// just for development
+				new AccountAction("key" /* just make handler happy */),
+				authenAction, 
+				new AuthorizationAction(), /* To read subject roles */
+				new SubjectAction() /* To read subject descriptions */);
 	}
     
 	public void Logout() {
-		subjectRoles = null;
-		subjectDescriptions = null;
-
-		AuthenticationAction action = new AuthenticationAction();
-		doSubjectBatchAction(null, action);
+		resetSubject();
+		doSubjectBatchAction(null, new AuthenticationAction());
 	}
 
-	public void accountSync(Consumer<String> success, Consumer<Throwable> failure) {
-		subjectRoles = null;
-		subjectDescriptions = null;
-		
-		doSubjectBatchAction(failure, new AuthorizationAction(), new SubjectAction());
+	public void accountSync() {
+		resetSubject();
+		GWT.log("account sync");
+		doSubjectBatchAction(null,
+				new AuthorizationAction(),  /* To read subject roles */
+				new SubjectAction() /* To read subject descriptions */);
 	}
 	
+	private final void resetSubject() {
+		subjectPrincipal = null;
+		subjectRoles = null;
+		subjectDescriptions = null;
+	}
 	/*
 	 * TODO: When Server side throw UnAuthorization Exception, this function be called to synchronize subject.
 	 */
 	public boolean isLogin() {
-		return null != subjectRoles;
+		GWT.log("is login?" + subjectPrincipal);
+		GWT.log("is login?" + subjectRoles);
+		return (null != subjectPrincipal) && (null != subjectRoles);
 	}
 	
 	public String getAccountAttribute(String key) {

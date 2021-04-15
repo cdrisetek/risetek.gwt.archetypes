@@ -17,7 +17,6 @@
 .kv-block {
 display: block;
 position: relative;
--webkit-tap-highlight-color: rgba(0,0,0,0);
 will-change: transform,opacity;
 outline: none;
 overflow: hidden;

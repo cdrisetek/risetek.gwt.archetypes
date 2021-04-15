@@ -10,5 +10,6 @@ import ${package}.share.dispatch.GetResult;
 public interface IAuthorizingHandler {
 	GetNoResult doAuthenticationAction(AuthenticationAction action) throws ActionException;
 	GetResult<AuthorizationEntity> doAuthorizationAction(AuthorizationAction action) throws ActionException;
-	String encryptRealmPassword(String password);
+	String encryptRealmPassword(Object password);
+	boolean passwordsMatch(Object submittedPlaintext, String encrypted);
 }

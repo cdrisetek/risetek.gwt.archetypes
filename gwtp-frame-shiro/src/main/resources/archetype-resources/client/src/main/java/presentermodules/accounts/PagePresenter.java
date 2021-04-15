@@ -98,7 +98,14 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public void onReveal() {
 		selectedAccount = placeManager.getCurrentPlaceRequest().getParameter(TokenNames.select, selectedAccount);
 		getView().showAccountView();
+		super.onReveal();
 	}
+
+	@Override
+    protected void onHide() {
+    	selectedAccount = null;
+    	super.onHide();
+    }
 	
 	@Override
 	public void createAccount(String name, String password, Map<String, String> descriptions) {

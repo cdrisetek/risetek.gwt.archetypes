@@ -1,6 +1,7 @@
 package ${package}.presentermodules.home.cards.simple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,17 +43,17 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		List<InfoItem> items = new ArrayList<>();
 		InfoItem item = new InfoItem();
 		item.infoText = "Git commit ID";
-		item.infoTextSecondary = stamp.getCommitID();
+		item.infoTextSecondary = Arrays.asList(stamp.getCommitID());
 		items.add(item);
 
 		item = new InfoItem();
 		item.infoText = "Git Commit Date Time";
-		item.infoTextSecondary = stamp.getCommitDate();
+		item.infoTextSecondary = Arrays.asList(stamp.getCommitDate());
 		items.add(item);
 
 		item = new InfoItem();
 		item.infoText = "Build Date Time";
-		item.infoTextSecondary = stamp.getBuilderStamp();
+		item.infoTextSecondary = Arrays.asList(stamp.getBuilderStamp());
 		items.add(item);
 
 		getView().updateInfoItems(items);

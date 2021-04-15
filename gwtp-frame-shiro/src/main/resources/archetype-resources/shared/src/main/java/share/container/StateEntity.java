@@ -1,5 +1,9 @@
 package ${package}.share.container;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Vector;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class StateEntity implements IsSerializable {
@@ -9,11 +13,11 @@ public class StateEntity implements IsSerializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getMessage() {
+	public List<String> getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
-		this.message = message;
+		(this.message = Optional.ofNullable(this.message).orElse(new Vector<>())).add(message);
 	}
 	public int getType() {
 		return type;
@@ -22,6 +26,6 @@ public class StateEntity implements IsSerializable {
 		this.type = type;
 	}
 	private String title;
-	private String message;
+	private List<String> message;
 	private int type;
 }

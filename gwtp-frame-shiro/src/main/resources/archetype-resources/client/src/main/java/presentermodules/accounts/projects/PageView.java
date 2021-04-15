@@ -98,17 +98,19 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
         				isStop.accept(true);
         			}});
         	}).checkKeyPress().build())
-	        .nextField(boxNotes).build();
+			.nextField(boxSecret).minLength(8).build()
+	        .nextField(boxNotes).build()
+	        .nextField(btnCommit).build();
 		}
 		
 		@UiField MaterialButton btnCommit;
-		@UiField MaterialValueBox<String> boxName, boxNotes;
+		@UiField MaterialValueBox<String> boxName, boxNotes, boxSecret;
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
 			Map<String, String> descriptions = new HashMap<>();
 			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
-			
+			Optional.ofNullable(boxSecret.getValue()).ifPresent(v->descriptions.put(EnumProject.SECRET.name(), v));
 			getUiHandlers().createProject(boxName.getValue(), descriptions);
 		}
 
@@ -117,12 +119,18 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			fields.validate(boxNotes);
 		}
 		
+		@UiHandler("boxSecret")
+		void onSecretFocus(FocusEvent e) {
+			fields.validate(boxNotes);
+		}
+
 		@Override
 		protected void onAttach() {
 			super.onAttach();
 			panelValidate.clear();
 			boxName.clear();
 			boxNotes.clear();
+			boxSecret.clear();
 			boxName.setFocus(true);
 
 			Scheduler.get().scheduleDeferred(() -> {
@@ -164,21 +172,39 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	static class EditView extends ViewWithUiHandlers<MyUiHandlers> {
 		interface Binder extends UiBinder<Widget, EditView> {}
+		private final SheetField fields;
 		@Inject
 		public EditView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
+
+			// Build validation chain.
+			(fields = new SheetField.Builder(boxSecret).minLength(8).build())
+	        .nextField(boxNotes).build()
+	        .nextField(btnCommit).build();
 		}
-		
-		@UiField MaterialValueBox<String> boxName, boxNotes;
+
+		@UiField MaterialValueBox<String> boxName, boxNotes, boxSecret;
 		@UiField MaterialButton btnEnable, btnDisable;
+		@UiField MaterialButton btnCommit;
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
 			Map<String, String> descriptions = new HashMap<>();
 			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
+			Optional.ofNullable(boxSecret.getValue()).ifPresent(v->descriptions.put(EnumProject.SECRET.name(), v));
 			if(btnEnable.isEnabled()) descriptions.put(EnumProject.STATUS.name(), "disable");
 			
 			getUiHandlers().updateProject(boxName.getValue(), descriptions);
+		}
+		
+		@UiHandler("boxNotes")
+		void onNotesFocus(FocusEvent e) {
+			fields.validate(boxNotes);
+		}
+		
+		@UiHandler("boxSecret")
+		void onSecretFocus(FocusEvent e) {
+			fields.validate(boxNotes);
 		}
 		
 		@UiHandler("btnEnable")
@@ -202,11 +228,13 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 			getUiHandlers().getProject((name, descriptions) -> {
 				boxName.setValue(name);
+				boxSecret.setValue(descriptions.get(EnumProject.SECRET.name()));
 				boxNotes.setValue(descriptions.get(EnumProject.NOTES.name()));
 				String status = descriptions.get(EnumProject.STATUS.name());
 				boolean s = "disable".equals(status);
 				toggleStatus(!s);
 			});
+			boxSecret.setFocus(true);
 		}
 	}
 	private final EditView editView;

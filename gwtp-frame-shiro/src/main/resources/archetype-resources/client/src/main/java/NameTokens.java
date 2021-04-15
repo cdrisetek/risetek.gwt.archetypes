@@ -15,4 +15,5 @@ public class NameTokens {
     public static final String updateEmail = "/security/email";
     public static final String newAcct = "/security/newacct";
     public static final String resetPassword = "/security/resetPassword";
+    public static final String deploy = "/deploy";
 }

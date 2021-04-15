@@ -312,6 +312,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		
 		private void renderHostProjectRoles() {
 			panelProjectRoles.clear();
+			if(null == projectRoleSet)
+				return;
 			for(String role:projectRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
@@ -326,6 +328,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 		private void renderAccountRoles() {
 			panelRoles.clear();
+			if(null == accountRoleSet)
+				return;
 			for(String role:accountRoleSet) {
 				Label chip = new Label(role);
 				chip.addClickHandler(e -> {
@@ -340,6 +344,14 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		
 		@Override
 		protected void onAttach() {
+			labSelectedAccount.setVisible(false);
+			btnAccountSet.setEnabled(false);
+			accountRoleSet = null;
+			projectRoleSet = null;
+			panelRolesContent.setVisible(false);
+			renderAccountRoles();
+			renderHostProjectRoles();
+
 			getUiHandlers().getAccountRoles((name) -> {
 				labSelectedAccount.setValue(name);
 				labSelectedAccount.setVisible((null != name && !name.isEmpty()));

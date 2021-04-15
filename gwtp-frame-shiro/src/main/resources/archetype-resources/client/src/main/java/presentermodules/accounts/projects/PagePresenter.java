@@ -98,6 +98,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		selectedAccount = placeManager.getCurrentPlaceRequest().getParameter(TokenNames.select, selectedAccount);
 		selectedProject = placeManager.getCurrentPlaceRequest().getParameter(TokenNames.selectProject, selectedProject);
 		getView().showProjectView();
+		super.onReveal();
 	}
 
 	private final PlaceRequest backPlace = new PlaceRequest.Builder().nameToken(NameTokens.home).build();

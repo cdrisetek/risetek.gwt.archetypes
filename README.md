@@ -111,6 +111,27 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * 可序列化的ActionException在xxx.share.exception包中。
 * ServerExceptionHandler类在client的utils.ServerExceptionHandler。
 
+#### Service side initialization
+* DevOpsTask提供了一种跟踪，记录服务端初始化的办法。
+* 特别地，如果服务端没有提供合适的账户进行后续的作业，可以进入/services页面处理。
+
+#### 部署
+服务端需要得到浏览器访问的URL，因此部署时要考虑将这些信息真实地传递到服务端，比如在使用nginx的情况下，一个实际的配置例子：
+
+```
+server {
+  listen 80;
+  server_name devops.yun74.com;
+  location / {
+    proxy_pass http://localhost:19000;
+    port_in_redirect off;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+  }
+}
+```
+
 modular-webapp
 ======
 #### 构造项目，自定义module名称，比如demo

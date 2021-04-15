@@ -11,8 +11,8 @@ margin:   2px;
 width:    NAV_MENU_WIDTH;
 height:   NAV_MENU_HEIGHT;
 background-color:  COLOR_TONE;
-display:           inline-flex;
-display:           -webkit-inline-box;
+display: -webkit-inline-box;
+display: inline-flex;
 cursor: pointer;
 }
 .menuItemTitle {

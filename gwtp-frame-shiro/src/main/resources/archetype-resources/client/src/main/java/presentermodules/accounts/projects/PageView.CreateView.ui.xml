@@ -2,23 +2,7 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
  xmlns:ma='urn:import:gwt.material.design.addins.client'
  xmlns:m='urn:import:gwt.material.design.client.ui'>
-<ui:style gss="true">
-@external card-action row material-label material-icons;
-.card-slot .card-action {background: rgba(160,160,160,0.05);}
-.card-slot .card-action button {font-size: 1.2rem;}
-.card-slot .card-action .row {margin-bottom: 0px;}
-.card-slot .material-label {margin: 10px 20px;}
-.ui-field {margin: 30px 40px 0 40px; min-width: 320px;}
-.ui-hidden-icons {display: none;}
-.ui-account-validate {position: absolute; right: 0; top: 0; display: flex; color: blue;}
-.ui-account-validate .material-icons {margin: auto;}
-.box-rotate, .box-static {width: 100%; height: 100%; display: flex;}
-.box-rotate {transform-origin: 50% 50%; animation: rotate 0.5s linear infinite;}
-@keyframes rotate{0%{transform: rotate(0);} 100%{transform: rotate(360deg);}}
-.box-section {border: 1px solid #C0C0C0; border-radius: 3px; margin: 0 0 10px 0;}
-.card-action button {opacity:0.5;}
-.card-action button:focus {opacity:1;}
-</ui:style>
+<ui:style gss="true" src="../style.gss"/>
 
 <g:HTMLPanel>
 <m:MaterialCard styleName='{style.card-slot}'>
@@ -29,10 +13,12 @@
   </m:MaterialRow>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="新建账户要求长度至少为4，并且不能与已经存在的账户同名。"/>
-  <m:MaterialTextBox ui:field="boxName" placeholder="选择一个不重复的项目名称" styleName='{style.ui-field}' iconType="PERSON" type="TEXT" maxLength="30"/>
+   <m:MaterialTextBox ui:field="boxName" placeholder="选择一个不重复的项目名称" styleName='{style.card-row}' iconType="PERSON" type="TEXT" maxLength="30"/>
   </g:HTMLPanel>
-   <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色。"/>
-  <m:MaterialTextBox ui:field="boxNotes" placeholder="可选的项目注释" styleName='{style.ui-field}' iconType="NOTE" type="TEXT" maxLength="200"/>
+  <m:MaterialLabel text="OAuth需要设定项目密钥用以确保项目安全，项目密钥长度不能小于8。"/>
+  <m:MaterialTextBox ui:field="boxSecret" placeholder="项目密钥" iconType="NOTE" type="TEXT" maxLength="30"/>
+  <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色。"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="可选的项目注释" styleName='{style.card-row}' iconType="NOTE" type="TEXT" maxLength="200"/>
  </m:MaterialCardContent>
  <m:MaterialCardAction>
   <m:MaterialRow>
@@ -41,9 +27,9 @@
   </m:MaterialRow>
  </m:MaterialCardAction>
 </m:MaterialCard>
-<div class='{style.ui-hidden-icons}'>
- <g:HTMLPanel ui:field='panelValidate' styleName='{style.ui-account-validate}' />
- <g:HTMLPanel ui:field='iconChecking' styleName='{style.box-rotate}'><m:MaterialIcon iconType="REFRESH" /></g:HTMLPanel>
+<div style="display: none;">
+ <g:HTMLPanel ui:field='panelValidate' styleName='{style.ui-panel-validate}' />
+ <g:HTMLPanel ui:field='iconChecking' styleName='{style.box-rotate}'><m:MaterialIcon iconType="REFRESH"/></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconValidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CHECK" iconColor="GREEN"/></g:HTMLPanel>
  <g:HTMLPanel ui:field='iconInvalidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CLEAR" iconColor="RED"/></g:HTMLPanel>
 </div>

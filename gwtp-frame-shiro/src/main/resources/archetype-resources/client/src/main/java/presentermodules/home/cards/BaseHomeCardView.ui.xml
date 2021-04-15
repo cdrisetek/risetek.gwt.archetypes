@@ -76,12 +76,12 @@
  display: flex;
  position: relative;
  align-items: center;
+ overflow-wrap: anywhere;
  padding: 4px 16px 4px 0;
  width: 100%;
  color: #000;
  border: 0;
  text-decoration: none;
- transition: background-color .3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .infoCardItemContentLeft {flex: 1 1; min-width: 0;}

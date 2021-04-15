@@ -74,15 +74,15 @@ public class BaseHomeCardView<Ui extends UiHandlers> extends ViewWithUiHandlers<
 				infoCardContentLeft.getElement().appendChild(textLine);
 			}
 			if(null != item.infoTextSecondary) {
-				Element textLine = DOM.createDiv();
-				textLine.setClassName(style.infoTextLine());
-
-				Label text = new Label(item.infoTextSecondary);
-				text.setStyleName(style.cardInfoText());
-				text.addStyleName(style.cardInfoTextSecondary());
-				textLine.appendChild(text.getElement());
-
-				infoCardContentLeft.getElement().appendChild(textLine);
+				for(String s : item.infoTextSecondary) {
+					Element textLine = DOM.createDiv();
+					textLine.setClassName(style.infoTextLine());
+					Label text = new Label(s);
+					text.setStyleName(style.cardInfoText());
+					text.addStyleName(style.cardInfoTextSecondary());
+					textLine.appendChild(text.getElement());
+					infoCardContentLeft.getElement().appendChild(textLine);
+				}
 			}
 			cardBodyGroup.add(itemPanel);
 		}

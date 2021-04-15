@@ -95,7 +95,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectC
 		UrlBuilder builder = new UrlBuilder();
 		builder.setProtocol(Window.Location.getProtocol())
 		       .setHost(Window.Location.getHost())
-		       .setPath("/login");
+		       .setPath("/oauth/login");
 
 		String port = Window.Location.getPort();
 		if (port != null && port.length() > 0) {

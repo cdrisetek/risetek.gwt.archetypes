@@ -1,0 +1,88 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@external card-action row material-label material-icons;
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+.container .card-slot .card-action button {font-size: 1.2rem;}
+.container .card-slot .card-action .row {margin-bottom: 0px;}
+.container .card-slot .material-label {margin: 10px 20px;}
+</ui:style>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' width='100%'>
+  <m:MaterialLink ui:field='btnGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="客户端模拟" />
+ </m:MaterialNavBar>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="OAuth说明" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="OAuth。"/>
+   <m:MaterialLabel text="B端，通常是浏览器。"/>
+   <m:MaterialLabel text="C端，OAuth Client。"/>
+   <m:MaterialLabel text="S端，OAuth Server。"/>
+  </m:MaterialCardContent>
+ </m:MaterialCard>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="第一步：模拟登录" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="B > OAuth Client: GET -> /oauth/dlogin。"/>
+   <m:MaterialLabel text="OAuth Client > B: REDIRECT TO -> /dlogin.jsp?client_id+redirect_uri。"/>
+   <m:MaterialLabel text="执行这一步，浏览器发起Request路径为：/oauth/dlogin，服务端加入client_id和回调页面参数，并重定向到/dlogin.jsp页面。"/>
+   <m:MaterialLabel text="进入模拟的OAuth登录界面（/dlogin.jsp）后，输入账户和密码，确定后，服务端/oauth/authz进行授权，重定向到加上OAuth Code参数的回调页面。"/>
+   <m:MaterialLabel text="提示：因为模拟的OAuth登录界面是独立存在的，所以进入到模拟界面的时候，当前的所有信息会丢失。那意味着，重新回来，需要再次登录本服务。"/>
+   <m:MaterialLabel text="提示：在实际的过程中，登录确定后，/oauth/authz回调的页面在OAuth Client域，而不是本实例中的展示页面。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnCommit" margin="8" text="确定" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard ui:field='panelToken' styleName='{style.card-slot}' visible='false'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="第二步：OAuth Code for Token" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel ui:field='labelCode'/>
+   <m:MaterialLabel ui:field='labelState'/>
+   <m:MaterialLabel text="模拟 OAuth Client向OAuth Server的请求过程。"/>
+   <m:MaterialLabel text="已经获取了OAuth Server提供的Code，服务后台用client_id，client_security和code交换Token。"/>
+   <m:MaterialLabel text="注意：在实际的过程中，登录确定后，/oauth/authz回调的页面在OAuth Client域，而不是本实例中的展示页面。您看到的这个界面是一个（并不必要的）中间过程。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnTokenCommit" margin="8" text="确定" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard ui:field='panelResources' styleName='{style.card-slot}' visible='false'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="第三步：OAuth Token for Resources" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel ui:field='labelToken'/>
+   <m:MaterialLabel text="模拟 OAuth Client向OAuth Server的请求过程。"/>
+   <m:MaterialLabel text="已经获取了OAuth Server提供的Token，服务后台用client_id，client_security和code交换Token。"/>
+   <m:MaterialLabel text="注意：在实际的过程中，登录确定后，/oauth/authz回调的页面在OAuth Client域，而不是本实例中的展示页面。您看到的这个界面是一个（并不必要的）中间过程。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnResourcesCommit" margin="8" text="确定" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="说明" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="您可以用本示例服务调试OAuth客户端。"/>
+  </m:MaterialCardContent>
+ </m:MaterialCard>
+
+</g:HTMLPanel>
+</ui:UiBinder>

@@ -18,13 +18,14 @@ import com.google.inject.Module;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
-import ${package}.server.accounts.IAccountManagement;
-import ${package}.server.servlet.LoginServlet;
+import ${package}.server.devops.ServicesManagement;
 import ${package}.server.shiro.MyShiroWebModule;
-import ${package}.server.servlet.OAuthJWTServlet;
+import ${package}.server.shiro.OAuthAuthzServlet;
+import ${package}.server.shiro.OAuthLoginUrlBuilderServlet;
+import ${package}.server.shiro.OAuthTokenServlet;
 
 /**
- * Don't change this class, Maven-processer-plugin need to override this class for auto load submodules.
+ * Maven-processer-plugin need this class to override for auto load submodules.
  * 
  * @author wangyc@risetek.com
  */
@@ -43,10 +44,11 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 		Injector injector = (Injector) servletContext.getAttribute(Injector.class.getName());
 		if(null != injector) {
 			// TODO: callback? or inject?
-			IAccountManagement accountManagement = injector.getInstance(IAccountManagement.class);
-			if(null != accountManagement)
-				accountManagement.shutdown();
 		}
+		// Call registered clean functions.
+		// TODO: Destroyable
+		ServicesManagement.cleanServices();
+		
 		super.contextDestroyed(servletContextEvent);
 	}
 	
@@ -67,15 +69,28 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 		modulesList.add(new ServletModule() {
 			@Override
 			protected void configureServlets() {
-				// For redirect login page to AAA server
+				// For redirect login page to OAuth server
 				// AAA server could be local or remote OAuth server.
-				serve("/login").with(LoginServlet.class);
-				// For remote server exchange JWT message with OAuth server.
-				serve("/oauth/jwt").with(OAuthJWTServlet.class);
+				serve("/oauth/login").with(OAuthLoginUrlBuilderServlet.class); // OAuth client handler
+				serve("/oauth/token").with(OAuthTokenServlet.class); // OAuth client handler
+				serve("/oauth/authz").with(OAuthAuthzServlet.class); // OAuth server handler
 
+				// Demo Login for devops
+				serve("/demo/oauth/login").with(OAuthLoginUrlBuilderServlet.class);
+				serve("/demo/oauth/authz").with(OAuthAuthzServlet.class);
+				serve("/demo/oauth/token").with(OAuthTokenServlet.class);
+				
 				serve("/dispatch/*").with(DispatchServiceImpl.class);
 				//shiro filter
+		        filter("/oauth/token").through(GuiceShiroFilter.class);
+		        
+		        // TODO:!!
+		        // filter("/oauth/token").through(OAuthTokenServlet.class);
+		        
+
+//		        filter("/demo/oauth/token").through(GuiceShiroFilter.class);
 		        filter("/dispatch/*").through(GuiceShiroFilter.class);
+		        filter("*").through(HttpHeaderFilter.class);
 //				bind(ExceptionHandler.class).to(DefaultExceptionHandler.class);
 				bind(Context.class).toInstance(ctx);
 			}

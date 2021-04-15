@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * 每一个项目开发，都需要设定项目本身的role及其permissions
  * 服务端按照这个设定进行授权
@@ -11,7 +13,7 @@ import java.util.Set;
  * @author wangyc@risetek.com
  *
  */
-public enum HostProjectRBAC {
+public enum HostProjectRBAC implements IsSerializable {
 	ADMIN {
 		@Override
 		public String toString() {
@@ -19,6 +21,7 @@ public enum HostProjectRBAC {
 		}
 
 		private final Set<String> permissions = new HashSet<>(Arrays.asList(
+				"roles:create,update,read",
 				"accounts:create,update,read",
 				"projects:create,update,read"));
 		@Override
@@ -58,6 +61,7 @@ public enum HostProjectRBAC {
 			return "开发";
 		}
 		private final Set<String> permissions = new HashSet<>(Arrays.asList(
+				"roles:create,update,read",
 				"accounts:create,update,read",
 				"projects:create,update,read"));
 		@Override

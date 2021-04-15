@@ -11,6 +11,7 @@ import ${package}.NameTokens;
 import ${package}.share.exception.ActionAuthenticationException;
 import ${package}.share.exception.ActionUnauthenticatedException;
 import ${package}.share.exception.ActionUnauthorizedException;
+import ${package}.share.exception.ActionUninitializedException;
 
 @Singleton
 public class ServerExceptionHandler {
@@ -43,9 +44,11 @@ public class ServerExceptionHandler {
 		}
 		else if(caught instanceof ActionUnauthenticatedException) {
 			placeManager.revealUnauthorizedPlace(null);
-		}
-		else if(caught instanceof ActionException) {
+		} else if(caught instanceof ActionException) {
 			GWT.log(" caught instanceof ActionException");
+			GWT.log("Server State Failed." + caught.getClass());
+		} else if(caught instanceof ActionUninitializedException) {
+			GWT.log(" caught instanceof ActionUninitializedException");
 			GWT.log("Server State Failed." + caught.getClass());
 		} else {
 			GWT.log("Server State Failed." + caught);

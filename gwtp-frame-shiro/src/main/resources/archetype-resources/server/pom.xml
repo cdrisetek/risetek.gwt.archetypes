@@ -14,30 +14,32 @@
 
   <properties>
     <webappDirectory>${dollar}{project.build.directory}/${dollar}{project.build.finalName}</webappDirectory>
-    <shiro.version>1.6.0</shiro.version>
+    <shiro.version>1.7.1</shiro.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
     <commons-logging.version>1.2</commons-logging.version>
+    <hsqldb-version>2.5.1</hsqldb-version>
+    <oltu.version>1.0.2</oltu.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>${dollar}{project.groupId}</groupId>
-      <artifactId>${rootArtifactId}-shared</artifactId>
-      <version>${dollar}{project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-     <groupId>com.google.inject.extensions</groupId>
-     <artifactId>guice-servlet</artifactId>
-    </dependency>
-    <dependency>
-     <groupId>javax.servlet</groupId>
-     <artifactId>javax.servlet-api</artifactId>
-     <scope>provided</scope>
-    </dependency>
+   <dependency>
+     <groupId>${dollar}{project.groupId}</groupId>
+     <artifactId>${rootArtifactId}-shared</artifactId>
+     <version>${dollar}{project.version}</version>
+   </dependency>
+   <dependency>
+     <groupId>com.google.inject</groupId>
+     <artifactId>guice</artifactId>
+   </dependency>
+   <dependency>
+    <groupId>com.google.inject.extensions</groupId>
+    <artifactId>guice-servlet</artifactId>
+   </dependency>
+   <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <scope>provided</scope>
+   </dependency>
 
 <!-- 
     <dependency>
@@ -80,6 +82,57 @@
      <groupId>com.gwtplatform</groupId>
      <artifactId>gwtp-dispatch-rpc-server-guice</artifactId>
     </dependency>
+   <dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>${hsqldb-version}</version>
+   </dependency>
+   <!-- oltu -->
+   <dependency>
+    <groupId>org.apache.oltu.commons</groupId>
+    <artifactId>org.apache.oltu.commons.json</artifactId>
+    <version>1.0.0</version>
+   </dependency>
+
+   <dependency>
+    <groupId>org.apache.oltu.commons</groupId>
+    <artifactId>org.apache.oltu.commons.encodedtoken</artifactId>
+    <version>1.0.0</version>
+   </dependency>
+
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.common</artifactId>
+    <version>${oltu.version}</version>
+   </dependency>
+
+<!-- 
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+    <version>${oltu.version}</version>
+   </dependency>
+ -->
+
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+    <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+     <groupId>org.apache.oltu.oauth2</groupId>
+     <artifactId>org.apache.oltu.oauth2.client</artifactId>
+     <version>${oltu.version}</version>
+    </dependency>
+
+
+    <dependency>
+     <groupId>org.apache.oltu.oauth2</groupId>
+     <artifactId>org.apache.oltu.oauth2.jwt</artifactId>
+     <version>1.0.3</version>
+   </dependency>
+
   </dependencies>
 
   <build>
@@ -187,6 +240,12 @@
                     <resourceBase>${dollar}{webappDirectory}</resourceBase>
                   </resourceBases>
                 </webApp>
+                <systemProperties>
+                 <systemProperty>
+                   <name>log4j.configuration</name>
+                   <value>${basedir}/src/main/webapp/WEB-INF/log4j.properties</value>
+                 </systemProperty>
+                </systemProperties>
               </configuration>
             </plugin>
           </plugins>

@@ -1,11 +1,14 @@
 package ${package}.presentermodules.home.cards.welcome;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Location;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -54,13 +57,17 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		List<InfoItem> items = new ArrayList<>();
 		InfoItem item = new InfoItem();
 		item.infoText = "\u767b\u5f55\u72b6\u6001";
-		item.infoTextSecondary = subject.isLogin() ? "已登录" : "未登录";
+		item.infoTextSecondary = Arrays.asList(subject.isLogin() ? "已登录" : "未登录");
 		items.add(item);
 		if (!subject.isLogin()) {
 			item = new InfoItem();
 			item.infoText = "登录后拥有更多操作权限";
 			items.add(item);
-			getView().addAction("用户登录", c->{placeManager.revealPlace(placeRequest, false);});
+			getView().addAction("用户登录", c->{
+				//placeManager.revealPlace(placeRequest, false);
+	            String param = Location.createUrlBuilder().setPath("/oauth/login").buildString();
+	            Location.replace(param);
+				});
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";
@@ -79,12 +86,12 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 					sb.append(" " + e.toString());
 			}
 
-			item.infoTextSecondary = sb.toString();
+			item.infoTextSecondary = Arrays.asList(sb.toString());
 			items.add(item);
 
 			item = new InfoItem();
 			item.infoText = "项目";
-			item.infoTextSecondary = Project.name;
+			item.infoTextSecondary = Arrays.asList(Project.name);
 			items.add(item);
 			
 			getView().addAction("我的账户信息", c->{placeManager.revealPlace(securityPlaceRequest);});

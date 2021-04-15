@@ -4,94 +4,76 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import ${package}.utils.SheetField;
+import ${package}.utils.SheetField.TYPE;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialCheckBox;
-import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialToast;
+import gwt.material.design.client.ui.MaterialValueBox;
 
 class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter.MyView {
 	private static final String buttonLogining = "登录中...";
 	private static final String buttonLogin = "登录";
 
-	@UiField
-	MaterialTextBox username, password;
-	
-	@UiField
-	MaterialCheckBox remembeme;
+	@UiField MaterialValueBox<String> boxAccount, boxPassword;
+	@UiField MaterialCheckBox remembeme;
+	@UiField MaterialButton btnLogin;
+	@UiField MaterialCard panelAccounEx;
 
-	@UiField
-	MaterialButton loginButton;
-	
-	@UiField
-	MaterialCard accountop;
-
-	interface Binder extends UiBinder<HTMLPanel, PageView> {}
+	interface Binder extends UiBinder<Widget, PageView> {}
+	private final SheetField fieldHeader;
 
 	@Inject
     public PageView(Binder binder) {
     	initWidget(binder.createAndBindUi(this));
     	
-    	username.setAutocomplete(false);
-    	Element el = username.asValueBoxBase().getElement();
+    	boxAccount.setAutocomplete(false);
+    	Element el = boxAccount.asValueBoxBase().getElement();
 		el.setAttribute("spellcheck", "false");
 		el.setAttribute("autocapitalize", "off");
 		el.setAttribute("autocorrect", "off");
     	
-    	password.setAutocomplete(false);
-    	el = password.asValueBoxBase().getElement();
+    	boxPassword.setAutocomplete(false);
+    	el = boxPassword.asValueBoxBase().getElement();
 		el.setAttribute("spellcheck", "false");
 		el.setAttribute("autocapitalize", "off");
 		el.setAttribute("autocorrect", "off");
     	
     	// default no account operation panel.
-    	setAccountOperatorActive(false);
-    }
+    	// setAccountOperatorActive(false);
+	
+		// Build validation chain.
+		(fieldHeader = new SheetField.Builder(boxAccount).type(TYPE.ACCOUNT).minLength(1).build())
+		.nextField(boxPassword).type(TYPE.PASSWORD).minLength(1).setKeyHandler(event -> {
+			if(event.getNativeKeyCode() != KeyCodes.KEY_ENTER)
+				reset();
+			else
+				doLogin();
+		}).build()
+        .nextField(btnLogin).build();
+	}
 
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-		loginButton.setText(buttonLogin);
-		username.setFocus(true);
+		btnLogin.setText(buttonLogin);
+		boxAccount.setFocus(true);
 	}    
 
-	@UiHandler("username")
-	void onUserNameFocus(FocusEvent e) {
-		username.clearErrorText();
-		password.clearErrorText();
-	}
-
-	@UiHandler("username")
-	void onUserNameKeyEnter(KeyPressEvent event) {
-		if(event.getCharCode() == KeyCodes.KEY_ENTER)
-			doLogin();
-		else
-			reset();
-	}
-	
-	@UiHandler("password")
+	@UiHandler("boxPassword")
 	void onPasswordFocus(FocusEvent e) {
-		username.clearErrorText();
-		password.clearErrorText();
+		fieldHeader.validate(boxPassword);
 	}
 	
-	@UiHandler("password")
-	void onPasswordKeyEnter(KeyPressEvent event) {
-		if(event.getCharCode() == KeyCodes.KEY_ENTER)
-			doLogin();
-		else
-			reset();
-	}
-
-	@UiHandler("loginButton")
+	@UiHandler("btnLogin")
 	void onLoginClick(ClickEvent e) {
 		doLogin();
 	}
@@ -102,7 +84,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 	
 	private void reset() {
-		loginButton.setText(buttonLogin);
+		btnLogin.setText(buttonLogin);
 	}
 	
 	@Override
@@ -112,23 +94,15 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	private void doLogin() {
-		if(username.getValue().isEmpty())
-			username.setErrorText("账户不能为空");
-		if(password.getValue().isEmpty())
-			password.setErrorText("密码不能为空");
-		
-		if(username.getValue().isEmpty() || password.getValue().isEmpty())
+		if(boxAccount.getValue().isEmpty() || boxPassword.getValue().isEmpty()) {
+			fieldHeader.validate(btnLogin);
 			return;
+		}
 
-		loginButton.setText(buttonLogining);
-		getUiHandlers().Login(username.getValue(), password.getValue(), remembeme.getValue());
-		username.setValue(null);
-		password.setValue(null);
-		username.setFocus(true);
-	}
-
-	@Override
-	public void setAccountOperatorActive(boolean enable) {
-		accountop.setVisible(enable);
+		btnLogin.setText(buttonLogining);
+		getUiHandlers().Login(boxAccount.getValue(), boxPassword.getValue(), remembeme.getValue());
+		boxAccount.setValue(null);
+		boxPassword.setValue(null);
+		boxAccount.setFocus(true);
 	}
 }
