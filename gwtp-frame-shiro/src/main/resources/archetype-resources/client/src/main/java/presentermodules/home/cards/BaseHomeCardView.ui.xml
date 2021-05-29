@@ -63,7 +63,6 @@
 .headText {
  margin: 0 12px 0 0;
  color: COLOR_TONE;
- font-family: "roboto";
  font-size: 18px;
  font-weight: bold;
  letter-spacing: normal;

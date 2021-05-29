@@ -1,0 +1,21 @@
+@external material-icons;
+@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
+@def CELL_WIDTH 160px;
+
+.container-chooser {margin: 5px; display: block;}
+.container-chooser .account-icon-box {margin: 20px auto; width: 96px; border-radius: 50%; background-color: COLOR_TONE;}
+.container-chooser .account-icon {color: #FFFFFF; font-size: 96px;}
+.container-chooser .principal {text-align: center; font-size: 1.4rem;}
+.container-chooser .container-buttons {background: rgba(0,0,0,0.02); padding: 10px 20px;}
+.container-chooser .menu-icon {color: #FFFFFF; font-size: 24px;}
+
+.container-chooser .chooser-menu-items>div {display: flex;}
+.container-chooser .chooser-bottom {
+margin:           2px;
+height:           35px;
+background-color: rgba(26, 115, 232, 0.9);
+color:            #fbfb20;
+text-align:       center;
+box-shadow: 0 3px 4px 0 rgba(0,0,0,.2), 0 3px 3px -2px rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+}
+.container-chooser .chooser-bottom .copyright {height: 100%; font-size: 12px; line-height: 35px;}

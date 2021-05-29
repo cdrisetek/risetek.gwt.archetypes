@@ -116,7 +116,8 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * 特别地，如果服务端没有提供合适的账户进行后续的作业，可以进入/services页面处理。
 
 #### 部署
-服务端需要得到浏览器访问的URL，因此部署时要考虑将这些信息真实地传递到服务端，比如在使用nginx的情况下，一个实际的配置例子：
+##### nginx
+* 服务端需要得到浏览器访问的URL，因此部署时要考虑将这些信息真实地传递到服务端，比如在使用nginx的情况下，一个实际的配置例子：
 
 ```
 server {
@@ -131,6 +132,23 @@ server {
   }
 }
 ```
+##### Docker
+* 如果用Docker进行部署，部署服务器需要安装docker.io和docker-compose
+* 用于部署的服务器账户需要具有sudo能力
+* 用于部署的服务器账户执行sudo时如果需要输入密码，那么在部署期间需要多次输入这个密码。请阅读以下<strong>参考</strong>的内容以选择合适的方案。
+* 部署完成后，在部署的工作区（WORKSPACE，由环境变量.env定义），存留完整的docker-compose.yml，可以用于管理。
+
+##### 运行时
+* 我们需要用上/.database目录，这是用于存放数据库文件的目录
+* /config目录，是用于提供给microprofile额外（用户自定义）配置文件的目录
+* 在没有创建账户的情况下，需要配置文件 /config/application.properties 的介入。用部署账户登录后，请及时创建有效的管理账户，然后删除配置文件中的deploy账户，以保障安全。如果出现忘记管理账户的情况，也可以通过临时加入deploy的方式加以挽救。
+
+```
+deploy.account=deploy
+deploy.password=deploy
+```
+##### 参考
+* 关于ssh remote 的sudo需要密码问题，请参考https://www.shell-tips.com/linux/sudo-no-tty-present-and-no-askpass-program-specified/
 
 modular-webapp
 ======

@@ -12,4 +12,6 @@ public class LoadRange {
 	// offset of scroll
 	public double scrolledOffset;
 	public int viewHeight;
+
+	public long datasequence;
 }

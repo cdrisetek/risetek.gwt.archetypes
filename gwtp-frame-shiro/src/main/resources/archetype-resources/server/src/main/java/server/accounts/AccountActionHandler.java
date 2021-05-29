@@ -18,8 +18,6 @@ import ${package}.share.exception.ActionUnauthorizedException;
 public class AccountActionHandler implements ActionHandler<AccountAction, GetResults<AccountEntity>> {
 	@Inject
 	IAccountManagement accountManagement;
-	@Inject
-	TemporaryAccount temporaryAccount;
 	
 	@Override
 	public GetResults<AccountEntity> execute(AccountAction action, ExecutionContext context) throws ActionException {
@@ -42,9 +40,6 @@ public class AccountActionHandler implements ActionHandler<AccountAction, GetRes
 					throw new ActionUnauthorizedException("permission: update accounts");
 
 				accountManagement.updateAccounts(action.accounts);
-				break;
-			} else if(null == action.accounts || action.accounts.isEmpty()) {
-				temporaryAccount.createTemporaryAccount();
 				break;
 			}
 

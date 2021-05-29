@@ -5,84 +5,68 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
+
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.eclipse.microprofile.config.Config;
 
 import ${package}.share.accounts.AccountEntity;
 import ${package}.share.accounts.EnumAccount;
 import ${package}.share.accounts.hosts.HostProjectRBAC;
+import java.util.logging.Logger;
 
-@Singleton
 public class TemporaryAccount {
-	@Inject
-	IAccountManagement accountManagement;
-
+	private IAuthorizingHandler authorizing;
 	private String temporaryAccountCredential = null;
 	private String temporaryAccountPrincipal = null;
 	private AccountEntity accountEntity = null;
-	private Set<HostProjectRBAC> roles1 = null, roles2 = null;
+	private Set<HostProjectRBAC> roles = null;
 
-	public void createTemporaryAccount() {
-		if(accountManagement.anyMatchedRole("DEVELOPER"))
-			return;
-
-		temporaryAccountPrincipal = "deploy";
-		// TODO: random password.
-		temporaryAccountCredential = "admin";
-
-		System.out.println("--------------- deploy -----------------------------");
-		System.out.println("--------------- deploy -----------------------------");
-		System.out.println("--------------- " + temporaryAccountCredential + " -----------------------------");
-		System.out.println("--------------- deploy -----------------------------");
-		System.out.println("--------------- deploy -----------------------------");
-		
+	public TemporaryAccount(String account, String password, IAuthorizingHandler authorizing) {
+		this.authorizing = authorizing;
+		temporaryAccountPrincipal = account;
+		temporaryAccountCredential = password;
 		accountEntity = new AccountEntity();
 		accountEntity.setPrincipal(temporaryAccountPrincipal);
 		accountEntity.setDescription(EnumAccount.NOTES, "Temporary account for bootup");
-		accountEntity.setDescription(EnumAccount.EMAIL, "demo@risetek.com");
-		roles1 = Arrays.asList(HostProjectRBAC.DEVELOPER, HostProjectRBAC.GUEST).stream().collect(Collectors.toSet());
-		roles2 = Arrays.asList(HostProjectRBAC.DEVELOPER, HostProjectRBAC.GUEST).stream().collect(Collectors.toSet());
+		accountEntity.setDescription(EnumAccount.EMAIL, "deploy@noanswer.com");
+		roles = Arrays.asList(HostProjectRBAC.DEVELOPER, HostProjectRBAC.GUEST).stream().collect(Collectors.toSet());
 	}
 
-	/*
-	 * should invoke only once.
-	 */
-	public Object getCredential(Object principal) {
-		if(temporaryAccountPrincipal == null || !temporaryAccountPrincipal.equals(principal))
-			return null;
-
-		String tmp = temporaryAccountCredential;
-		temporaryAccountCredential = null;
-		temporaryAccountPrincipal = null;
-		return tmp;
-	}
-
-	/**
-	 * IAuthorizingHandler.doAuthorizationAction
-	 * and AuthorizingRealm.doGetAuthorizationInfo both need this, twice.
-	 * @param principal
-	 * @return
-	 */
 	public Set<HostProjectRBAC> getRoleSet(Object principal) {
-		Set<HostProjectRBAC> tmp;
-		if(null != roles1) {
-			tmp = roles1;
-			roles1 = null;
-		} else {
-			tmp = roles2;
-			roles2 = null;
-		}
-
-		return tmp;
+		return roles;
 	}
 
-	/**
-	 * 
-	 * ISubjectManagement getSubjectEntity need this, only once.
-	 * @return
-	 */
-	public AccountEntity getAccountEntity() {
-		AccountEntity tmp = accountEntity;
-		accountEntity = null;
-		return tmp;
+	public AccountEntity getAccountEntity(String principal, Object credential) throws OAuthProblemException {
+		if (null == accountEntity || !principal.equals(temporaryAccountPrincipal))
+			return null;
+		if (authorizing.passwordsMatch(credential, temporaryAccountCredential))
+			return accountEntity;
+		throw OAuthProblemException.error("invalid password");
+	}
+
+	@Singleton
+	public static class deployAccountProvider implements Provider<TemporaryAccount> {
+		static Logger logger = Logger.getLogger(deployAccountProvider.class.getName());
+		@Inject
+		Config config;
+		@Inject
+		IAuthorizingHandler authorizing;
+
+		@Override
+		public TemporaryAccount get() {
+			logger.info("========= deploy config is:" + config);
+			String account = config.getValue("deploy.account", String.class);
+			if (null == account)
+				return null;
+
+			String password = config.getValue("deploy.password", String.class);
+			if (null == password)
+				return null;
+
+			logger.info(" Deploy account generated");
+			return new TemporaryAccount(account, authorizing.encryptRealmPassword(password), authorizing);
+		}
 	}
 }

@@ -6,12 +6,12 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import ${package}.bindery.AutoLoadPresenterModule;
 
 @AutoLoadPresenterModule
-public class PlatformMenuModule extends AbstractPresenterModule {
+public class Module extends AbstractPresenterModule {
     @Override
     protected void configure() {
         bindPresenter(PagePresenter.class,
         		PagePresenter.MyView.class,
-        		ViewImpl.class,
+        		PageView.class,
                 PagePresenter.MyProxy.class);
         
         bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("LoginMenu")).to(SimpleLoginMenu.class).in(Singleton.class);

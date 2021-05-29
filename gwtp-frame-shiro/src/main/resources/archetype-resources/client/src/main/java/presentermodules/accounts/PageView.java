@@ -1,6 +1,7 @@
 package ${package}.presentermodules.accounts;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -8,7 +9,6 @@ import java.util.Set;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -73,20 +73,19 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	static class CreateView extends ViewWithUiHandlers<MyUiHandlers> {
 		@UiField HTMLPanel panelValidate, iconChecking, iconValidate, iconInvalidate;
 		@UiField MaterialButton btnCommit;
-		@UiField MaterialValueBox<String> boxName, boxPassword, boxPassword2, boxEmail, boxTelphone, boxNotes;
+		@UiField MaterialValueBox<String> boxAccount, boxPassword, boxPassword2, boxEmail, boxTelphone, boxNotes;
 		interface Binder extends UiBinder<Widget, CreateView> {}
 
-		private final SheetField fieldHeader;
 		@Inject
 		public CreateView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
 			// Used to hold icons to indicate account name verification status.
-			boxName.add(panelValidate);
-			boxName.getValueBoxBase().getElement().setAttribute("spellcheck", "false");
+			boxAccount.add(panelValidate);
+			boxAccount.getValueBoxBase().getElement().setAttribute("spellcheck", "false");
 
-			// Build validation chain.
-			(fieldHeader = new SheetField.Builder(boxName).set(isStop -> {
-    			getUiHandlers().checkValidate(boxName.getValue(), (state) -> {
+			// Build SheetField chain.
+			new SheetField.Builder(boxAccount).asHeader().set(isStop -> {
+    			getUiHandlers().checkValidate(boxAccount.getValue(), (state) -> {
         			setValidateState(state);
         			if(state == AccountValidate.CHECKING)
         				return;
@@ -96,9 +95,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
         				btnCommit.setEnabled(false);
         				isStop.accept(true);
         			}});
-        	}).checkKeyPress().build())
-			.nextField(boxPassword).minLength(4).build()
-			.nextField(boxPassword2).set(isStop -> {
+        	}).checkKeyPress().build()
+			.nextField(boxPassword).checkOnFocus().minLength(4).build()
+			.nextField(boxPassword2).checkOnFocus().set(isStop -> {
 				if(!boxPassword.getValue().equals(boxPassword2.getValue())) {
 					boxPassword2.setFocus(true);
 					isStop.accept(true);
@@ -107,9 +106,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 					isStop.accept(false);
 				}
     		}).build()
-	        .nextField(boxEmail).type(TYPE.EMAIL).build()
-	        .nextField(boxTelphone).type(TYPE.TELPHONE).build()
-	        .nextField(boxNotes).build()
+	        .nextField(boxEmail).checkOnFocus().type(TYPE.EMAIL).build()
+	        .nextField(boxTelphone).checkOnFocus().type(TYPE.TELPHONE).build()
+	        .nextField(boxNotes).checkOnFocus().build()
 	        .nextField(btnCommit).build();
 		}
 
@@ -120,50 +119,25 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			Optional.ofNullable(boxTelphone.getValue()).ifPresent(v->descriptions.put(EnumAccount.TELPHONE.name(), v));
 			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumAccount.NOTES.name(), v));
 			
-			getUiHandlers().createAccount(boxName.getValue(), boxPassword.getValue(), descriptions);
-		}
-		
-		@UiHandler("boxPassword")
-		void onPasswordFocus(FocusEvent e) {
-			fieldHeader.validate(boxPassword);
+			getUiHandlers().createAccount(boxAccount.getValue(), boxPassword.getValue(), descriptions);
 		}
 
-		@UiHandler("boxPassword2")
-		void onPassword2Focus(FocusEvent e) {
-			fieldHeader.validate(boxPassword2);
-		}
-
-		@UiHandler("boxEmail")
-		void onEmailFocus(FocusEvent e) {
-			fieldHeader.validate(boxEmail);
-		}
-
-		@UiHandler("boxTelphone")
-		void onTelphoneFocus(FocusEvent e) {
-			fieldHeader.validate(boxTelphone);
-		}
-
-		@UiHandler("boxNotes")
-		void onNotesFocus(FocusEvent e) {
-			fieldHeader.validate(boxNotes);
-		}
-		
 		@Override
 		protected void onAttach() {
 			super.onAttach();
 			panelValidate.clear();
-			boxName.clear();
+			boxAccount.clear();
 			boxPassword.clear();
 			boxPassword2.clear();
 			boxEmail.clear();
 			boxNotes.clear();
 			btnCommit.setEnabled(false);
-	        boxName.setFocus(true);
+	        boxAccount.setFocus(true);
 			
 			Scheduler.get().scheduleDeferred(() -> {
 				// Set Icon box as the same height as input box to stay center. 
-		        panelValidate.getElement().getStyle().setWidth(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
-		        panelValidate.getElement().getStyle().setHeight(boxName.asValueBoxBase().getOffsetHeight(), Unit.PX);
+		        panelValidate.getElement().getStyle().setWidth(boxAccount.asValueBoxBase().getOffsetHeight(), Unit.PX);
+		        panelValidate.getElement().getStyle().setHeight(boxAccount.asValueBoxBase().getOffsetHeight(), Unit.PX);
 			});
 		}
 		
@@ -201,30 +175,14 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		public EditView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
 			// Build validation chain.
-			(fieldHeader = new SheetField.Builder(boxEmail).type(TYPE.EMAIL).build())
-	        .nextField(boxTelphone).type(TYPE.TELPHONE).build()
-	        .nextField(boxNotes).build()
+			new SheetField.Builder(boxEmail).type(TYPE.EMAIL).build()
+	        .nextField(boxTelphone).type(TYPE.TELPHONE).checkOnFocus().build()
+	        .nextField(boxNotes).checkOnFocus().build()
 	        .nextField(btnCommit).build();
 		}
 		
 		@UiField MaterialValueBox<String> boxName, boxEmail, boxTelphone, boxNotes;
 		@UiField MaterialButton btnEnable, btnDisable, btnCommit;
-		private final SheetField fieldHeader;
-
-		@UiHandler("boxEmail")
-		void onEmailFocus(FocusEvent e) {
-			fieldHeader.validate(boxEmail);
-		}
-
-		@UiHandler("boxTelphone")
-		void onTelphoneFocus(FocusEvent e) {
-			fieldHeader.validate(boxTelphone);
-		}
-
-		@UiHandler("boxNotes")
-		void onNotesFocus(FocusEvent e) {
-			fieldHeader.validate(boxNotes);
-		}
 
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
@@ -357,8 +315,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 				labSelectedAccount.setVisible((null != name && !name.isEmpty()));
 				btnAccountSet.setEnabled((null != name && !name.isEmpty()));
 			}, (roles, projectRoles) -> {
-				accountRoleSet = roles;
-				projectRoleSet = projectRoles;
+				accountRoleSet = Optional.ofNullable(roles).orElse(new HashSet<>());
+				projectRoleSet = Optional.ofNullable(projectRoles).orElse(new HashSet<>());
 
 				boolean visible = (null != projectRoleSet) && (!projectRoleSet.isEmpty());
 				panelRolesContent.setVisible(visible);

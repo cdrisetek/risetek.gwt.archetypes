@@ -2,7 +2,6 @@ package ${package}.presentermodules.login;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -29,7 +28,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	@UiField MaterialCard panelAccounEx;
 
 	interface Binder extends UiBinder<Widget, PageView> {}
-	private final SheetField fieldHeader;
 
 	@Inject
     public PageView(Binder binder) {
@@ -51,13 +49,13 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
     	// setAccountOperatorActive(false);
 	
 		// Build validation chain.
-		(fieldHeader = new SheetField.Builder(boxAccount).type(TYPE.ACCOUNT).minLength(1).build())
+		new SheetField.Builder(boxAccount).type(TYPE.ACCOUNT).minLength(1).build()
 		.nextField(boxPassword).type(TYPE.PASSWORD).minLength(1).setKeyHandler(event -> {
 			if(event.getNativeKeyCode() != KeyCodes.KEY_ENTER)
 				reset();
 			else
 				doLogin();
-		}).build()
+		}).checkOnFocus().build()
         .nextField(btnLogin).build();
 	}
 
@@ -68,11 +66,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 		boxAccount.setFocus(true);
 	}    
 
-	@UiHandler("boxPassword")
-	void onPasswordFocus(FocusEvent e) {
-		fieldHeader.validate(boxPassword);
-	}
-	
 	@UiHandler("btnLogin")
 	void onLoginClick(ClickEvent e) {
 		doLogin();
@@ -94,11 +87,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	}
 
 	private void doLogin() {
-		if(boxAccount.getValue().isEmpty() || boxPassword.getValue().isEmpty()) {
-			fieldHeader.validate(btnLogin);
-			return;
-		}
-
 		btnLogin.setText(buttonLogining);
 		getUiHandlers().Login(boxAccount.getValue(), boxPassword.getValue(), remembeme.getValue());
 		boxAccount.setValue(null);

@@ -13,7 +13,7 @@
   </m:MaterialRow>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="新建账户要求长度至少为4，并且不能与已经存在的账户同名。"/>
-   <m:MaterialTextBox ui:field="boxName" placeholder="账户" styleName='{style.card-row}' iconType="PERSON" type="TEXT" maxLength="30"/>
+   <m:MaterialTextBox ui:field="boxAccount" placeholder="账户" styleName='{style.card-row}' iconType="PERSON" type="TEXT" maxLength="30"/>
   </g:HTMLPanel>
   <g:HTMLPanel styleName='{style.box-section}'>
    <m:MaterialLabel text="密码长度不能小于4个字符。"/>

@@ -1,0 +1,20 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+<ui:style gss="true" src='style.gss'/>
+ 
+<g:HTMLPanel styleName="{style.container-chooser}">
+  <g:HTMLPanel styleName="{style.account-icon-box}">
+   <m:MaterialIcon iconType="PERM_IDENTITY" iconSize="LARGE" styleName='{style.account-icon}'/>
+  </g:HTMLPanel>
+  <g:Label ui:field="labelPrincipal" styleName="{style.principal}"/>
+ <div class="{style.container-buttons}">
+ <m:MaterialButton ui:field='btnAccount' margin="8" text="账号信息" waves="DEFAULT" textColor="WHITE"/>
+ <m:MaterialButton ui:field='btnLogout' margin="8" text="退出账号" waves="DEFAULT" textColor="WHITE"/>
+ </div>
+ <div style="display: none;">
+  <i ui:field='iconMenu' class="material-icons {style.menu-icon}">perm_identity</i>
+ </div>
+</g:HTMLPanel>
+</ui:UiBinder>

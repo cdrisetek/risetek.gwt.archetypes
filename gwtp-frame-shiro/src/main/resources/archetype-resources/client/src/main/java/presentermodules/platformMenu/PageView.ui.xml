@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-<ui:style gss="true" type='${package}.presentermodules.platformMenu.ViewImpl.Style'>
+<ui:style gss="true" type='${package}.presentermodules.platformMenu.PageView.Style'>
 @def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
 
 .barContainer {
@@ -22,13 +22,8 @@ box-shadow: 0 3px 4px 0 rgba(0,0,0,.2), 0 3px 3px -2px rgba(0,0,0,.14), 0 1px 8p
 height: 48px;
 }
 
-.barBlue {
-background-color: COLOR_TONE;
-}
-
-.barLeft {
-flex: 1 0 auto;
-}
+.barBlue {background-color: COLOR_TONE;}
+.barLeft {flex: 1 0 auto;}
 
 .barMiddle {
 justify-content: flex-end;
@@ -36,30 +31,13 @@ padding: 0;
 min-width: 48px;
 }
 
-.barLeft, .barMiddle, .barRight {
-display:flex;
-align-items:center
-}
+.barLeft, .barMiddle, .barRight {display:flex; align-items:center;}
 
-.barLeft, .barRight {
-flex: 1 0 auto;
-}
+.barLeft, .barRight {flex: 1 0 auto;}
 
-.barRight {
-justify-content: flex-end;
-padding-right: 8px;
-}
+.barRight {justify-content: flex-end; padding-right: 8px;}
 
-.barButton {
-}
-
-.ngStartInserted {
-}
-
-.cdcOverlayContainer {
-position: fixed;
-z-index: 1000;
-}
+.cdcOverlayContainer {position: fixed; z-index: 1000;}
 
 .cdcOverlayContainer, .cdcGlobalOverlayWrapper {
 pointer-events: none;
@@ -92,19 +70,14 @@ transition: opacity 400ms cubic-bezier(0.25,0.8,0.25,1);
 opacity: 0;
 }
 
-.cdkOverlayBackdrop.cdkOverlayBackdropShowing {
-opacity: 1;
-}
-
-.cdkOverlayTransparentBackdrop, .cdkOverlayTransparentBackdrop.cdkOverlayBackdropShowing {
-opacity: 0;
-}
+.cdkOverlayBackdrop.cdkOverlayBackdropShowing {opacity: 1;}
+.cdkOverlayTransparentBackdrop, .cdkOverlayTransparentBackdrop.cdkOverlayBackdropShowing {opacity: 0;}
 </ui:style>
 
 <g:HTMLPanel>
- <g:HTMLPanel styleName="{style.cdkOverlayBackdrop} {style.cdkOverlayTransparentBackdrop} {style.cdkOverlayBackdropShowing}" ui:field="backdrop"/>
- <g:HTMLPanel styleName="{style.barContainer} {style.barBlue} {style.platformBar} {style.ngStartInserted}" ui:field="barContainer">
-  <g:HTMLPanel styleName="{style.cdcOverlayContainer} {style.cfcNg2Region}" ui:field="overlayContainer"/>
+ <g:HTMLPanel ui:field="backdrop" styleName="{style.cdkOverlayBackdrop} {style.cdkOverlayTransparentBackdrop} {style.cdkOverlayBackdropShowing}"/>
+ <g:HTMLPanel ui:field="barContainer" styleName="{style.barContainer} {style.barBlue} {style.platformBar}">
+  <g:HTMLPanel ui:field="overlayContainer" styleName="{style.cdcOverlayContainer} {style.cfcNg2Region}"/>
  </g:HTMLPanel>
 </g:HTMLPanel>
 

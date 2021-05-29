@@ -23,7 +23,7 @@ public class Module extends HandlerModule {
 		// Authorizing
 		bind(IAuthorizingHandler.class).to(MyAuthorizingRealm.class).asEagerSingleton();
 		bind(ISubjectManagement.class).to(MyAuthorizingRealm.class).asEagerSingleton();
-		bind(TemporaryAccount.class).asEagerSingleton();
+		bind(TemporaryAccount.class).toProvider(TemporaryAccount.deployAccountProvider.class);
 		bindHandler(SubjectAction.class, SubjectActionHandler.class);
 		bindHandler(AuthenticationAction.class, AuthenticationActionHandler.class);
 		bindHandler(AuthorizationAction.class, AuthorizationActionHandler.class);

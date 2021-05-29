@@ -9,11 +9,12 @@ import ${package}.share.accounts.projects.ProjectAction;
 import ${package}.share.accounts.projects.ProjectEntity;
 import ${package}.share.dispatch.GetResults;
 import ${package}.ui.infinitycard.CardPresenterWidget;
+import ${package}.ui.infinitycard.CardUiHandlers;
 import ${package}.ui.infinitycard.LoadRange;
 import ${package}.utils.ServerExceptionHandler;
 
-public class SelectorWidget extends CardPresenterWidget<ProjectEntity, SelectorView.Card> {
-	public interface MyView extends CardPresenterWidget.CardView<ProjectEntity, SelectorView.Card> {
+public class SelectorWidget extends CardPresenterWidget<ProjectEntity, SelectorView.Card, CardUiHandlers<ProjectEntity>, SelectorView> {
+	public interface MyView extends CardPresenterWidget.CardView<ProjectEntity, CardUiHandlers<ProjectEntity>> {
 	}
 
 	@Inject

@@ -11,26 +11,28 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import ${package}.utils.ServerExceptionHandler;
 
-public abstract class CardPresenterWidget<E, C extends CardWidget<E>>
-		        extends PresenterWidget<CardInfinityView<E, C>>
-                implements CardUiHandlers<E> {
+public abstract class CardPresenterWidget<E extends Comparable<E>, C extends CardWidget<E>,
+                                          H extends CardUiHandlers<E>,
+                                          V extends CardInfinityView<E, C, H>>
+                extends PresenterWidget<V> implements CardUiHandlers<E> {
 
-	public interface CardView<E, C> extends View, HasUiHandlers<CardUiHandlers<E>> {
-		void updateRowData(int start, List<? extends E> list, final LoadRange loadRange);
+	public interface CardView<VE, VH extends CardUiHandlers<VE>> extends View, HasUiHandlers<VH> {
+		void updateRowData(int start, List<? extends VE> list, final LoadRange loadRange);
 		void refresh();
 	}
 
 	protected final ServerExceptionHandler exceptionHandler;
 	protected final DispatchAsync dispatcher;
 
+	@SuppressWarnings("unchecked")
 	public CardPresenterWidget(final EventBus eventBus,
                                final DispatchAsync dispatcher,
                                final ServerExceptionHandler exceptionHandler,
-			                   final CardInfinityView<E, C> view) {
+			                   final V view) {
 		super(eventBus, view);
 		this.dispatcher = dispatcher;
 		this.exceptionHandler = exceptionHandler;
-		getView().setUiHandlers(this);
+		getView().setUiHandlers((H)this);
 	}
 
 	@Override
@@ -43,9 +45,9 @@ public abstract class CardPresenterWidget<E, C extends CardWidget<E>>
 		return null == searchKeyProvider ? null : searchKeyProvider.get();
 	}
 
-	public Consumer<IsCardWidget<E>> selectedConsumer;
+	public Consumer<CardWidget<E>> selectedConsumer;
 	@Override
-	public void onSelected(IsCardWidget<E> card) {
+	public void onSelected(CardWidget<E> card) {
 		if(null == selectedConsumer)
 			return;
 		selectedConsumer.accept(card);

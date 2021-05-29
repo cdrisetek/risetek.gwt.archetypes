@@ -11,6 +11,8 @@ import javax.servlet.ServletContextEvent;
 
 import org.apache.shiro.guice.aop.ShiroAopModule;
 import org.apache.shiro.guice.web.GuiceShiroFilter;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -22,6 +24,7 @@ import ${package}.server.devops.ServicesManagement;
 import ${package}.server.shiro.MyShiroWebModule;
 import ${package}.server.shiro.OAuthAuthzServlet;
 import ${package}.server.shiro.OAuthLoginUrlBuilderServlet;
+import ${package}.server.shiro.OAuthLogoutServlet;
 import ${package}.server.shiro.OAuthTokenServlet;
 
 /**
@@ -72,6 +75,7 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 				// For redirect login page to OAuth server
 				// AAA server could be local or remote OAuth server.
 				serve("/oauth/login").with(OAuthLoginUrlBuilderServlet.class); // OAuth client handler
+				serve("/oauth/logout").with(OAuthLogoutServlet.class); // OAuth server handler
 				serve("/oauth/token").with(OAuthTokenServlet.class); // OAuth client handler
 				serve("/oauth/authz").with(OAuthAuthzServlet.class); // OAuth server handler
 
@@ -83,7 +87,8 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 				serve("/dispatch/*").with(DispatchServiceImpl.class);
 				//shiro filter
 		        filter("/oauth/token").through(GuiceShiroFilter.class);
-		        
+		        filter("/oauth/logout").through(GuiceShiroFilter.class); // SecurityManagement inject
+
 		        // TODO:!!
 		        // filter("/oauth/token").through(OAuthTokenServlet.class);
 		        
@@ -92,6 +97,9 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 		        filter("/dispatch/*").through(GuiceShiroFilter.class);
 		        filter("*").through(HttpHeaderFilter.class);
 //				bind(ExceptionHandler.class).to(DefaultExceptionHandler.class);
+
+		        // For microprofile config without CDI
+		        bind(Config.class).toInstance(ConfigProviderResolver.instance().getConfig());
 				bind(Context.class).toInstance(ctx);
 			}
 		});

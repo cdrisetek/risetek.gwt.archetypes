@@ -1,10 +1,8 @@
 package ${package}.server.accounts;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,13 +12,10 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
-import org.apache.oltu.oauth2.client.response.OAuthAccessTokenResponse;
-import org.apache.oltu.oauth2.client.response.OAuthClientResponseFactory;
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
-import org.apache.oltu.oauth2.common.message.OAuthResponse.OAuthResponseBuilder;
 import org.apache.oltu.oauth2.common.message.types.TokenType;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
 import org.apache.oltu.oauth2.jwt.JWT;
@@ -29,7 +24,6 @@ import org.apache.oltu.oauth2.jwt.io.JWTWriter;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.shiro.IOAuthConfig;
-import ${package}.server.shiro.OAuthJWTAccessTokenResponse;
 import ${package}.share.accounts.AccountEntity;
 
 @Singleton
@@ -39,49 +33,53 @@ public class AccessTokenManagement {
 	@Inject private TemporaryAccount temporaryAccount;
 	@Inject private IRoleManagement roleManagement;
 
-	private OAuthResponseBuilder json;
-
-	public String buildAccessTokenResource(String code) throws OAuthProblemException, OAuthSystemException {
+	public String buildAccessTokenResource(String code, boolean isInternal /* is for internal authentication? */)
+			throws OAuthProblemException, OAuthSystemException {
 		OAuthInfo info = codeMap.get(code);
 		if(null == info)
 			throw OAuthProblemException.error("invalide access code");
 
-		boolean isDemo = info.isDemo();
-		
-		try {
-
-		if(!isDemo) {
-			// Validate
-			String credential = Optional.ofNullable(authorizing.encryptRealmPassword(temporaryAccount.getCredential(info.getPrincipal())))
-			                           .orElse((String)accountManagement.getCredential(info.getPrincipal()));
-			if(null == credential)
-				throw OAuthProblemException.error("invalide account");
-
-			if(! authorizing.passwordsMatch(info.getCredential(), credential))
-				throw OAuthProblemException.error("invalide password");
-		}
-
-		Set<String> roles;
-		if(isDemo)
-			roles = Arrays.asList("DEVELOPER", "GUEST").stream().collect(Collectors.toSet());
-		else if(null == info.getClientID()) {
-			roles = Optional.ofNullable(temporaryAccount.getRoleSet(info.getPrincipal()))
-                     .orElse(roleManagement.getRoleSet(info.getPrincipal()))
-                     .stream().map(r -> r.name()).collect(Collectors.toSet());
-		} else
-			roles = roleManagement.getRoleSet(info.getPrincipal(), info.getClientID());
-
-		if(null == roles || roles.isEmpty())
-			throw OAuthProblemException.error("no roles granded");
-
-		AccountEntity account = Optional.ofNullable(temporaryAccount.getAccountEntity())
-				.orElse(accountManagement.getAccount(info.getPrincipal()));
-		
+		String principal = info.getPrincipal();
+		Object password = info.getCredential();
 		BasicOAuthToken token = info.getToken();
 
+		AccountEntity account = null;
+		Set<String> roles = null;
+
+		if(isInternal && null != temporaryAccount) {
+			// If have temporaryAccount, use it.
+			account = temporaryAccount.getAccountEntity(principal, password);
+			if(null != account)
+				roles = temporaryAccount.getRoleSet(principal).stream().map(r -> r.name()).collect(Collectors.toSet());
+		}
+		
+		if(null == account) {
+			try {
+				// Validate
+				String credential = (String)accountManagement.getCredential(principal);
+				if(null == credential)
+					throw OAuthProblemException.error("invalide account");
+
+				if(! authorizing.passwordsMatch(password, credential))
+					throw OAuthProblemException.error("invalide password");
+
+				if(null == info.getClientID()) {
+					roles = roleManagement.getRoleSet(principal)
+				                          .stream().map(r -> r.name()).collect(Collectors.toSet());
+				} else
+					roles = roleManagement.getRoleSet(principal, info.getClientID());
+
+				if(null == roles || roles.isEmpty())
+					throw OAuthProblemException.error("no roles granded");
+
+				account = accountManagement.getAccount(principal);
+			} catch (ActionException | OAuthProblemException e) {
+				e.printStackTrace();
+			}
+		}
+	
 		long time = new Date().getTime();
-		JWT.Builder builder = new JWT.Builder();
-		builder.setHeaderAlgorithm("RS256")
+		JWT jwt = new JWT.Builder().setHeaderAlgorithm("RS256")
 		       .setHeaderType("JWT")
 		       .setHeaderContentType("JWT")
 		       .setClaimsSetIssuer(IOAuthConfig.issuer)
@@ -91,38 +89,16 @@ public class AccessTokenManagement {
 		       .setClaimsSetSubject(code)
 		       .setClaimsSetCustomField(OAuth.OAUTH_ACCESS_TOKEN, token.getAccessToken())
 		       .setClaimsSetCustomField(OAuth.OAUTH_REFRESH_TOKEN, token.getRefreshToken())
-		       .setClaimsSetCustomField("principal", info.getPrincipal())
+		       .setClaimsSetCustomField("principal", principal)
                .setClaimsSetCustomField("Roles", roles.stream().collect(Collectors.joining(",")))
                .setClaimsSetCustomField("Descriptions", null==account?null:account.getDescriptions())
-		       .setSignature(IOAuthConfig.jwtSignature);
-
-		if(info.isDemo())
-			builder.setClaimsSetCustomField("DEMO", true);
+		       .setSignature(IOAuthConfig.jwtSignature).build();
 
 		// Wrap JWT with json
-		json = OAuthResponse.status(HttpServletResponse.SC_OK)
-				.setParam("JWT", new JWTWriter().write(builder.build()));
-		} catch(ActionException e) {
-			throw OAuthProblemException.error(e.getMessage());
-		}
+		OAuthResponse oAuthResponse = OAuthResponse.status(HttpServletResponse.SC_OK)
+				.setParam("JWT", new JWTWriter().write(jwt)).buildJSONMessage();
 		
-		return json.buildJSONMessage().getBody();
-	}
-
-	// For internal exchange OAuthCode for OAuthToken
-	public OAuthAccessTokenResponse getOAuthAccessTokenResponseInternal(String accessCode) {
-		OAuthAccessTokenResponse response = null;
-		try {
-			response = OAuthClientResponseFactory
-			.createCustomResponse(buildAccessTokenResource(accessCode), null, 0, null, OAuthJWTAccessTokenResponse.class);
-		} catch (OAuthSystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OAuthProblemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return response;
+		return oAuthResponse.getBody();
 	}
 	
 	private static Map<String, OAuthInfo> codeMap = new HashMap<>();
@@ -143,11 +119,6 @@ public class AccessTokenManagement {
 
 		public CodeBuilder setClientID(String clientid) {
 			info.setClientID(clientid);
-			return this;
-		}
-
-		public CodeBuilder setDemo(boolean isDemo) {
-			info.setDemo(isDemo);
 			return this;
 		}
 
@@ -192,19 +163,12 @@ public class AccessTokenManagement {
 		public void setToken(BasicOAuthToken token) {
 			this.token = token;
 		}
-		public boolean isDemo() {
-			return isDemo;
-		}
-		public void setDemo(boolean isDemo) {
-			this.isDemo = isDemo;
-		}
 		@NotNull
 		private String principal;
 		@NotNull
 		private Object credential;
 		private String clientID;
 		private BasicOAuthToken token;
-		private boolean isDemo = true;
 	}
 
 }

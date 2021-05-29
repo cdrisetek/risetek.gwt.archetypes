@@ -17,7 +17,15 @@ public class MyBootstrapper implements Bootstrapper {
     		final Subject subject,
             final PlaceManager placeManager) {
     	this.subject = subject;
-        eventBus.addHandler(SubjectChangeEvent.getType(), () -> placeManager.revealDefaultPlace());
+        eventBus.addHandler(SubjectChangeEvent.getType(), () -> {
+        	try {
+        		// NOTE: when reveal place is not permit, some exception as authentication
+        		// fired, if not process this situation, browser fall in loop.
+        		placeManager.revealCurrentPlace();
+        	} catch(Exception e) {
+            	placeManager.revealDefaultPlace();
+        	};
+        });
     }
 
     @Override

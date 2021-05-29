@@ -1,36 +1,41 @@
 package ${package}.presentermodules.platformMenu;
 
-import javax.inject.Singleton;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import ${package}.bindery.IBuilderStamp;
-import ${package}.bindery.PlainMenuLoader;
-import ${package}.bindery.PlainMenuLoader.PlainMenuContent;
-import ${package}.utils.Icons;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.risetek.bindery.IBuilderStamp;
+import com.risetek.bindery.PlainMenuLoader;
+import com.risetek.bindery.PlainMenuLoader.PlainMenuContent;
 
 @Singleton
 public class SimpleNavMenu extends AbstractPlatformBarMenu {
 	private final static PlainMenuLoader menuloader = GWT.create(PlainMenuLoader.class);
-	private final static IBuilderStamp stamp = GWT.create(IBuilderStamp.class);
-	private static String copyrightText = "© 2000-" + stamp.getYear() + " Chengdu Risetek Corp.  &nbsp;&nbsp;&nbsp;Build at:" + stamp.getBuilderStamp();
+
 	@Override
-	public String getTip() {
+	public String getTipString() {
 		return "\u5bfc\u822a\u83dc\u5355";
 	}
 
 	@Inject
-	public SimpleNavMenu(Binder binder) {
+	public SimpleNavMenu(final Binder binder, final ChooserPanel chooserPanel) {
 		super(binder);
-		
-		FlowPanel navChooserDetail = new FlowPanel();
-		navChooserDetail.setStyleName(style.cfcNavchooserDetails());
-		accountChooserMenu.add(navChooserDetail);
+		Scheduler.get().scheduleDeferred(() -> chooserPanel.setUiHandlers(getUiHandlers()));
+		setMenuIcon(chooserPanel.iconMenu);
+		setChooserBoxLeft(20);
+
+		panelChoosers.add(chooserPanel);
 
 		List<PlainMenuContent> menus = menuloader.getMenus();
 		
@@ -39,32 +44,36 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 		for(PlainMenuContent menu: menus) {
 			if(index++ % 3 == 0) {
 				navBarContainer = new FlowPanel();
-				navBarContainer.setStyleName(style.navBarContainer());
-				navChooserDetail.add(navBarContainer);
+				chooserPanel.add(navBarContainer);
 			}
 				
-			Panel panel = new SimpleNavMenuItem(menu.title, menu.token, menu.icon == null ? null : menu.icon.getElement(), c->{uiHandler.gotoPlace(c);});
+			Panel panel = new SimpleNavMenuItem(menu.title, menu.token, menu.icon == null ? null : menu.icon.getElement(), c->{getUiHandlers().gotoPlace(c);});
 			navBarContainer.add(panel);
 		}
-		
-		// bottom bar
-		FlowPanel bottomContainer = new FlowPanel();
-		bottomContainer.setStyleName(style.navMenubottomContainer());
-		HTML copyright = new HTML(copyrightText);
-		copyright.setStyleName(style.copyright());
-		bottomContainer.add(copyright);
-		navChooserDetail.add(bottomContainer);
-		
-		boundingboxMenu.getElement().setAttribute("style", "top: 42px; left: 20px; height: 100%; width: 100%; align-items: flex-start; justify-content: flex-start;");
-
-		matIcon.appendChild(Icons.matIcon());
-    	Element el = button.getElement();
-        el.setAttribute("aria-label", "\u5bfc\u822a\u83dc\u5355");
-        el.setAttribute("aria-haspopup", "true");
 	}
 
 	@Override
-	public Panel getMenuPanel() {
+	public Panel getChooserPanel() {
 		return boundingboxMenu;
+	}
+
+	static class ChooserPanel extends ViewWithUiHandlers<MyUiHandlers> {
+		private final static IBuilderStamp stamp = GWT.create(IBuilderStamp.class);
+		private static String copyrightText = "© 2000-" + stamp.getYear() + " Chengdu Risetek Corp.  &nbsp;&nbsp;&nbsp;Build at:" + stamp.getBuilderStamp();
+
+		interface AccountBinder extends UiBinder<Widget, ChooserPanel> {}
+		@UiField FlowPanel navChooserDetail;
+		@UiField DivElement labelCopyright;
+		@UiField Element iconMenu;
+		@Inject
+		public ChooserPanel(final AccountBinder binder) {
+			initWidget(binder.createAndBindUi(this));
+			labelCopyright.setInnerHTML(copyrightText);
+		}
+		
+		public void add(Panel panel) {
+			navChooserDetail.add(panel);
+		}
+		
 	}
 }

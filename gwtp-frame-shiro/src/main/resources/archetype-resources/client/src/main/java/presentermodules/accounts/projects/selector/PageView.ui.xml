@@ -11,7 +11,8 @@
  </m:MaterialNavBar>
  <!-- NavBar Search -->
  <m:MaterialNavBar ui:field="navBarSearch" visible="false" backgroundColor='TRANSPARENT' shadow='0' textColor='BLUE' styleName="{style.center-container}">
-  <m:MaterialSearch ui:field="txtSearch" placeholder="输入查询关键字" backgroundColor="TRANSPARENT" textColor='BLUE' iconColor="BLUE" shadow="0" styleName="{style.search-container}"/>
+  <m:MaterialSearch ui:field="txtSearch" placeholder="输入查询关键字" backgroundColor="TRANSPARENT"
+                    textColor='BLUE' iconColor="BLUE" shadow="0" styleName="{style.search-container}"/>
  </m:MaterialNavBar> 
 <g:HTMLPanel styleName='{style.blur-container}'/>
 <g:HTMLPanel ui:field='slot' styleName='{style.slot-container}'/>

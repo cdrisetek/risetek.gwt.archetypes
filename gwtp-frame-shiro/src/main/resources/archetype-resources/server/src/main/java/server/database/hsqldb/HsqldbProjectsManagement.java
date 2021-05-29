@@ -1,14 +1,18 @@
 package ${package}.server.database.hsqldb;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.transaction.Transactional;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.accounts.IProjectsManagement;
@@ -19,19 +23,14 @@ import ${package}.share.devops.DevOpsTaskEntity.TaskType;
 
 @Singleton
 public class HsqldbProjectsManagement implements IProjectsManagement {
+	private final SessionFactory sessionFactory;
 
-	public HsqldbProjectsManagement() {
+	@Inject
+	public HsqldbProjectsManagement(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 		DevOpsTask task = new DevOpsTask("Hsqldb ProjectsManagement", TaskType.FATAL, null);
-		try {
-			projectSelectStatement = DatabaseManagement.database.getConnection().prepareStatement(projectsSelectSql);
-			selectEntityStatement = DatabaseManagement.database.getConnection().prepareStatement(selectEntitySql);
-			projectUpsetStatement = DatabaseManagement.database.getConnection().prepareStatement(projectsUpsertSql);
-			task.addMessage("connection and statements passed");
-			task.stat = TaskState.READY;
-		} catch (SQLException e) {
-			task.addMessage("test SQL failed");
-			task.stat = TaskState.FAILED;
-		}
+		task.addMessage("connection and statements passed");
+		task.stat = TaskState.READY;
 	}
 
 	private boolean isLike(ProjectEntity entity, String like) {
@@ -46,56 +45,40 @@ public class HsqldbProjectsManagement implements IProjectsManagement {
 		return false;
 	}
 
-	private PreparedStatement projectSelectStatement;
-	private final String projectsSelectSql = "SELECT NAME, DESCRIPTIONS FROM PROJECTS";
 	private List<ProjectEntity> _readProjects(String like, int offset, int limit) throws SQLException {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+
+		List<ProjectEntity> query = session.createQuery("FROM ProjectEntity", ProjectEntity.class).getResultList();
+		transaction.commit();
+
 		List<ProjectEntity> list = new Vector<>();
-
 		int start = 0, count = 0;
-		try (ResultSet resultSet = projectSelectStatement.executeQuery()) {
-			while(resultSet.next()) {
-				ProjectEntity entity = new ProjectEntity();
-				entity.setName(resultSet.getString(1));
-				@SuppressWarnings("unchecked")
-				Map<String, String> descMap = (Map<String, String>)resultSet.getObject(2);
-				entity.setDescription(descMap);
+		for(ProjectEntity e:query) {
+			if(!isLike(e, like) || start++ < offset)
+				continue;
+			
+			if(count++ >= limit)
+				break;
 
-				if(!isLike(entity, like) || start++ < offset)
-					continue;
-				
-				if(count++ >= limit)
-					break;
-
-				list.add(entity);
-			}
-			DatabaseManagement.statisticsRead();
-		} catch (SQLException e) {
-			throw e;
+			list.add(e);
 		}
-
 		return list;
 	}
 
-	private PreparedStatement selectEntityStatement;
-	private final String selectEntitySql = "SELECT NAME, DESCRIPTIONS FROM PROJECTS WHERE NAME=?";
 	private List<ProjectEntity> _readProjectsE(Set<ProjectEntity> entities) throws SQLException {
 		List<ProjectEntity> list = new Vector<>();
-
+		
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
 		for(ProjectEntity entity:entities) {
-			selectEntityStatement.setString(1, entity.getName());
-			try(ResultSet resultSet = selectEntityStatement.executeQuery()) {
-				if(resultSet.next()) {
-					@SuppressWarnings("unchecked")
-					Map<String, String> descMap = (Map<String, String>)resultSet.getObject(2);
-					entity.setDescriptions(descMap);
-					list.add(entity);
-				}
-				DatabaseManagement.statisticsRead();
-			}catch (SQLException e) {
-				throw e;
-			}
+			session.bySimpleNaturalId(ProjectEntity.class).loadOptional(entity.getName()).ifPresent(e -> list.add(e));
+			// session.byId(ProjectEntity.class).loadOptional(entity.getName()).ifPresent(e -> list.add(e));
 		}
-
+		transaction.commit();
+		
 		return list;
 	}
 	
@@ -111,30 +94,33 @@ public class HsqldbProjectsManagement implements IProjectsManagement {
 			throw new ActionException(e);
 		}
 	}
-	
-	PreparedStatement projectUpsetStatement;
-	private final String projectsUpsertSql = "REPLACE INTO PROJECTS(NAME, DESCRIPTIONS) VALUES(?,?)";
+
 	@Override
 	public void updateOrInsert(Set<ProjectEntity> entities) throws ActionException {
-		try {
-			for(ProjectEntity entity:entities) {
-				projectUpsetStatement.setString(1, entity.getName());
-				projectUpsetStatement.setObject(2, (Object)entity.getDescriptions());
-				projectUpsetStatement.execute();
-				DatabaseManagement.statisticsWrite();
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		for(ProjectEntity entity:entities) {
+			// ProjectEntity account = session.byId(ProjectEntity.class).load(entity.getName());
+			ProjectEntity account = session.bySimpleNaturalId(ProjectEntity.class).load(entity.getName());
+			if(null == account)
+				session.save(entity);
+			else {
+				session.clear();
+				account.setDescription(entity.getDescriptions());
+				session.saveOrUpdate(account);
 			}
-		} catch (SQLException e) {
-			throw new ActionException(e);
 		}
+		transaction.commit();
 	}
 
-	private final String projectsDeleteSql = "DELETE FROM PROJECTS";
+	@Transactional
 	@Override
 	public void clearDatas() throws ActionException {
-		try {
-			DatabaseManagement.database.getConnection().createStatement().execute(projectsDeleteSql);
-		} catch (SQLException e) {
-			throw new ActionException(e);
-		}
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		session.createNativeQuery("DELETE FROM ProjectEntity").executeUpdate();
+		transaction.commit();
 	}
 }

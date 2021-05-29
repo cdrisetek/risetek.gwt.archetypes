@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.web.bindery.event.shared.EventBus;
@@ -107,9 +108,16 @@ public final class Subject {
 				new SubjectAction() /* To read subject descriptions */);
 	}
     
+	public void Login() {
+		resetSubject();
+        String param = Location.createUrlBuilder().setPath("/oauth/login").buildString();
+        Location.assign(param);
+	}
+	
 	public void Logout() {
 		resetSubject();
-		doSubjectBatchAction(null, new AuthenticationAction());
+        String param = Location.createUrlBuilder().setPath("/oauth/logout").buildString();
+        Location.assign(param);
 	}
 
 	public void accountSync() {

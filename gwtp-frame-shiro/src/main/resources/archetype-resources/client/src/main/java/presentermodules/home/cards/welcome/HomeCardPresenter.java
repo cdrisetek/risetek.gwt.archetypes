@@ -7,8 +7,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.Location;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -48,7 +46,6 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		getView().setUiHandlers(this);
 	}
 
-	private final PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(NameTokens.login).build();
 	private final PlaceRequest securityPlaceRequest = new PlaceRequest.Builder().nameToken(NameTokens.security).build();
 
 	private void updateLoginInfoCard() {
@@ -63,11 +60,7 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 			item = new InfoItem();
 			item.infoText = "登录后拥有更多操作权限";
 			items.add(item);
-			getView().addAction("用户登录", c->{
-				//placeManager.revealPlace(placeRequest, false);
-	            String param = Location.createUrlBuilder().setPath("/oauth/login").buildString();
-	            Location.replace(param);
-				});
+			getView().addAction("用户登录", c-> subject.Login());
 		} else {
 			item = new InfoItem();
 			item.infoText = "操作权限";

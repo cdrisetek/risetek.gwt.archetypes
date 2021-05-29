@@ -3,7 +3,6 @@ package ${package}.presentermodules.security;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -68,12 +67,11 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		interface Binder extends UiBinder<Widget, PasswordView> {}
 		@UiField MaterialValueBox<String> boxPassword, boxPassword2;
 		@UiField MaterialButton btnCommit;
-		private final SheetField fields;
 
 		@Inject
 		public PasswordView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
-			(fields = new SheetField.Builder(boxPassword).minLength(4).build())
+			new SheetField.Builder(boxPassword).minLength(4).build()
 			.nextField(boxPassword2).set(isStop -> {
 				if(!boxPassword.getValue().equals(boxPassword2.getValue())) {
 					boxPassword2.setFocus(true);
@@ -90,16 +88,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		@UiHandler("btnCommit")
 		public void onCommitClick(ClickEvent e) {
 			getUiHandlers().updatePassword(boxPassword.getValue());
-		}
-
-		@UiHandler("boxPassword")
-		void onPasswordFocus(FocusEvent e) {
-			fields.validate(boxPassword);
-		}
-
-		@UiHandler("boxPassword2")
-		void onPassword2Focus(FocusEvent e) {
-			fields.validate(boxPassword2);
 		}
 
 		@Override
@@ -122,7 +110,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 		interface Binder extends UiBinder<Widget, EmailView> {}
 		@UiField MaterialValueBox<String> boxEmail;
 		@UiField MaterialButton btnCommit;
-		private final SheetField fields;
 
 		@Inject
 		public EmailView(final EventBus eventBus, final Binder uiBinder) {
@@ -134,13 +121,13 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 			e.setAttribute("autocomplete", "off");
 			e.setAttribute("AutoCompleteType", "Disabled");
 			e.setAttribute("autocorrect", "off");
-			
-			(fields = new SheetField.Builder(boxEmail).type(TYPE.EMAIL).minLength(1).checkKeyPress().set(isStoped->{
+
+			new SheetField.Builder(boxEmail).type(TYPE.EMAIL).minLength(1).checkKeyPress().set(isStoped->{
 				// here we go, the field had validate by EMAIL pattern and not empty, so it is validation.
 				btnCommit.setEnabled(true);
 				isStoped.accept(false);
-			}).build())
-			.nextField(btnCommit).build();
+			}).build()
+			.nextField(btnCommit).checkOnFocus().build();
 		}
 
 		@UiHandler("btnCommit")
@@ -148,11 +135,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 			getUiHandlers().updateEmail(boxEmail.getValue());
 		}
 
-		@UiHandler("btnCommit")
-		void onCommitFocus(FocusEvent e) {
-			fields.validate(btnCommit);
-		}
-		
 		@Override
 		public void onAttach() {
 			boxEmail.setText(getUiHandlers().getSecurityInformation(EnumAccount.EMAIL.name()));

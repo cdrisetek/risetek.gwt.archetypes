@@ -82,12 +82,15 @@
    parameterList.append("username", username.value);
    parameterList.append("password", password.value);
    xhr = createXHR();
-   xhr.open("POST", "/demo/oauth/authz", true);
+   xhr.open("POST", "/oauth/authz", true);
    xhr.onreadystatechange = function () {
     if (xhr.readyState != 4) return
     if (xhr.status == 200 || xhr.status == 0) {
      o = JSON.parse(xhr.responseText);
-     location = parameterList.get("redirect_uri") + "?code=" + o.code + "&state=" + o.state;
+     url = parameterList.get("redirect_uri") + "?code=" + o.code + "&state=" + o.state;
+     if(rememberme.checked)
+	     url = url + "&rememberme";
+     location = url;
     }
    }   
    
@@ -140,10 +143,11 @@
 
  <div style="background: rgba(0,0,0,0.01); padding: 20px;">
   <div class="checkbox">
-   <input type="checkbox" value="on" tabindex="0" class="filled-in"><label>自动登录</label></div></div>
+   <input id="rememberme" type="checkbox" tabindex="0" class="filled-in"><label>自动登录</label></div></div>
   </div>
  </div>
  <script>
+  const rememberme = document.getElementById("rememberme");
   const username = document.getElementById("username");
   const password = document.getElementById("password");
   const commit = document.getElementById("commit");

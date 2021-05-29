@@ -11,7 +11,8 @@ public interface IOAuthConfig {
 
 	public final static String state_key = "oauth-state";
 	public final static String code_key = "oauth-code";
-	
+	public final static String rememberme_key = "rememberme";
+
 	// OAuth server Location.
 	// 如果将 OAuth sever 位置设定为 null，那么这个项目具有本地服务能力
 	public final static String endpointLocation = null; // "http://devops.yun74.com";

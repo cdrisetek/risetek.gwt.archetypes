@@ -79,7 +79,6 @@
 
     padding: 20px 28px;
     
-    font-family: 'Roboto',arial,sans-serif;
     font-size: 24px;
     line-height: 32px;
     resize: none;

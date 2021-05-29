@@ -1,6 +1,7 @@
 package ${package}.presentermodules.accounts.projects;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -9,7 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -78,7 +78,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	static class CreateView extends ViewWithUiHandlers<MyUiHandlers> {
 		@UiField HTMLPanel panelValidate, iconChecking, iconValidate, iconInvalidate;
 		interface Binder extends UiBinder<Widget, CreateView> {}
-		private final SheetField fields;
+
 		@Inject
 		public CreateView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
@@ -86,7 +86,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			boxName.getValueBoxBase().getElement().setAttribute("spellcheck", "false");
 
 			// Build validation chain.
-			(fields = new SheetField.Builder(boxName).set(isStop -> {
+			new SheetField.Builder(boxName).set(isStop -> {
     			getUiHandlers().checkValidate(boxName.getValue(), (state) -> {
         			setValidateState(state);
         			if(state == ProjectValidate.CHECKING)
@@ -97,9 +97,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
         				btnCommit.setEnabled(false);
         				isStop.accept(true);
         			}});
-        	}).checkKeyPress().build())
-			.nextField(boxSecret).minLength(8).build()
-	        .nextField(boxNotes).build()
+        	}).checkKeyPress().build()
+			.nextField(boxSecret).minLength(8).checkOnFocus().build()
+	        .nextField(boxNotes).checkOnFocus().build()
 	        .nextField(btnCommit).build();
 		}
 		
@@ -112,16 +112,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			Optional.ofNullable(boxNotes.getValue()).ifPresent(v->descriptions.put(EnumProject.NOTES.name(), v));
 			Optional.ofNullable(boxSecret.getValue()).ifPresent(v->descriptions.put(EnumProject.SECRET.name(), v));
 			getUiHandlers().createProject(boxName.getValue(), descriptions);
-		}
-
-		@UiHandler("boxNotes")
-		void onNotesFocus(FocusEvent e) {
-			fields.validate(boxNotes);
-		}
-		
-		@UiHandler("boxSecret")
-		void onSecretFocus(FocusEvent e) {
-			fields.validate(boxNotes);
 		}
 
 		@Override
@@ -172,14 +162,15 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 	static class EditView extends ViewWithUiHandlers<MyUiHandlers> {
 		interface Binder extends UiBinder<Widget, EditView> {}
-		private final SheetField fields;
+
 		@Inject
 		public EditView(final EventBus eventBus, final Binder uiBinder) {
 			initWidget(uiBinder.createAndBindUi(this));
 
 			// Build validation chain.
-			(fields = new SheetField.Builder(boxSecret).minLength(8).build())
-	        .nextField(boxNotes).build()
+			new SheetField.Builder(boxSecret).minLength(8).build()
+	        .nextField(boxSecret).minLength(8).checkOnFocus().build()
+	        .nextField(boxNotes).checkOnFocus().build()
 	        .nextField(btnCommit).build();
 		}
 
@@ -195,16 +186,6 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 			if(btnEnable.isEnabled()) descriptions.put(EnumProject.STATUS.name(), "disable");
 			
 			getUiHandlers().updateProject(boxName.getValue(), descriptions);
-		}
-		
-		@UiHandler("boxNotes")
-		void onNotesFocus(FocusEvent e) {
-			fields.validate(boxNotes);
-		}
-		
-		@UiHandler("boxSecret")
-		void onSecretFocus(FocusEvent e) {
-			fields.validate(boxNotes);
 		}
 		
 		@UiHandler("btnEnable")
@@ -285,7 +266,7 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 
 			getUiHandlers().getProjectRoles((name, roles) -> {
 				project = name;
-				roleSet = roles;
+				roleSet = Optional.ofNullable(roles).orElse(new HashSet<>());
 				render();
 				Scheduler.get().scheduleDeferred(() -> boxRole.setFocus(true));
 			});
@@ -378,8 +359,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 				btnProjectSet.setEnabled((null != project && !project.isEmpty()));
 				btnProjectRole.setEnabled((null != project && !project.isEmpty()));
 			}, (accountRoles, projectRoles) -> {
-				accountRoleSet = accountRoles;
-				projectRoleSet = projectRoles;
+				accountRoleSet = Optional.ofNullable(accountRoles).orElse(new HashSet<>());
+				projectRoleSet = Optional.ofNullable(projectRoles).orElse(new HashSet<>());
 				
 				// Remove roles from projectSet which accountSet already granted.
 				for(String s:accountRoleSet)

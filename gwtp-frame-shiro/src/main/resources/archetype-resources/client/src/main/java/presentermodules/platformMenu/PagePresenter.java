@@ -16,15 +16,15 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.place.root.RevealMenuEventHandler;
 import ${package}.place.root.RootPresenter;
 
-public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> 
+public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
 	implements MyUiHandlers, RevealMenuEventHandler {
     public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-    	void removeMenuPanel();
+    	void clearMenuPanel();
     	void installRightMenu(AbstractPlatformBarMenu... menus);
     	void installMiddleMenu(AbstractPlatformBarMenu... menus);
     	void installLeftMenu(AbstractPlatformBarMenu... menus);
     	void showTip(AbstractPlatformBarMenu menu);
-    	void showMenuPanel(AbstractPlatformBarMenu menu);
+    	void showChooser(AbstractPlatformBarMenu menu);
     }
 
     private final PlaceManager placeManager;
@@ -43,8 +43,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
     }
 
 	@Override
-	public void removeMenuPanel() {
-		getView().removeMenuPanel();
+	public void hideChooser() {
+		getView().clearMenuPanel();
 	}
 
 	/**
@@ -89,13 +89,13 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 
 	@Override
-	public void onMenuClick(AbstractPlatformBarMenu menu) {
-		getView().showMenuPanel(menu);
+	public void onIconClick(AbstractPlatformBarMenu menu) {
+		getView().showChooser(menu);
 	}
 
 	@Override
 	public void gotoPlace(String token) {
-		removeMenuPanel();
+		hideChooser();
 		PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(token).build();
 		placeManager.revealPlace(placeRequest);
 	}

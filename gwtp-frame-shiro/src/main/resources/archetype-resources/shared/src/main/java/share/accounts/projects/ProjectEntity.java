@@ -1,14 +1,31 @@
 package ${package}.share.accounts.projects;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import org.hibernate.type.JavaObjectType;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ProjectEntity implements IsSerializable {
+@TypeDefs({@TypeDef(name = "other", typeClass = JavaObjectType.class)})
+@DynamicUpdate
+
+@Entity
+public class ProjectEntity implements Serializable, IsSerializable, Comparable<ProjectEntity> {
+	private static final long serialVersionUID = 7962053254007801699L;
+
 	public String getName() {
 		return name;
 	}
@@ -41,8 +58,20 @@ public class ProjectEntity implements IsSerializable {
 		this.descriptions = descriptions;
 	}
 
-	// Shoud be Unique
-	@NotNull @Size(max=64)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
+
+	@NaturalId
+	@Column(nullable = false, unique = true, updatable = false, length=64)
 	private String name;
+
+	@Column(columnDefinition="OTHER")
+	@Type(type = "other")
 	private Map<String, String> descriptions;
+
+	@Override
+	public int compareTo(ProjectEntity o) {
+		return getName().compareTo(o.getName());
+	}
 }

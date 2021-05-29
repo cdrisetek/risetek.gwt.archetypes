@@ -1,80 +1,66 @@
 package ${package}.server.database.hsqldb;
 
-import java.sql.Array;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.hsqldb.jdbc.JDBCArrayBasic;
-import org.hsqldb.types.Type;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.gwtplatform.dispatch.shared.ActionException;
 import ${package}.server.accounts.IRoleManagement;
 import ${package}.server.devops.DevOpsTask;
 import ${package}.share.accounts.hosts.HostProjectRBAC;
+import ${package}.share.accounts.roles.RoleEntity;
 import ${package}.share.devops.DevOpsTaskEntity.TaskState;
 import ${package}.share.devops.DevOpsTaskEntity.TaskType;
 import ${package}.share.templates.Project;
 
 @Singleton
 public class HsqldbRoleManagement implements IRoleManagement {
+	private final SessionFactory sessionFactory;
 
-	public HsqldbRoleManagement() {
+	@Inject
+	public HsqldbRoleManagement(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 		DevOpsTask task = new DevOpsTask("Hsqldb RoleManagement", TaskType.FATAL, null);
-		try {
-			roleSelectStatement = DatabaseManagement.database.getConnection().prepareStatement(roleSelectSql);
-			roleUpsertStatement = DatabaseManagement.database.getConnection().prepareStatement(roleUpsertSql);
-			task.addMessage("connection and statements passed");
-			task.stat = TaskState.READY;
-		} catch (SQLException e) {
-			task.addMessage("test SQL failed: " + e.getMessage());
-			task.stat = TaskState.FAILED;
-		}
+		task.addMessage("connection and statements passed");
+		task.stat = TaskState.READY;
 	}
 
-	private PreparedStatement roleSelectStatement;
-	private final String roleSelectSql = "SELECT (ROLES) FROM ROLES WHERE K=?";
 	@Override
 	public Set<String> getRoleSet(Object principal, Object project) throws ActionException {
 		String key = makeKey(principal, project);
-		try {
-			roleSelectStatement.setString(1, key);
-			ResultSet resultSet = roleSelectStatement.executeQuery();
-			if(resultSet.next()) {
-				Array roleArray = resultSet.getArray(1);
-				return Arrays.asList((Object[])roleArray.getArray()).stream()
-						.map(obj -> (String)obj).collect(Collectors.toSet());
-			}
-			DatabaseManagement.statisticsRead();
-		} catch (SQLException e) {
-			throw new ActionException(e);
-		}
-
-		return new HashSet<String>();
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		RoleEntity roleEntity = session.byId(RoleEntity.class).load(key);
+		transaction.commit();
+		if(null == roleEntity)
+			return null;
+		return roleEntity.getRoleSet();
 	}
 
-	private PreparedStatement roleUpsertStatement;
-	private final String roleUpsertSql = "REPLACE INTO ROLES(K, ROLES) VALUES(?,?)";
 	@Override
 	public void setRoleSet(Object principal, Object project, Set<String> roles) throws ActionException {
 		String key = makeKey(principal, project);
-		try {
-			roleUpsertStatement.setString(1, key);
-
-			// default types defined in org.hsqldb.types.Type can be used
-			JDBCArrayBasic array = new JDBCArrayBasic(roles.toArray(), Type.SQL_VARCHAR_DEFAULT);				
-			roleUpsertStatement.setArray(2, array);
-			roleUpsertStatement.execute();
-			DatabaseManagement.statisticsWrite();
-		} catch (Throwable e) {
-			throw new ActionException(e);
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		RoleEntity roleEntity = session.byId(RoleEntity.class).load(key);
+		if(null == roleEntity) {
+			roleEntity = new RoleEntity();
+			roleEntity.principal = (String)principal;
+			roleEntity.project = (String)project;
+			roleEntity.key = key;
 		}
+
+		roleEntity.addRoleSet(roles);
+		session.saveOrUpdate(roleEntity);
+		transaction.commit();
 	}
 
 	@Override

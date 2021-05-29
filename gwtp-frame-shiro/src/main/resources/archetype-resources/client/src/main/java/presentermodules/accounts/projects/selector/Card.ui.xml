@@ -1,5 +1,4 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
- xmlns:r='urn:import:${package}.ui.infinitycard'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 <ui:style gss="true" src="../../selector.gss">
 .card-name {
@@ -41,12 +40,12 @@ color: COLOR_TONE;
 }
 </ui:style>
 
-<r:CardPanel ui:field="cardPanel" styleName="{style.card-container}">
+<g:HTMLPanel styleName="{style.card-container}">
 <div class="{style.card-body}">
  <div class="{style.card-content}">
   <g:HTML styleName="{style.card-name}" ui:field="name" />
   <g:HTML styleName="{style.card-note}" ui:field="note" />
  </div>
 </div>
-</r:CardPanel>
+</g:HTMLPanel>
 </ui:UiBinder>

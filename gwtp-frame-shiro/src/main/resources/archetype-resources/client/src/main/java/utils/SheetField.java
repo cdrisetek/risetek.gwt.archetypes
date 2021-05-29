@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.function.Consumer;
 
+import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -16,6 +17,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialValueBox;
 
+/**
+ * Fields is widget with value or click handler or focus etc.
+ * SheetField concatenation of the various fields of the form in sequence.
+ * 
+ * @author wangyc@risetek.com
+ *
+ */
 public class SheetField {
 	public interface ValidatorFunction<T> {
 		void apply(T event);
@@ -24,6 +32,7 @@ public class SheetField {
 	public enum TYPE {ACCOUNT, PASSWORD, EMAIL, TELPHONE}
 
 	private SheetField next = null;
+	private SheetField headerField;
 
 	private Widget field;
 	private KeyUpHandler keyHandler;
@@ -50,8 +59,9 @@ public class SheetField {
 		}
 
 		private SheetField parent;
-		public Builder(Widget field, SheetField parent) {
+		protected Builder(Widget field, SheetField parent) {
 			this.parent = parent;
+			sheetField.headerField = parent.headerField;
 			sheetField.field = field;
 		}
 		
@@ -62,8 +72,8 @@ public class SheetField {
 		public Builder type(TYPE type) {
 			switch(type) {
 			case ACCOUNT:
-				assert (sheetField.field instanceof HasValue) : "password field not HasValue";
-				assert (sheetField.field instanceof Focusable) : "password field not Focusable";
+				assert (sheetField.field instanceof HasValue) : "Field: " + sheetField.field + " not HasValue";
+				assert (sheetField.field instanceof Focusable) : "Field: " + sheetField.field + "not Focusable";
 
 				break;
 			case PASSWORD:
@@ -91,6 +101,19 @@ public class SheetField {
 				assert false : "unsupport type";
 				break;
 			}
+			return this;
+		}
+
+		public Builder asHeader() {
+			assert null == sheetField.headerField : "Header field had set for: " + sheetField.headerField;
+			sheetField.headerField = sheetField;
+			return this;
+		}
+		
+		public Builder checkOnFocus() {
+			assert sheetField.field instanceof HasFocusHandlers : "Field: " + sheetField.field + " do not have focushandlers.";
+			HasFocusHandlers focusableField = (HasFocusHandlers)sheetField.field;
+			focusableField.addFocusHandler(event ->sheetField.headerField.validate(sheetField.field));
 			return this;
 		}
 
@@ -170,6 +193,8 @@ public class SheetField {
 		}
 	}
 
+	// Travel from this field to target field, validate with setting rules.
+	// Stop at that field when not valid.
 	public void validate(Widget target) {
 		if(field == target)
 			return;

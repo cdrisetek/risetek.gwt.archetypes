@@ -1,31 +1,32 @@
 package ${package}.ui.infinitycard;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.SimplePanel;
 
-public abstract class CardWidget<E> implements IsCardWidget<E> {
-	protected E entity;
+public abstract class CardWidget<E> extends SimplePanel implements HasClickHandlers {
+	public CardWidget(E entity) {
+		this.entity = entity;
+	}
+
+	private E entity;
 	
-	@Override
 	public E getEntity() {
 		return entity;
 	}
 
-    @Override
-    public Widget asWidget() {
-        if (widget == null)
-            throw new NullPointerException("widget cannot be null, you should call ViewImpl.initWidget() before.");
+	public void setEntity(E entity) {
+		this.entity = entity;
+	}
 
-        return widget;
-    }
-	
-	private Widget widget;
-    protected void initWidget(IsWidget widget) {
-        if (this.widget != null)
-            throw new IllegalStateException("ViewImpl.initWidget() may only be called once.");
-        else if (widget == null)
-            throw new NullPointerException("widget cannot be null");
+	public boolean visible = false;
+    public void onShow() {};
+    public void onHide() {};
 
-        this.widget = widget.asWidget();
-    }
+	@Override
+	public HandlerRegistration addClickHandler(ClickHandler handler) {
+	    return addDomHandler(handler, ClickEvent.getType());
+	}
 }

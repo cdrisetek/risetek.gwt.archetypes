@@ -3,7 +3,6 @@ package ${package}.presentermodules.platformMenu;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -13,86 +12,69 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.user.client.ui.Widget;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
-public abstract class AbstractPlatformBarMenu extends ViewImpl implements HasUiHandlers<MyUiHandlers> {
+public abstract class AbstractPlatformBarMenu extends ViewWithUiHandlers<MyUiHandlers> {
     @UiTemplate("Menu.ui.xml")
-	public interface Binder extends UiBinder<HTMLPanel, AbstractPlatformBarMenu> {}
+	public interface Binder extends UiBinder<Widget, AbstractPlatformBarMenu> {}
 
-    public interface Style extends CssResource {
-    	String matIconButton();
-    	String cfcAccountchooserButtons();
-    	String barButton();
-    	String copyright();
-    	String cfcNavchooserDetails();
-    	String pccConsoleNavButton();
-    	String cfcIcon();
-    	String cfcProfilebutton();
-    	String matIcon();
-    	String cfcProfilepicture();
-    	String largeAccountIcon();
-    	String ngStartInserted();
-    	String cfcAccountChooserMenu();
-    	String cfcAccountchooserDetails();
-    	String navBarContainer();
-    	String navMenubottomContainer();
-    	String cfcProfileRow();
-    }
-    public @UiField Style style;
+    @UiField Button btnIcon;
     
-    public @UiField Button button;
+    @UiField HTMLPanel boundingboxMenu, boundingboxTips, panelChoosers, panelIcon;
     
-    public @UiField HTMLPanel boundingboxMenu, boundingboxTips, accountChooserMenu, NavButton;
-    
-    public @UiField Element matIcon, tooltip, overlaypanelTips, overlaypanelMenu;
+    @UiField Element iconBox, tooltip, panelTips, panelMenu;
 
-    protected MyUiHandlers uiHandler;
-
-    public AbstractPlatformBarMenu(Binder binder) {
+    public AbstractPlatformBarMenu(final Binder binder) {
     	initWidget(binder.createAndBindUi(this));
-    	button.setTabIndex(0);
-		button.sinkEvents(Event.ONMOUSEOVER);
-    	button.addMouseOutHandler(c->{boundingboxTips.removeFromParent();});
-    	boundingboxTips.getElement().setAttribute("style", "top: 0px; left: 0px; height: 100%; width: 100%;");
+    	btnIcon.setTabIndex(0);
+		btnIcon.sinkEvents(Event.ONMOUSEOVER);
+    	btnIcon.addMouseOutHandler(c->{boundingboxTips.removeFromParent();});
     }
 
-    @UiHandler("button")
+    @UiHandler("btnIcon")
     void onButtonMouseOver(MouseOverEvent event) {
-    	uiHandler.showTip(this);
+    	getUiHandlers().showTip(this);
     }
     
-    @UiHandler("button")
+    @UiHandler("btnIcon")
     void onButtonClick(ClickEvent event) {
-    	uiHandler.onMenuClick(this);
+    	getUiHandlers().onIconClick(this);
     }
     
-	@Override
-	public void setUiHandlers(MyUiHandlers uiHandler) {
-    	this.uiHandler = uiHandler;
-	}
-	
 	@Override
 	public void onAttach() {
-		int xpostion = button.getAbsoluteLeft();
+		int xpostion = btnIcon.getAbsoluteLeft();
 		int windowWith = Window.getClientWidth();
 
 		if(xpostion < windowWith/2)
-			overlaypanelTips.setAttribute("style", "pointer-events: auto; top: 48px; left: " + xpostion + "px;");
+			panelTips.setAttribute("style", "left: " + xpostion + "px;");
 		else
-			overlaypanelTips.setAttribute("style", "pointer-events: auto; top: 48px; right: 12px;");
+			panelTips.setAttribute("style", "right: 12px;");
 
-    	tooltip.setInnerText(getTip());
+    	tooltip.setInnerText(getTipString());
 	}
 	
-    abstract public String getTip();
-	abstract public Panel getMenuPanel();
+    abstract public String getTipString();
+	abstract public Panel getChooserPanel();
     
-	public Panel getIcon() {
-        return NavButton;
+	void setMenuIcon(Element icon) {
+		iconBox.appendChild(icon);
+	}
+
+	public Panel getIconPanel() {
+        return panelIcon;
 	}
     
-    public Panel getToolTipPanel() {
+    public Panel getTipPanel() {
     	return boundingboxTips;
+    }
+    
+    public void setChooserBoxRight(int position) {
+		boundingboxMenu.getElement().setAttribute("style", "right: " + position + "px; align-items: flex-end;");
+    }
+
+    public void setChooserBoxLeft(int position) {
+		boundingboxMenu.getElement().setAttribute("style", "left: " + position + "px; align-items: flex-start;");
     }
 }

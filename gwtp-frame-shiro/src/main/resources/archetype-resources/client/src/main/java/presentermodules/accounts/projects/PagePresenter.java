@@ -286,9 +286,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 				public void onSuccess(GetResults<GetResult<?>> result) {
 					List<GetResult<?>> results = result.getResults();
 						RoleEntity projectRoleSet = (RoleEntity) (((GetResult<?>) results.get(0).getResults()).getResults());
-						assert null != projectRoleSet.getRoleSet();
 						RoleEntity accountRoleSet = (RoleEntity) (((GetResult<?>) results.get(1).getResults()).getResults());
-						assert null != accountRoleSet.getRoleSet();
 						names.accept(selectedAccount, selectedProject);
 						roleSet.accept(accountRoleSet.getRoleSet(), projectRoleSet.getRoleSet());
 				};

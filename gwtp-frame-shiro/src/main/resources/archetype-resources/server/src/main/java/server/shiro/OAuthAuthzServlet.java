@@ -57,12 +57,9 @@ public class OAuthAuthzServlet extends HttpServlet {
 					if(null == principal || null == credential)
 						throw OAuthProblemException.error("requires username and password");
 
-					boolean isDemo = (request.getIntHeader("X-Content-OAuth-Demo") > 0);
-					
 					AccessTokenManagement.CodeBuilder builder = new AccessTokenManagement.CodeBuilder()
 							                        .setPrincipal(principal)
-					                                .setCredential(credential)
-					                                .setDemo(isDemo);
+					                                .setCredential(credential);
 					if(! IOAuthConfig.client_id_local.equals(oRequest.getClientId()))
 						builder.setClientID(oRequest.getClientId());
 
@@ -85,7 +82,7 @@ public class OAuthAuthzServlet extends HttpServlet {
 					if(null == code)
 						throw OAuthProblemException.error("missing access code");
 
-					pw.print(accessTokenManagement.buildAccessTokenResource(code));
+					pw.print(accessTokenManagement.buildAccessTokenResource(code, false /* is for internal authentication? */));
 					response.setStatus(HttpServletResponse.SC_OK);
 					break;
 				}

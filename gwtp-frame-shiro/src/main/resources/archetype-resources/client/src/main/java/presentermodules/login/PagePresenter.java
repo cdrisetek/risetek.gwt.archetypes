@@ -1,6 +1,5 @@
 package ${package}.presentermodules.login;
 
-import com.google.gwt.user.client.Window.Location;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -17,6 +16,8 @@ import ${package}.NameTokens;
 import ${package}.entry.Subject;
 import ${package}.entry.SubjectChangeEvent;
 import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
+
+// NOTE: this place will be removed.
 
 public class PagePresenter extends
 		Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
@@ -54,7 +55,7 @@ public class PagePresenter extends
 
 	@Override
 	public void onReveal() {
-		Location.replace("/oauth/login");
+		subject.Login();
 	}
 	
 	@Override

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 #set($dollar = '$')
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
-  <version>${version}</version>
-  <packaging>pom</packaging>
-
-  <properties>
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>${groupId}</groupId>
+ <artifactId>${artifactId}</artifactId>
+ <version>${version}</version>
+ <packaging>pom</packaging>
+ <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     <gin.version>3.0.0</gin.version>
     <guice.version>4.2.3</guice.version>
     <gwt.version>2.9.0</gwt.version>
@@ -23,8 +20,8 @@
     <maven-processor.version>4.0-rc1</maven-processor.version>
     <maven-war.version>3.3.1</maven-war.version>
     <slf4j.version>1.7.26</slf4j.version>
+    <hibernate.version>6.0.0.Alpha7</hibernate.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -102,7 +99,17 @@
       <dependency>
        <groupId>org.slf4j</groupId>
        <artifactId>slf4j-simple</artifactId>
-       <version>${slf4j.version}</version>
+       <version>${dollar}{slf4j.version}</version>
+      </dependency>
+      <dependency>
+       <groupId>org.hibernate.orm</groupId>
+       <artifactId>hibernate-core</artifactId>
+       <version>${dollar}{hibernate.version}</version>
+      </dependency>
+      <dependency>
+       <groupId>org.hibernate.orm</groupId>
+       <artifactId>hibernate-agroal</artifactId>
+       <version>${dollar}{hibernate.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

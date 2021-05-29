@@ -57,6 +57,8 @@ public class OAuthTokenServlet extends HttpServlet implements IOAuthConfig {
 			// TODO: create OAuthClientToken and login.
 			OAuthClientToken token = OAuthClientToken.authCode(code, Arrays.asList("scope1", "scope2").stream().collect(Collectors.toSet()));
 			Subject subject = SecurityUtils.getSubject();
+			if(null != request.getParameter(IOAuthConfig.rememberme_key))
+				token.setRememberMe(true);
 
 			try {
 				subject.login(token);
