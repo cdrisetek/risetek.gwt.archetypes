@@ -57,11 +57,11 @@ public class TemporaryAccount {
 		@Override
 		public TemporaryAccount get() {
 			logger.info("========= deploy config is:" + config);
-			String account = config.getValue("deploy.account", String.class);
+			String account = config.getOptionalValue("deploy.account", String.class).orElse(null);
 			if (null == account)
 				return null;
 
-			String password = config.getValue("deploy.password", String.class);
+			String password = config.getOptionalValue("deploy.password", String.class).orElse(null);
 			if (null == password)
 				return null;
 

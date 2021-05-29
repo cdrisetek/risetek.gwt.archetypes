@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ import ${package}.share.accounts.AccountEntity;
 public class AccessTokenManagement {
 	@Inject private IAccountManagement accountManagement;
 	@Inject private IAuthorizingHandler authorizing;
-	@Inject private TemporaryAccount temporaryAccount;
+	@Inject @Nullable private TemporaryAccount temporaryAccount;
 	@Inject private IRoleManagement roleManagement;
 
 	public String buildAccessTokenResource(String code, boolean isInternal /* is for internal authentication? */)
