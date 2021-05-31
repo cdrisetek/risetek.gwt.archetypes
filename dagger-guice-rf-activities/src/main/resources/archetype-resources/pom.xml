@@ -10,10 +10,14 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <autofactory.version>1.0-beta5</autofactory.version>
-    <dagger.version>2.21</dagger.version>
-    <guice.version>4.2.2</guice.version>
+    <guice.version>4.2.3</guice.version>
+    <gwt.version>2.9.0</gwt.version>
+    <gwt-maven.version>1.0.0</gwt-maven.version>
+    <autofactory.version>1.0.1</autofactory.version>
+    <dagger.version>2.36</dagger.version>
+    <jdk.version>11</jdk.version>
+    <jetty.version>9.4.36.v20210114</jetty.version>
+    <maven-compiler.version>3.8.1</maven-compiler.version>
   </properties>
 
   <dependencyManagement>
@@ -21,7 +25,7 @@
       <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt</artifactId>
-        <version>2.8.2</version>
+        <version>${dollar}{gwt.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -54,6 +58,7 @@
         <groupId>com.google.auto.factory</groupId>
         <artifactId>auto-factory</artifactId>
         <version>${dollar}{autofactory.version}</version>
+        <optional>true</optional>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>
@@ -78,25 +83,32 @@
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>${dollar}{maven-compiler.version}</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <source>${dollar}{jdk.version}</source>
+            <target>${dollar}{jdk.version}</target>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.10.v20180503</version>
+          <version>${dollar}{jetty.version}</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>net.ltgt.gwt.maven</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>1.0-rc-10</version>
+          <version>${dollar}{gwt-maven.version}</version>
           <extensions>true</extensions>
           <configuration>
-            <sourceLevel>1.8</sourceLevel>
+            <sourceLevel>${dollar}{jdk.version}</sourceLevel>
             <failOnError>true</failOnError>
+            <codeserverArgs>
+              <arg>-bindAddress</arg>
+              <arg>0.0.0.0</arg>
+            </codeserverArgs>
           </configuration>
         </plugin>
         <plugin>
