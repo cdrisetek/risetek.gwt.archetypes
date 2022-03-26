@@ -22,7 +22,7 @@ risetek.archetypes
 
 ### 项目构造
 * 在eclipse下import-> Maven -> Existing Maven Projects，可以同时将三个项目纳入eclipse集成开发环境中。
-* 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project
+* 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project；有些情况下，存在依赖的package就是本项目提供的，那么需要先行使用mvn install来安装这个package。
 
 ### 调试
 * 在一个终端（窗口）中运行: `mvn gwt:codeserver -pl client -am`
@@ -117,6 +117,7 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 
 #### 部署
 ##### nginx
+* 数据服务通过不同的location组合在一起。
 * 服务端需要得到浏览器访问的URL，因此部署时要考虑将这些信息真实地传递到服务端，比如在使用nginx的情况下，一个实际的配置例子：
 
 ```
@@ -125,6 +126,13 @@ server {
   server_name devops.yun74.com;
   location / {
     proxy_pass http://localhost:19000;
+    port_in_redirect off;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+  }
+  location /iotms/ {
+    proxy_pass http://localhost:190020/;
     port_in_redirect off;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
