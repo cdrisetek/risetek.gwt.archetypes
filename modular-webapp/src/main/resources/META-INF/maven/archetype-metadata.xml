@@ -8,7 +8,8 @@
       <defaultValue>App</defaultValue>
     </requiredProperty>
     <requiredProperty key="module-short-name">
-      <defaultValue>${module.toLowerCase()}</defaultValue>
+    <!-- ${module.toLowerCase()} not function by maven version 3.6.3 -->
+      <defaultValue>app</defaultValue>
     </requiredProperty>
   </requiredProperties>
   <modules>
