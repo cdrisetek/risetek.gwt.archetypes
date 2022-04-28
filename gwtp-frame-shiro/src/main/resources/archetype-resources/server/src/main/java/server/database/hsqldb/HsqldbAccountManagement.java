@@ -112,7 +112,8 @@ public class HsqldbAccountManagement implements IAccountManagement {
 		transaction.begin();
 		for(AccountEntity entity:subjects) {
 			AccountEntity account = session.bySimpleNaturalId(AccountEntity.class).load(entity.principal);
-			session.clear();
+			if(null == account)
+				throw new ActionException("Invalid principal: " + entity.principal);
 			account.descriptions = entity.descriptions;
 			session.saveOrUpdate(account);
 		}
@@ -151,7 +152,8 @@ public class HsqldbAccountManagement implements IAccountManagement {
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
 		AccountEntity account = session.bySimpleNaturalId(AccountEntity.class).load(principal);
-		session.clear();
+		if(null == account)
+			throw new ActionException("Invalid principal: " + principal);
 		account.password = authorizing.encryptRealmPassword((String)credential);
 		session.saveOrUpdate(account);
 		transaction.commit();

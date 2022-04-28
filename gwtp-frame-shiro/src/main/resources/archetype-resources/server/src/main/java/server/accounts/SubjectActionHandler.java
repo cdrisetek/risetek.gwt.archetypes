@@ -34,7 +34,7 @@ public class SubjectActionHandler implements ActionHandler<SubjectAction, GetRes
 		// Change or reset current subject associated user password.
 		// If action.password is not null but is empty means reset password.
 		else if(null == action.account && null != action.password) {
-			if(!subject.isPermitted("subject:update"))
+			if(!subject.isAuthenticated())
 				throw new ActionUnauthorizedException("permission: update subject");
 				
 			subjectManagement.setSubjectPassword(action.password);

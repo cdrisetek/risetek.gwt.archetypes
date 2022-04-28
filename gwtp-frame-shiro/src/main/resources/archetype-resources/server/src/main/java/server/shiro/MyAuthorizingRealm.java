@@ -314,12 +314,18 @@ public class MyAuthorizingRealm extends IniRealm implements IAuthorizingHandler,
 		}
 
 		Subject subject = SecurityUtils.getSubject();
-		Object princial = subject.getPrincipal();
-		accountManagement.setCredential(princial, password);
-		
-		// Logout and force user login with new password again.
-		subject.logout();
-		throw new ActionUnauthenticatedException();
+		for(Object o:subject.getPrincipals()) {
+			if(o instanceof AccountEntity) {
+				AccountEntity e = (AccountEntity)o;
+				System.out.println("set password for user: " + e.principal);
+				accountManagement.setCredential(e.principal, password);
+				
+				// Logout and force user login with new password again.
+				subject.logout();
+				throw new ActionUnauthenticatedException("Force logout for password changed.");
+			}
+		}
+		throw new ActionException("Principal not found, it is impossible.");
 	}
 	// End of ISubjectManagement interface implements
 }
