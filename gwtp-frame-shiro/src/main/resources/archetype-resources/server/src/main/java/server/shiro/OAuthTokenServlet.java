@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,7 @@ import ${package}.server.shiro.oltu.client.OAuthClientToken;
  */
 
 @Singleton
+@WebServlet(value = "/oauth/token")
 public class OAuthTokenServlet extends HttpServlet implements IOAuthConfig {
 	private static final long serialVersionUID = -6683598824382339693L;
 

@@ -3,9 +3,10 @@
  <meta http-equiv="content-type" content="text/html">
  <meta charset='utf-8'>
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="shortcut icon" href="favicon.ico">
+ <link rel="shortcut icon" href="/favicon.ico">
  <title>OAuth Login</title>
- <link rel="stylesheet" type="text/css" href="fonts/font.css">
+ <link rel="stylesheet" type="text/css" href="css/font.css">
+ <link rel="stylesheet" type="text/css" href="css/theme.css">
 <style>
  html, body {width: 100%; height: 100%; margin: 0; overflow-x: hidden;}
  .container {
@@ -14,7 +15,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  color: #42a5f5;
   height: 100%;
  }
  .container::before, .container::after {
@@ -27,8 +27,8 @@
   content: '';
   display: block;
  }
- .lg-center {margin: 0 auto; width: 480px; border-radius: 5px; box-shadow: 0 4px 32px 0 rgb(10 14 29 / 2%), 0 8px 64px 0 rgb(10 14 29 / 8%);}
- .lg-commit-button {cursor: pointer; width: 100%; background: #42a5f5; font-size: 1.2rem; text-align: center; color: #FFFFFF;
+ .lg-center {margin: 0 auto; width: var(--rt-cellwidth-3); border-radius: 5px;}
+ .lg-commit-button {cursor: pointer; width: 100%; font-size: 1.2rem; text-align: center; color: #FFFFFF;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
   border: 0; border-radius: 2px;
   display: inline-block;
@@ -39,9 +39,7 @@
   vertical-align: middle;
   -webkit-tap-highlight-color: transparent;
  }
- .icon-ui {width: 24px; min-width: 24px; height: 24px;}
  .icon-ui .stroke {fill: none; stroke: #42a5f585; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;}
- .icon-ui .fill {fill: #42a5f5a5;}
  .input-box {
   display: flex;
   justify-content: space-between;
@@ -113,37 +111,37 @@
   </script>
 </head>
 <body>
-<div class='container'>
-<div class="lg-center">
+<div class='container rt-color-tone'>
+<div class="lg-center rt-bx-shadow">
  <div style="padding: 20px; font-size: 40px; text-align: center; font-weight: 700; line-height: 52px;">Login</div>
+ <form>
  <div style="padding: 20px 40px;">
   <div class="input-box">
-   <svg class="icon-ui" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
-    <path class="stroke" d="M2,4h20v16H2V4z"></path>
-    <path class="stroke" d="M2,8l10,5l10-5"></path>
+   <svg class="icon-ui rt-color-tone rt-icon-s24" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
+    <path class="stroke" d="M2,4h20v16H2V4z"/>
+    <path class="stroke" d="M2,8l10,5l10-5"/>
    </svg>
-   <input id="username" type="text" class="input-field" autocomplete="off" placeholder="账户" maxlength="30"
-    spellcheck="false" autocapitalize="off" autocorrect="off" required="required">
+   <input id="username" type="text" class="input-field" autocomplete="off" placeholder="账户" maxlength="30" spellcheck="false" autocapitalize="off" autocorrect="off" required="required"/>
   </div> 
   <div class="input-box">
-   <svg class="icon-ui" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
-    <path class="fill" d="M19,8V7c0-3.9-3.1-7-7-7S5,3.1,5,7v1h2V7c0-2.8,2.2-5,5-5s5,2.2,5,5v1H19"></path>
-    <path class="stroke" d="M3,9h18v14H3V9z"></path>
-    <circle class="fill" cx="8" cy="16" r="1"></circle>
-    <circle class="fill" cx="12" cy="16" r="1"></circle>
-    <circle class="fill" cx="16" cy="16" r="1"></circle>
+   <svg class="icon-ui rt-color-tone rt-icon-s24" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
+    <path class="fill" d="M19,8V7c0-3.9-3.1-7-7-7S5,3.1,5,7v1h2V7c0-2.8,2.2-5,5-5s5,2.2,5,5v1H19"/>
+    <path class="stroke" d="M3,9h18v14H3V9z"/>
+    <circle class="fill" cx="8" cy="16" r="1"/>
+    <circle class="fill" cx="12" cy="16" r="1"/>
+    <circle class="fill" cx="16" cy="16" r="1"/>
    </svg>
-   <input id="password" type="password" class="input-field" autocomplete="off" placeholder="密码" maxlength="30"
-    spellcheck="false" autocapitalize="off" autocorrect="off" required="required">
+   <input id="password" type="password" class="input-field" autocomplete="off" placeholder="密码" maxlength="30" spellcheck="false" autocapitalize="off" autocorrect="off" required="required"/>
   </div>
 
- <button id="commit" type="button" class="lg-commit-button"">
+ <button id="commit" type="button" class="lg-commit-button rt-bg-color-tone rt-bx-shadow">
   <span>登录</span>
  </button></div>
+ </form>
 
  <div style="background: rgba(0,0,0,0.01); padding: 20px;">
   <div class="checkbox">
-   <input id="rememberme" type="checkbox" tabindex="0" class="filled-in"><label>自动登录</label></div></div>
+   <input id="rememberme" type="checkbox" tabindex="0" class="filled-in"/><label>自动登录</label></div></div>
   </div>
  </div>
  <script>

@@ -13,7 +13,7 @@
   <packaging>gwt-app</packaging>
 
   <properties>
-    <gwt-material.version>2.4.0-rc1</gwt-material.version>
+    <gwt-material.version>2.6.1</gwt-material.version>
     <eclipse-jgit.version>5.10.0.202012080955-r</eclipse-jgit.version>
   </properties>
 
@@ -31,11 +31,11 @@
       <classifier>sources</classifier>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-dev</artifactId>
     </dependency>
     <dependency>

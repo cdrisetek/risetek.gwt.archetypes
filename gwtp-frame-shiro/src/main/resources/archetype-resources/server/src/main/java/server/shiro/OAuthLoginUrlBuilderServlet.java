@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
  */
 
 @Singleton
+@WebServlet(value = "/oauth/login")
 public class OAuthLoginUrlBuilderServlet extends HttpServlet implements IOAuthConfig {
 	private static final long serialVersionUID = 3898978461211429449L;
 

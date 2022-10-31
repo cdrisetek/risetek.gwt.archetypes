@@ -17,7 +17,7 @@ public interface IOAuthConfig {
 	// 如果将 OAuth sever 位置设定为 null，那么这个项目具有本地服务能力
 	public final static String endpointLocation = null; // "http://devops.yun74.com";
 	
-	public final static String loginURI = "/login.html"; 
+	public final static String loginURI = "/app/login.html"; 
 	public final static String authzURI = "/oauth/authz";
 	public final static String tokenURI = "/oauth/token";
 }

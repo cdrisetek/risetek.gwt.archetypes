@@ -10,14 +10,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gin.version>3.0.0</gin.version>
     <guice.version>4.2.3</guice.version>
-    <gwt.version>2.9.0</gwt.version>
-    <gwt-maven.version>1.0.0</gwt-maven.version>
+    <gwt.version>2.10.0</gwt.version>
+    <gwt-maven.version>1.0.1</gwt-maven.version>
     <gwtp.version>1.6</gwtp.version>
     <jdk.version>11</jdk.version>
-    <jetty.version>9.4.36.v20210114</jetty.version>
+    <jetty.version>10.0.8</jetty.version>
     <maven-compiler.version>3.8.1</maven-compiler.version>
     <maven-source.version>3.2.0</maven-source.version>
-    <maven-processor.version>4.0-rc1</maven-processor.version>
+    <maven-processor.version>4.5</maven-processor.version>
     <maven-war.version>3.3.1</maven-war.version>
     <slf4j.version>1.7.26</slf4j.version>
     <hibernate.version>6.0.0.Alpha7</hibernate.version>
@@ -25,24 +25,24 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>org.gwtproject</groupId>
         <artifactId>gwt</artifactId>
         <version>${dollar}{gwt.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-       <groupId>com.google.gwt</groupId>
+       <groupId>org.gwtproject</groupId>
        <artifactId>gwt-servlet</artifactId>
        <version>${dollar}{gwt.version}</version>
       </dependency>
       <dependency>
-       <groupId>com.google.gwt</groupId>
+       <groupId>org.gwtproject</groupId>
        <artifactId>gwt-user</artifactId>
        <version>${dollar}{gwt.version}</version>
       </dependency>
       <dependency>
-       <groupId>com.google.gwt</groupId>
+       <groupId>org.gwtproject</groupId>
        <artifactId>gwt-dev</artifactId>
        <version>${dollar}{gwt.version}</version>
       </dependency>

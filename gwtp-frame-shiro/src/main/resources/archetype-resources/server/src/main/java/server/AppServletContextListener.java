@@ -24,7 +24,6 @@ import ${package}.server.devops.ServicesManagement;
 import ${package}.server.shiro.MyShiroWebModule;
 import ${package}.server.shiro.OAuthAuthzServlet;
 import ${package}.server.shiro.OAuthLoginUrlBuilderServlet;
-import ${package}.server.shiro.OAuthLogoutServlet;
 import ${package}.server.shiro.OAuthTokenServlet;
 
 /**
@@ -72,13 +71,6 @@ public abstract class AppServletContextListener extends GuiceServletContextListe
 		modulesList.add(new ServletModule() {
 			@Override
 			protected void configureServlets() {
-				// For redirect login page to OAuth server
-				// AAA server could be local or remote OAuth server.
-				serve("/oauth/login").with(OAuthLoginUrlBuilderServlet.class); // OAuth client handler
-				serve("/oauth/logout").with(OAuthLogoutServlet.class); // OAuth server handler
-				serve("/oauth/token").with(OAuthTokenServlet.class); // OAuth client handler
-				serve("/oauth/authz").with(OAuthAuthzServlet.class); // OAuth server handler
-
 				// Demo Login for devops
 				serve("/demo/oauth/login").with(OAuthLoginUrlBuilderServlet.class);
 				serve("/demo/oauth/authz").with(OAuthAuthzServlet.class);
