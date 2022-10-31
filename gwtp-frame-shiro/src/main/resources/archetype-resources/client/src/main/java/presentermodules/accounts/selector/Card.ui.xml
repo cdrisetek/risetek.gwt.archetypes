@@ -17,7 +17,6 @@ text-overflow: ellipsis;
 font-weight:bold;
 margin-right: 10px;
 font-size: 1.2em;
-color: COLOR_TONE;
 }
 
 .card-name::before {content: "\8d26\6237:";}
@@ -25,23 +24,18 @@ color: COLOR_TONE;
 .card-tel::before {content: "\7535\8bdd:";}
 .card-note::before {content: "\5907\6ce8:";}
 
-@media only screen and (max-width: 800px) {
- .card-body { min-width: MIN_WIDTH; }
- .card-note { width: 100%; }
-}
-
 .card-content-left-panel {width: mult(CELLWIDTH, 2); min-width: mult(CELLWIDTH, 2);}
 </ui:style>
 
 <g:HTMLPanel styleName="{style.card-container}">
-<div class="{style.card-body}">
+<div class="{style.card-body} rt-bx-shadow">
  <div class="{style.card-content}">
    <g:HTMLPanel styleName='{style.card-content-left-panel}'>
-    <g:HTML styleName="{style.card-name}" ui:field="name" />
-    <g:HTML styleName="{style.card-email}" ui:field="email" />
-    <g:HTML styleName="{style.card-tel}" ui:field="telphone" />
+    <g:HTML styleName="{style.card-name} rt-color-before" ui:field="name" />
+    <g:HTML styleName="{style.card-email} rt-color-before" ui:field="email" />
+    <g:HTML styleName="{style.card-tel} rt-color-before" ui:field="telphone" />
    </g:HTMLPanel>
-   <g:HTML styleName="{style.card-note}" ui:field="note" />
+   <g:HTML styleName="{style.card-note} rt-color-before" ui:field="note" />
  </div>
 </div>
 </g:HTMLPanel>

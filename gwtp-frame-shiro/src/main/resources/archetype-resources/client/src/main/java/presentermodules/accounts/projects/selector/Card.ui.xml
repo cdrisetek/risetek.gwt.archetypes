@@ -14,7 +14,6 @@ content: "\9879\76ee:";
 font-weight:bold;
 margin-right: 10px;
 font-size: 1.2em;
-color: COLOR_TONE;
 }
 .card-note {
 width: 100%;
@@ -31,20 +30,15 @@ content: "\5907\6ce8:";
 font-weight:bold;
 font-size: 1.2em;
 margin-right: 10px;
-color: COLOR_TONE;
 }
 
-@media only screen and (max-width: 800px) {
- .card-body { min-width: MIN_WIDTH; }
- .card-note { width: 100%; }
-}
 </ui:style>
 
 <g:HTMLPanel styleName="{style.card-container}">
-<div class="{style.card-body}">
+<div class="{style.card-body} rt-bx-shadow">
  <div class="{style.card-content}">
-  <g:HTML styleName="{style.card-name}" ui:field="name" />
-  <g:HTML styleName="{style.card-note}" ui:field="note" />
+  <g:HTML styleName="{style.card-name} rt-color-before" ui:field="name" />
+  <g:HTML styleName="{style.card-note} rt-color-before" ui:field="note" />
  </div>
 </div>
 </g:HTMLPanel>

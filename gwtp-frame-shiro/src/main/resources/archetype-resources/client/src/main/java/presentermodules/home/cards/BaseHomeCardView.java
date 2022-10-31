@@ -29,7 +29,6 @@ public class BaseHomeCardView<Ui extends UiHandlers> extends ViewWithUiHandlers<
 		String infoCardItemLeftGutter();
 		String infoCardItemContentLeft();
 		String InfoCardItemContent();
-		String matIcon();
 		String homeCardRedirect();
 		String infoTextLine();
 		String cardInfoText();
@@ -100,7 +99,7 @@ public class BaseHomeCardView<Ui extends UiHandlers> extends ViewWithUiHandlers<
 		iconwrap.addStyleName(style.infoCardItemLeftGutter());
 		
 		SimplePanel icon = new SimplePanel();
-		icon.addStyleName(style.matIcon());
+		icon.addStyleName("rt-icon-s24");
 		icon.add(new Icons.ArrowRight());
 		
 		iconwrap.add(icon);

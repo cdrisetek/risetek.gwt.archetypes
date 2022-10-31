@@ -2,8 +2,6 @@
 @def CELLWIDTH 160px;
 @def MAX_WIDTH mult(CELLWIDTH, 5);
 @def MIN_WIDTH mult(CELLWIDTH, 4);
-@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
-@def BOX_SHADOW eval("${package}.resource.Resources.getBoxShadow()");
 
 .container {width: 100%; height: 100%; box-sizing: border-box; position: fixed;}
 .center-container {width: mult(CELLWIDTH, 5); margin: 0 auto;}
@@ -28,7 +26,6 @@ border-radius: 3px;
 margin: 0px;
 padding: 0px;
 background-color: transparent;
-box-shadow: BOX_SHADOW;
 cursor: pointer;
 }
 
@@ -42,5 +39,6 @@ display: inline-flex;
 
 @media only screen and (max-width: 800px) {
  .card-body { min-width: MIN_WIDTH; }
+ .card-note { width: 100%; }
  .card-content { display: block; }
 }

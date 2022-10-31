@@ -15,7 +15,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.bindery.PlainMenu;
 import ${package}.place.root.RootPresenter;
-import ${package}.presentermodules.accounts.TokenNames;
+import ${package}.presentermodules.development.TokenNames;
 import ${package}.utils.Icons;
 import ${package}.utils.Icons.ArrowLeft;
 import ${package}.utils.Icons.ArrowRight;

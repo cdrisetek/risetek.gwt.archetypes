@@ -24,6 +24,7 @@ public class SelectorWidget extends CardPresenterWidget<ProjectEntity, SelectorV
 			final ServerExceptionHandler exceptionHandler,
 			final SelectorView view) {
 		super(eventBus, dispatcher, exceptionHandler, view);
+		onRefresh();
 	}
 
 	private long lastsequence = 0;
