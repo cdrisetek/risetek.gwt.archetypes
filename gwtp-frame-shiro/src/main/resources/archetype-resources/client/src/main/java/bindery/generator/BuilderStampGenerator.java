@@ -51,7 +51,12 @@ public class BuilderStampGenerator extends Generator {
 					}
 				}
 			} catch (Exception e) {
-				file = Paths.get(file.getAbsoluteFile().getPath()).getParent().toFile();
+                try{
+                    file = Paths.get(file.getAbsoluteFile().getPath()).getParent().toFile();
+                }catch(Exception e1) {
+                    logger.log(TreeLogger.WARN, "This project is not a git repository. Please make it correct.", null);
+                    break;
+                }
 			}
 		}
 
@@ -98,11 +103,17 @@ public class BuilderStampGenerator extends Generator {
 			sourceWriter.print("}");
 
 			sourceWriter.print("public String getCommitID(){");
-			sourceWriter.print("  return \"" + git_commit_id + "\";");
+            if(null == git_commit_id)
+    			sourceWriter.print("  return null;");
+            else
+                sourceWriter.print("  return \"" + git_commit_id + "\";");
 			sourceWriter.print("}");
 
 			sourceWriter.print("public String getCommitDate(){");
-			sourceWriter.print("  return \"" + git_commit_date + "\";");
+            if(null == git_commit_date)
+                sourceWriter.print("  return null;");
+            else
+                sourceWriter.print("  return \"" + git_commit_date + "\";");
 			sourceWriter.print("}");
 
 			sourceWriter.commit(logger);
