@@ -2,8 +2,6 @@
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
 <ui:style gss="true" type='${package}.presentermodules.platformMenu.PageView.Style'>
-@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
-
 .barContainer {
 position: relative;
 display: flex;
@@ -22,7 +20,6 @@ box-shadow: 0 3px 4px 0 rgba(0,0,0,.2), 0 3px 3px -2px rgba(0,0,0,.14), 0 1px 8p
 height: 48px;
 }
 
-.barBlue {background-color: COLOR_TONE;}
 .barLeft {flex: 1 0 auto;}
 
 .barMiddle {
@@ -76,7 +73,7 @@ opacity: 0;
 
 <g:HTMLPanel>
  <g:HTMLPanel ui:field="backdrop" styleName="{style.cdkOverlayBackdrop} {style.cdkOverlayTransparentBackdrop} {style.cdkOverlayBackdropShowing}"/>
- <g:HTMLPanel ui:field="barContainer" styleName="{style.barContainer} {style.barBlue} {style.platformBar}">
+ <g:HTMLPanel ui:field="barContainer" styleName="{style.barContainer} rt-bg-color-tone {style.platformBar}">
   <g:HTMLPanel ui:field="overlayContainer" styleName="{style.cdcOverlayContainer} {style.cfcNg2Region}"/>
  </g:HTMLPanel>
 </g:HTMLPanel>

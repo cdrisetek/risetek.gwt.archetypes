@@ -14,6 +14,7 @@ min-height:     0;
 </ui:style>
 
 <g:HTMLPanel styleName="{style.homeStyle}">
- <h1>This is ErrorPlace</h1>
+ <h1>Error</h1>
+ <g:HTMLPanel ui:field='label'/>
 </g:HTMLPanel>
 </ui:UiBinder>

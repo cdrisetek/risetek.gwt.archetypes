@@ -5,7 +5,7 @@
 <ui:style gss="true" src='style.gss'/>
  
 <g:HTMLPanel styleName="{style.container-chooser}">
-  <g:HTMLPanel styleName="{style.account-icon-box}">
+  <g:HTMLPanel styleName="{style.account-icon-box} rt-bg-color">
    <m:MaterialIcon iconType="PERM_IDENTITY" iconSize="LARGE" styleName='{style.account-icon}'/>
   </g:HTMLPanel>
   <g:Label ui:field="labelPrincipal" styleName="{style.principal}"/>

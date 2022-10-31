@@ -41,17 +41,22 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		getView().clear();
 
 		List<InfoItem> items = new ArrayList<>();
-		InfoItem item = new InfoItem();
-		item.infoText = "Git commit ID";
-		item.infoTextSecondary = Arrays.asList(stamp.getCommitID());
-		items.add(item);
+		InfoItem item;
+        if(null != stamp.getCommitID()) {
+            item = new InfoItem();
+            item.infoText = "Git commit ID";
+            item.infoTextSecondary = Arrays.asList(stamp.getCommitID());
+            items.add(item);
+        }
 
-		item = new InfoItem();
-		item.infoText = "Git Commit Date Time";
-		item.infoTextSecondary = Arrays.asList(stamp.getCommitDate());
-		items.add(item);
+        if(null != stamp.getCommitDate()) {
+            item = new InfoItem();
+            item.infoText = "Git Commit Date Time";
+            item.infoTextSecondary = Arrays.asList(stamp.getCommitDate());
+            items.add(item);
+        }
 
-		item = new InfoItem();
+        item = new InfoItem();
 		item.infoText = "Build Date Time";
 		item.infoTextSecondary = Arrays.asList(stamp.getBuilderStamp());
 		items.add(item);

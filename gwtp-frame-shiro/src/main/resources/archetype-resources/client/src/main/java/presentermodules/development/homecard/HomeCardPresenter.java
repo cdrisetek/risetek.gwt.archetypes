@@ -12,7 +12,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.entry.Subject;
-import ${package}.presentermodules.accounts.TokenNames;
+import ${package}.presentermodules.development.TokenNames;
 import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 import ${package}.share.accounts.hosts.HostProjectRBAC;

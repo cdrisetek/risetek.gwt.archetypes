@@ -52,9 +52,4 @@ public abstract class CardPresenterWidget<E extends Comparable<E>, C extends Car
 			return;
 		selectedConsumer.accept(card);
 	}
-	
-	@Override
-	public void onReveal() {
-		onRefresh();
-	}
 }

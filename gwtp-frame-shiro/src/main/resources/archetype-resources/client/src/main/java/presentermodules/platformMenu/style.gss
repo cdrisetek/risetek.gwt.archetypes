@@ -1,9 +1,8 @@
 @external material-icons;
-@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
 @def CELL_WIDTH 160px;
 
 .container-chooser {margin: 5px; display: block;}
-.container-chooser .account-icon-box {margin: 20px auto; width: 96px; border-radius: 50%; background-color: COLOR_TONE;}
+.container-chooser .account-icon-box {margin: 20px auto; width: 96px; border-radius: 50%;}
 .container-chooser .account-icon {color: #FFFFFF; font-size: 96px;}
 .container-chooser .principal {text-align: center; font-size: 1.4rem;}
 .container-chooser .container-buttons {background: rgba(0,0,0,0.02); padding: 10px 20px;}

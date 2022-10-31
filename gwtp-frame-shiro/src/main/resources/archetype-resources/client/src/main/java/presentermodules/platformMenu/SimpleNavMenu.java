@@ -22,7 +22,7 @@ import com.risetek.bindery.PlainMenuLoader.PlainMenuContent;
 @Singleton
 public class SimpleNavMenu extends AbstractPlatformBarMenu {
 	private final static PlainMenuLoader menuloader = GWT.create(PlainMenuLoader.class);
-
+	private final ChooserPanel chooserPanel;
 	@Override
 	public String getTipString() {
 		return "\u5bfc\u822a\u83dc\u5355";
@@ -31,7 +31,8 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 	@Inject
 	public SimpleNavMenu(final Binder binder, final ChooserPanel chooserPanel) {
 		super(binder);
-		Scheduler.get().scheduleDeferred(() -> chooserPanel.setUiHandlers(getUiHandlers()));
+		this.chooserPanel = chooserPanel;
+//		Scheduler.get().scheduleDeferred(() -> chooserPanel.setUiHandlers(getUiHandlers()));
 		setMenuIcon(chooserPanel.iconMenu);
 		setChooserBoxLeft(20);
 
@@ -50,6 +51,12 @@ public class SimpleNavMenu extends AbstractPlatformBarMenu {
 			Panel panel = new SimpleNavMenuItem(menu.title, menu.token, menu.icon == null ? null : menu.icon.getElement(), c->{getUiHandlers().gotoPlace(c);});
 			navBarContainer.add(panel);
 		}
+	}
+
+	@Override
+	public void onAttach() {
+        super.onAttach();
+		chooserPanel.setUiHandlers(getUiHandlers());
 	}
 
 	@Override

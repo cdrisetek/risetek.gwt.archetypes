@@ -24,6 +24,7 @@ import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
 @Singleton
 public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectChangeHandler {
 	private final Subject subject;
+	private final ChooserPanel chooserPanel;
 
 	@Inject
 	public SimpleLoginMenu(final Binder binder,
@@ -36,14 +37,14 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectC
 		setMenuIcon(chooserPanel.iconMenu);
 
 		eventBus.addHandler(SubjectChangeEvent.getType(), this);
-		
+		this.chooserPanel = chooserPanel;
 		panelChoosers.add(chooserPanel.asWidget());
-		Scheduler.get().scheduleDeferred(() -> chooserPanel.setUiHandlers(getUiHandlers()));
 	}
 	
 	@Override
 	public void onAttach() {
 		super.onAttach();
+		chooserPanel.setUiHandlers(getUiHandlers());
 		// TODO: adjust by button.
 		int rightPosition = Window.getClientWidth() - btnIcon.getAbsoluteLeft() - btnIcon.getOffsetWidth();
 		setChooserBoxRight(rightPosition);

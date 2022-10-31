@@ -1,13 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-
-	<ui:style gss="true" type="${package}.presentermodules.home.cards.BaseHomeCardView.MyStyle">
-@def COLOR_TONE eval("${package}.resource.Resources.getToneColor()");
-@def BOX_SHADOW eval("${package}.resource.Resources.getBoxShadow()");
-@def COLOR_MAIN eval("${package}.resource.Resources.getMainColor()");
-@def CELL_WIDTH 160px;
-
-.homeCard {
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" type="${package}.presentermodules.home.cards.BaseHomeCardView.MyStyle">
+.home-card {
  display: flex;
  flex-direction: column;
  flex-grow: 1;
@@ -16,7 +10,7 @@
  padding: 0;
  position: relative;
  width: 100%;
- background-color: COLOR_MAIN; border-radius: 2px; box-shadow: BOX_SHADOW;
+ border-radius: 2px; 
 }
 
 .infoCardTopRight {
@@ -29,7 +23,6 @@
  display: flex;
  align-items: center;
  padding: 20px 0 4px 0;
- color: COLOR_TONE;
 }
 	
 .infoCardItemLeftGutter {
@@ -45,13 +38,6 @@
  text-align: center;
  width: 28px;
 }
-.matIcon {
- display: inline-block;
- background-repeat: no-repeat;
- fill: currentColor;
- height: 24px;
- width: 24px;
-}
 	
 .headContent {
  display: flex;
@@ -62,7 +48,6 @@
 
 .headText {
  margin: 0 12px 0 0;
- color: COLOR_TONE;
  font-size: 18px;
  font-weight: bold;
  letter-spacing: normal;
@@ -115,14 +100,14 @@ div.cardInfoText.cardInfoTextSecondary {color: rgba(0,0,0,.66);}
 </ui:style>
 
 <g:HTMLPanel>
- <div class="{style.homeCard}">
+ <div class="{style.home-card} rt-bg-color rt-bx-shadow">
   <div class="{style.infoCardTopRight}"/>
-  <div class="{style.infoCardHeader}">
+  <div class="{style.infoCardHeader} rt-color-tone">
    <div class="{style.infoCardItemLeftGutter}">
-    <div class="{style.matIcon}" ui:field="iconPanel"/>
+    <div class="rt-icon-s24" ui:field="iconPanel"/>
    </div>
    <div class="{style.headContent}">
-    <div class="{style.headText}" ui:field="headLabel"/>
+    <div class="{style.headText} rt-color-tone" ui:field="headLabel"/>
    </div>
    </div>
    <div class="{style.cfcLoader}">
