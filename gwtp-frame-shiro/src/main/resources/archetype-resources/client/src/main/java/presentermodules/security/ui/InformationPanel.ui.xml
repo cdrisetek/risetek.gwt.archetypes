@@ -1,0 +1,68 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+<ui:style gss="true">
+.article {
+-webkit-flex-basis: 100%;
+flex-basis: 100%;
+-webkit-box-flex: 1;
+box-flex: 1;
+-webkit-flex-grow: 1;
+flex-grow: 1;
+-webkit-flex-shrink: 1;
+flex-shrink: 1;
+margin-left: 12px;
+margin-right: 12px;
+margin-top: 24px;
+min-width: 0;
+}
+
+.articleBody {
+background-color: white;
+-webkit-border-radius: 8px;
+border-radius: 8px;
+border: 1px solid #dadce0;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+overflow: hidden;
+width: 100%;
+}
+
+.articleTitle {
+padding-top: 24px;
+padding-left: 24px;
+padding-right: 24px;
+height: 100%;
+padding-bottom: 8px;
+display: flex;
+flex-direction: column;
+-webkit-box-flex: 1;
+flex-grow: 1;
+flex-shrink: 1;
+flex-basis: 0;
+}
+
+.articleTitleHeader {
+font-size: 1.375rem;
+font-weight: 400;
+line-height: 1.75rem;
+word-break: break-word;
+word-wrap: break-word;
+color: #202124;
+
+-webkit-box-flex: 0;
+flex-shrink: 0;
+margin: 0;
+padding: 0;
+}
+
+</ui:style>
+
+<g:HTMLPanel styleName="{style.article}">
+ <g:HTMLPanel styleName="{style.articleBody}" ui:field="infolist">
+  <div class="{style.articleTitle}">
+   <div class="{style.articleTitleHeader}" ui:field="title"/>
+  </div>
+ </g:HTMLPanel>
+</g:HTMLPanel>
+</ui:UiBinder>

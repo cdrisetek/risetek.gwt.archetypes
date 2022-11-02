@@ -1,0 +1,55 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true" src="../style.gss"/>
+
+<m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialLabel text="OAuth服务以项目的形式组织管理安全信息，要为一个OAuth客户提供服务，需要将这个客户的账户关联到一个项目。"/>
+   <m:MaterialLabel text="客户的账户可以关联到多个项目。"/>
+   <m:MaterialLabel text="您可以创建一个项目，设置项目信息，为项目创建角色，给用户分配项目角色" />
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field='btnProjectSelect' textColor='BLUE' text="选择项目" iconType="BLUR_LINEAR"/>
+   <m:MaterialLink ui:field='btnProjectCreate' textColor='BLUE' text="创建项目" iconType="ACCOUNT_BALANCE_WALLET"/>
+  </m:MaterialCardAction>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="选择的项目" textColor='BLUE' iconType="ACCOUNT_BALANCE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="指派项目角色，选择要指派的项目，还要选择要指派的账户，然后将项目设定的角色指定给选择的用户，巴拉巴拉巴拉巴拉。" />
+   </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field='btnProjectSet' textColor='BLUE' text="设置项目" iconType="BUILD" enabled='false'/>
+   <m:MaterialLink ui:field='btnProjectRole' textColor='BLUE' text="设置角色" iconType="BUBBLE_CHART" enabled='false'/>
+   <m:MaterialChip ui:field='labSelectedProject' styleName='{style.selected-project}' margin="4" visible="false" backgroundColor="BLUE" textColor="WHITE" float="RIGHT"/>
+  </m:MaterialCardAction>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="选择的账户" textColor='BLUE' iconType="ACCOUNT_BOX" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="设置账户信息，需要先行选择账户。"/>
+   <m:MaterialLabel text="修改已经选择好的账户信息。" />
+  <m:MaterialLabel text="指派项目角色，选择要指派的项目，还要选择要指派的账户，然后将项目设定的角色指定给选择的用户，巴拉巴拉巴拉巴拉。" />
+   </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialLink ui:field='btnAccountSelect' textColor='BLUE' text="选择账户" iconType="BLUR_CIRCULAR"/>
+   <m:MaterialChip ui:field='labSelectedAccount' styleName='{style.selected-account}' margin="4" visible="false" backgroundColor="BLUE" textColor="WHITE" float="RIGHT"/>
+  </m:MaterialCardAction>
+
+  <m:MaterialCardContent ui:field='panelRolesContent' visible='false'>
+   <m:MaterialCardTitle text="角色" textColor='BLUE' iconType="GROUP_WORK" iconPosition="RIGHT"/>
+  <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
+   
+  <g:HTMLPanel styleName='{style.box-role-container}'>
+   <g:Label ui:field='labAccountRoles' styleName='{style.box-role-description}'/>
+   <m:MaterialRow ui:field='panelAccountRoles' styleName='{style.role-chip}'/>
+  </g:HTMLPanel>
+   
+   <m:MaterialLabel text="修改已经选择好的账户信息。" />
+
+  <g:HTMLPanel styleName='{style.box-role-container}'>
+   <g:Label ui:field='labProjectRoles' styleName='{style.box-role-description}'/>
+   <m:MaterialRow ui:field='panelProjectRoles' styleName='{style.role-chip} {style.role-chip-provider}'/>
+  </g:HTMLPanel>
+
+  </m:MaterialCardContent>  
+
+</m:MaterialCard>
+</ui:UiBinder>

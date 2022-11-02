@@ -1,0 +1,37 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true" src="../style.gss"/>
+
+<g:HTMLPanel>
+<m:MaterialCard styleName='{style.card-slot}'>
+ <m:MaterialCardContent margin="8">
+  <m:MaterialCardTitle text="创建" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+  <m:MaterialRow>
+   <m:MaterialLabel text="项目名称要求四个字母以上，与存在的项目名称不重复。"/>
+  </m:MaterialRow>
+  <g:HTMLPanel styleName='{style.box-section}'>
+   <m:MaterialLabel text="新建账户要求长度至少为4，并且不能与已经存在的账户同名。"/>
+   <m:MaterialTextBox ui:field="boxName" placeholder="选择一个不重复的项目名称" styleName='{style.card-row}' iconType="PERSON" type="TEXT" maxLength="30"/>
+  </g:HTMLPanel>
+  <m:MaterialLabel text="OAuth需要设定项目密钥用以确保项目安全，项目密钥长度不能小于8。"/>
+  <m:MaterialTextBox ui:field="boxSecret" placeholder="项目密钥" iconType="NOTE" type="TEXT" maxLength="30"/>
+  <m:MaterialLabel text="管理者可以为拥有账户的用户分配本地服务的其它角色，也可以分配oAuth项目设置的角色。"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="可选的项目注释" styleName='{style.card-row}' iconType="NOTE" type="TEXT" maxLength="200"/>
+ </m:MaterialCardContent>
+ <m:MaterialCardAction>
+  <m:MaterialRow>
+  <m:MaterialButton ui:field="btnCommit" margin="8" text="确定添加" waves="LIGHT" textColor="WHITE" iconType="ARROW_FORWARD"
+                    enabled="false" float="RIGHT" size="LARGE" iconPosition="RIGHT"/>
+  </m:MaterialRow>
+ </m:MaterialCardAction>
+</m:MaterialCard>
+<div style="display: none;">
+ <g:HTMLPanel ui:field='panelValidate' styleName='{style.ui-panel-validate}' />
+ <g:HTMLPanel ui:field='iconChecking' styleName='{style.box-rotate}'><m:MaterialIcon iconType="REFRESH"/></g:HTMLPanel>
+ <g:HTMLPanel ui:field='iconValidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CHECK" iconColor="GREEN"/></g:HTMLPanel>
+ <g:HTMLPanel ui:field='iconInvalidate' styleName='{style.box-static}'><m:MaterialIcon iconType="CLEAR" iconColor="RED"/></g:HTMLPanel>
+</div>
+</g:HTMLPanel>
+</ui:UiBinder>

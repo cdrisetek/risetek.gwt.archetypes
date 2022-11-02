@@ -1,0 +1,121 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" type="${package}.presentermodules.home.cards.BaseHomeCardView.MyStyle">
+.home-card {
+ display: flex;
+ flex-direction: column;
+ flex-grow: 1;
+ flex-shrink: 1;
+ margin-bottom: 16px;
+ padding: 0;
+ position: relative;
+ width: 100%;
+ border-radius: 2px; 
+}
+
+.infoCardTopRight {
+ position: absolute;
+ right: 4px;
+ top: 12px;
+ z-index: 9;
+}
+.infoCardHeader {
+ display: flex;
+ align-items: center;
+ padding: 20px 0 4px 0;
+}
+	
+.infoCardItemLeftGutter {
+ display: flex;
+ flex-direction: column;
+ flex-shrink: 0;
+ align-items: center;
+ align-self: flex-start;
+ height: 24px;
+ line-height: initial;
+ padding-left: 20px;
+ position: relative;
+ text-align: center;
+ width: 28px;
+}
+	
+.headContent {
+ display: flex;
+ flex-wrap: wrap;
+ align-items: baseline;
+ padding-left: 16px;
+}
+
+.headText {
+ margin: 0 12px 0 0;
+ font-size: 18px;
+ font-weight: bold;
+ letter-spacing: normal;
+ line-height: 24px;
+}
+	
+.cardBodyGroup {padding-bottom: 12px;}
+
+.homeCardItem {
+ display: flex;
+ position: relative;
+ align-items: center;
+ overflow-wrap: anywhere;
+ padding: 4px 16px 4px 0;
+ width: 100%;
+ color: #000;
+ border: 0;
+ text-decoration: none;
+}
+
+.infoCardItemContentLeft {flex: 1 1; min-width: 0;}
+
+.InfoCardItemContent {
+ display: flex;
+ flex-direction: row;
+ flex: 1 1;
+ min-width: 0;
+ padding-left: 16px;
+ width: 100%;
+}
+
+div.cardInfoText.cardInfoTextSecondary {color: rgba(0,0,0,.66);}
+
+.infoTextLine {display: flex; justify-content: space-between;}
+	
+.infoTextLine:first-child {padding-top: 6px;}
+	
+.homeCardAction {
+ display: flex;
+ cursor: pointer;
+ border-top: 1px solid rgba(0,0,0,.12);
+ padding-top: 12px;
+ padding-bottom: 12px;
+ text-decoration: none;
+}
+	
+.homeCardRedirect {display: flex; align-items: center;}
+.cfcLoader {}
+.loaderContent {}
+</ui:style>
+
+<g:HTMLPanel>
+ <div class="{style.home-card} rt-bg-color rt-bx-shadow">
+  <div class="{style.infoCardTopRight}"/>
+  <div class="{style.infoCardHeader} rt-color-tone">
+   <div class="{style.infoCardItemLeftGutter}">
+    <div class="rt-icon-s24" ui:field="iconPanel"/>
+   </div>
+   <div class="{style.headContent}">
+    <div class="{style.headText} rt-color-tone" ui:field="headLabel"/>
+   </div>
+   </div>
+   <div class="{style.cfcLoader}">
+    <g:FlowPanel ui:field="loaderContent" styleName="{style.loaderContent}">
+     <g:FlowPanel ui:field="cardBodyGroup" styleName="{style.cardBodyGroup}"/>
+     <g:FlowPanel ui:field="actionGroup" />
+    </g:FlowPanel>
+   </div>
+ </div>
+</g:HTMLPanel>
+</ui:UiBinder>

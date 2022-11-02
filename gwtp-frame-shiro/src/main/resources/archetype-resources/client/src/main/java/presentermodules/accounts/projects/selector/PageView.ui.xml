@@ -1,0 +1,20 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true" src="../../selector.gss"/>
+ 
+<g:HTMLPanel styleName="{style.container}">
+ <m:MaterialNavBar ui:field="navBar" backgroundColor='TRANSPARENT' shadow='0' styleName="{style.center-container}">
+  <m:MaterialLink ui:field='lnkGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="选择项目" />
+  <m:MaterialLink ui:field="btnSearch" iconType="SEARCH" iconColor="BLUE" float="RIGHT"/>
+ </m:MaterialNavBar>
+ <!-- NavBar Search -->
+ <m:MaterialNavBar ui:field="navBarSearch" visible="false" backgroundColor='TRANSPARENT' shadow='0' textColor='BLUE' styleName="{style.center-container}">
+  <m:MaterialSearch ui:field="txtSearch" placeholder="输入查询关键字" backgroundColor="TRANSPARENT"
+                    textColor='BLUE' iconColor="BLUE" shadow="0" styleName="{style.search-container}"/>
+ </m:MaterialNavBar> 
+<g:HTMLPanel styleName='{style.blur-container}'/>
+<g:HTMLPanel ui:field='slot' styleName='{style.slot-container}'/>
+</g:HTMLPanel>
+</ui:UiBinder>

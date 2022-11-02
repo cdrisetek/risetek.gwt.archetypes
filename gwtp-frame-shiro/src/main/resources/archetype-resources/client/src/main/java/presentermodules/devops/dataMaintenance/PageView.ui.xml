@@ -1,0 +1,71 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@external card-action row material-label material-icons;
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+.container .card-slot .card-action button {font-size: 1.2rem;}
+.container .card-slot .card-action .row {margin-bottom: 0px;}
+.container .card-slot .material-label {margin: 10px 20px;}
+</ui:style>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' width='100%'>
+  <m:MaterialLink ui:field='btnGoback' textColor='BLUE' iconType="ARROW_BACK"/>
+  <m:MaterialNavBrand textColor='BLUE' text="数据维护" />
+ </m:MaterialNavBar>
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="清除所有项目数据" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="清除服务器端所有项目数据。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnClearProjectCommit" margin="8" text="确定清除" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="随机产生项目数据" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="随机产生项目数据。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnRandomProjects" margin="8" text="确定产生" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="清除所有账户数据" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="清除服务器端所有账户数据。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnClearAccountCommit" margin="8" text="确定清除" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="随机产生账户数据" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="随机产生账户数据。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnRandomAccount" margin="8" text="确定产生" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+
+</g:HTMLPanel>
+</ui:UiBinder>

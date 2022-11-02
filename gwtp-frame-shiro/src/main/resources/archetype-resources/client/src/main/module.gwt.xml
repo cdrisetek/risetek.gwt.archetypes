@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name="com.google.gwt.user.User" />
+  <inherits name="com.google.gwt.inject.Inject" />
+  <inherits name="com.google.gwt.user.theme.standard.Standard" />
+
+  <inherits name="com.google.gwt.logging.Logging"/>
+  <set-property name="gwt.logging.enabled" value="TRUE"/> 
+  <set-property name="gwt.logging.logLevel" value="ALL"/>
+  <set-property name="gwt.logging.consoleHandler" value="ENABLED" />
+  <set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
+  <set-property name="gwt.logging.systemHandler" value="DISABLED" />    
+
+  <set-configuration-property name="CssResource.enableGss" value="true" />
+  <set-configuration-property name="CssResource.conversionMode" value="strict" />
+  <public path="public" />
+  <stylesheet src="css/font.css"/>
+  <stylesheet src="css/theme.css"/>
+  <source path="">
+    <exclude name="**/generator/**" />
+  </source>
+
+  <!-- Other module inherits                                      -->
+  <inherits name="com.gwtplatform.dispatch.rpc.DispatchRpc" />
+
+  <!-- Specify the app entry point class.                         -->
+  <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+  
+  <set-configuration-property name="gwtp.bootstrapper" value="${package}.entry.MyBootstrapper" />
+
+  <add-linker name="xsiframe"/>
+  <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+
+  <set-configuration-property name="gin.ginjector.modules" 
+                                value="${package}.entry.MavenProcessedPresenterModuleLoader"/>
+
+  <generate-with class="${package}.bindery.generator.BuilderStampGenerator" >
+	<when-type-assignable class="${package}.bindery.IBuilderStamp" />
+  </generate-with>
+  <generate-with class="${package}.bindery.generator.PlainMenuGenerator">
+    <when-type-assignable class="${package}.bindery.PlainMenuLoader"/>
+  </generate-with>
+
+  <set-property name="user.agent" value="gecko1_8,safari" />
+</module>

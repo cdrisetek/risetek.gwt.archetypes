@@ -1,0 +1,18 @@
+:root {
+ --rt-color-gray: #f7f7f7;
+ --rt-color-tone: #42a5f5;
+ --rt-bx-shdow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+ --rt-cellwidth-1: 160px;
+ --rt-cellwidth-2: 320px;
+ --rt-cellwidth-3: 480px;
+ --rt-cellwidth-4: 640px;
+ --rt-cellwidth-5: 800px;
+}
+.rt-bg-color{background: var(--rt-color-gray);}
+.rt-bg-color-tone{background: var(--rt-color-tone);}
+.rt-color-tone{color: var(--rt-color-tone);}
+.rt-bx-shadow{box-shadow: var(--rt-bx-shdow);}
+.rt-color-before::before{color: var(--rt-color-tone);}
+.rt-icon-s24 {display: inline-block; background-repeat: no-repeat; fill: currentColor; height: 24px; width: 24px;}
+/* panel center cell 5 */
+.rt-pl-ct-5 {width: var(--rt-cellwidth-5); margin: 0 auto;}

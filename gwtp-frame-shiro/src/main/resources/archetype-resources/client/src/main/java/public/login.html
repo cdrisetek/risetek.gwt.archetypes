@@ -1,0 +1,162 @@
+<!doctype html><html lang="zh-cn" dir="ltr">
+<head>
+ <meta http-equiv="content-type" content="text/html">
+ <meta charset='utf-8'>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="shortcut icon" href="/favicon.ico">
+ <title>OAuth Login</title>
+ <link rel="stylesheet" type="text/css" href="css/font.css">
+ <link rel="stylesheet" type="text/css" href="css/theme.css">
+<style>
+ html, body {width: 100%; height: 100%; margin: 0; overflow-x: hidden;}
+ .container {
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+ }
+ .container::before, .container::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  content: '';
+  display: block;
+ }
+ .lg-center {margin: 0 auto; width: var(--rt-cellwidth-3); border-radius: 5px;}
+ .lg-commit-button {cursor: pointer; width: 100%; font-size: 1.2rem; text-align: center; color: #FFFFFF;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+  border: 0; border-radius: 2px;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  text-transform: uppercase;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+ }
+ .icon-ui .stroke {fill: none; stroke: #42a5f585; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;}
+ .input-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: 56px;
+  border-radius: 5px;
+  border: 1px solid;
+  margin-bottom: 20px;
+ }
+ .input-box.ui-focus-bg, div.ui-focus-bg {background: #42a5f515;}
+ input.input-field {border: none; outline: none; width: 100%; padding: 0 20px; font-size: 20px; color: inherit; background: transparent;}
+ input.input-field::-webkit-input-placeholder {color: #42a5f535;}
+ .checkbox {display: block;}
+</style>
+<script>
+  function createXHR () {
+    for(f of [
+        function () { return new XMLHttpRequest () },
+        function () { return new ActiveXObject ("Microsoft.XMLHTTP") },
+        function () { return new ActiveXObject ("Msxml3.XMLHTTP") },
+        function () { return new ActiveXObject ("Msxml2.XMLHTTP") },
+    ]) {
+     try {return f()} catch(e) {
+      continue
+     }
+    }
+    return null;
+   }
+  
+  function onCommit() {
+   parameterList = new URLSearchParams(window.location.search);
+   if(username.value.length==0 || password.value.length==0) {
+    alert("BUG?");
+    return;
+   }
+   
+   parameterList.append("username", username.value);
+   parameterList.append("password", password.value);
+   xhr = createXHR();
+   xhr.open("POST", "/oauth/authz", true);
+   xhr.onreadystatechange = function () {
+    if (xhr.readyState != 4) return
+    if (xhr.status == 200 || xhr.status == 0) {
+     o = JSON.parse(xhr.responseText);
+     url = parameterList.get("redirect_uri") + "?code=" + o.code + "&state=" + o.state;
+     if(rememberme.checked)
+	     url = url + "&rememberme";
+     location = url;
+    }
+   }   
+   
+   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+   /* NOTE: set X-Content-OAuth-Demo as Integet */
+   if("demo" == parameterList.get("client_id"))
+	xhr.setRequestHeader('X-Content-OAuth-Demo', 100);
+   xhr.send(parameterList.toString());
+  }
+
+  function onCheckfield(element) {
+   for(e of [username, password])
+    if(e==element || e.value.length==0){e.focus(); e.select(); return false;}
+   return true;
+  }
+
+  function onkeyPress(e, n) {
+    return ('13' == (e.keyCode || e.which) && e.target.value.length!=0)?onCheckfield(n):false
+  }
+  </script>
+</head>
+<body>
+<div class='container rt-color-tone'>
+<div class="lg-center rt-bx-shadow">
+ <div style="padding: 20px; font-size: 40px; text-align: center; font-weight: 700; line-height: 52px;">Login</div>
+ <form>
+ <div style="padding: 20px 40px;">
+  <div class="input-box">
+   <svg class="icon-ui rt-color-tone rt-icon-s24" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
+    <path class="stroke" d="M2,4h20v16H2V4z"/>
+    <path class="stroke" d="M2,8l10,5l10-5"/>
+   </svg>
+   <input id="username" type="text" class="input-field" autocomplete="off" placeholder="账户" maxlength="30" spellcheck="false" autocapitalize="off" autocorrect="off" required="required"/>
+  </div> 
+  <div class="input-box">
+   <svg class="icon-ui rt-color-tone rt-icon-s24" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24">
+    <path class="fill" d="M19,8V7c0-3.9-3.1-7-7-7S5,3.1,5,7v1h2V7c0-2.8,2.2-5,5-5s5,2.2,5,5v1H19"/>
+    <path class="stroke" d="M3,9h18v14H3V9z"/>
+    <circle class="fill" cx="8" cy="16" r="1"/>
+    <circle class="fill" cx="12" cy="16" r="1"/>
+    <circle class="fill" cx="16" cy="16" r="1"/>
+   </svg>
+   <input id="password" type="password" class="input-field" autocomplete="off" placeholder="密码" maxlength="30" spellcheck="false" autocapitalize="off" autocorrect="off" required="required"/>
+  </div>
+
+ <button id="commit" type="button" class="lg-commit-button rt-bg-color-tone rt-bx-shadow">
+  <span>登录</span>
+ </button></div>
+ </form>
+
+ <div style="background: rgba(0,0,0,0.01); padding: 20px;">
+  <div class="checkbox">
+   <input id="rememberme" type="checkbox" tabindex="0" class="filled-in"/><label>自动登录</label></div></div>
+  </div>
+ </div>
+ <script>
+  const rememberme = document.getElementById("rememberme");
+  const username = document.getElementById("username");
+  const password = document.getElementById("password");
+  const commit = document.getElementById("commit");
+  [username, password, commit].forEach(el=> {
+   el.addEventListener("focus", (e) => {el.parentNode.classList.add("ui-focus-bg"); onCheckfield(el)}) 
+   el.addEventListener("blur", (e) => {el.parentNode.classList.remove("ui-focus-bg");})} 
+  )
+  commit.addEventListener("click", () => {if(onCheckfield(commit))onCommit()});
+  username.addEventListener("keypress", (e) => onkeyPress(e, password));
+  password.addEventListener("keypress", (e) => {if(onkeyPress(e, commit))onCommit()});
+  onCheckfield(username);
+ </script>
+</body>
+</html>

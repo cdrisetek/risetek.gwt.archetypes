@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'webfont';
+}
+
+body, html, table td, select {
+  font-family: Microsoft YaHei, Arial Unicode MS, Arial, sans-serif;
+}

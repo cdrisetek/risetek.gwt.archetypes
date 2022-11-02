@@ -1,0 +1,71 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:m='urn:import:${package}.presentermodules.security.ui'>
+
+	<ui:style gss="true">
+		.pretty {
+		min-height: 100%;
+		width: 100%;
+		height: auto;
+		position: relative;
+		background-color: #fff;
+		color: rgba(0,0,0,0.87);
+		font: 400 15px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+		min-width: 320px;
+		overflow: visible;
+		-webkit-font-smoothing: antialiased;
+		margin: 0;
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
+		}
+
+		.main { margin: auto; max-width: 660px; }
+		.mainDescript { padding: 24px 0; }
+
+		.container {
+		border: 1px solid #dadce0;
+		border-radius: 8px;
+		overflow: hidden;
+		margin: 0 auto;
+		max-width: 660px;
+		background: #fff;
+		}
+
+		.container1 { padding: 24px; }
+
+		.interval { height: 25px; }
+		.input_area {
+	    width: 100%;
+	    height: 40px;
+	    border: 1px solid #dadce0;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		margin: auto;
+		max-width: 300px;
+	    }
+	    
+	    .commitButton { width: 50px; height:40px; }
+	</ui:style>
+
+	<g:HTMLPanel styleName='{style.pretty}'>
+        <m:TitlePanel ui:field='titlePanel' title='注册新用户' />
+		<div role='main'>
+			<c-wiz>
+				<div class='{style.main}'>
+					<div class='{style.mainDescript}'>新注册的用户信息，我们会使用邮箱与您联系。</div>
+				</div>
+				<div class='{style.container}'>
+					<div class='{style.container1}'>
+						<input type="text" class="{style.input_area}" ui:field="username"/>
+						<div class="{style.interval}" />
+						<input type="password" class="{style.input_area}" ui:field="password"/>
+						<div class="{style.interval}" />
+						<div>
+							<g:Button styleName="{style.commitButton}" ui:field="commit">确定</g:Button>
+						</div>
+					</div>
+				</div>
+			</c-wiz>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

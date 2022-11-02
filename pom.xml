@@ -1,81 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-   Copyright 2012 Thomas Broyer
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
-  </parent>
-
-  <groupId>net.ltgt.gwt.archetypes</groupId>
+  <groupId>com.risetek.archetypes</groupId>
   <artifactId>gwt-maven-archetypes</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>HEAD-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <inceptionYear>2012</inceptionYear>
-  <licenses>
-    <license>
-      <name>Apache 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <name>Thomas Broyer</name>
-      <email>t.broyer@ltgt.net</email>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Alexandre Ardhuin</name>
-      <email>alexandre.ardhuin@gmail.com</email>
-    </contributor>
-    <contributor>
-      <name>Yannis Gonianakis</name>
-      <email>jgonian@gmail.com</email>
-    </contributor>
-  </contributors>
-
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
 
   <modules>
     <module>modular-webapp</module>
-    <module>modular-requestfactory</module>
-    <module>guice-rf-activities</module>
+    <module>empty-webapp</module>
+    <module>empty-frame</module>
+    <module>empty-frame-shiro</module>
+    <module>gwtp-frame-shiro</module>
+    <module>dagger-guice-rf-activities</module>
   </modules>
-
-  <scm>
-    <connection>scm:git:git://github.com/tbroyer/gwt-maven-archetypes.git</connection>
-    <developerConnection>scm:git:git@github.com:tbroyer/gwt-maven-archetypes.git</developerConnection>
-    <url>https://github.com/tbroyer/gwt-maven-archetypes</url>
-  </scm>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/tbroyer/gwt-maven-archetypes/issues</url>
-  </issueManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <mavenVersion>3.0</mavenVersion>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+        <configuration>
+          <!-- using nexus-staging-maven-plugin instead -->
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+        <!-- Note: "manual" configuration (no "extensions=true") to prevent
+             flatten-m-p from including the plugin in deployment POMs -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.2.2</version>
+        <configuration>
+          <flattenMode>oss</flattenMode>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>3.1.0</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <ignoreEOLStyle>true</ignoreEOLStyle>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

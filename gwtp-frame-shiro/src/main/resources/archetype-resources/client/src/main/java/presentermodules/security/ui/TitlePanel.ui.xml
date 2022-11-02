@@ -1,0 +1,133 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:m='urn:import:gwt.material.design.client.ui'>
+
+	<ui:style gss="true">
+		.title { width: 100%;}
+
+		.title1 {
+		height: 56px;
+		-webkit-transition:
+		height .2s ease-in-out;
+		transition: height .2s ease-in-out;
+		background-color: white;
+		display: -webkit-box;
+		display: -moz-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		position: fixed;
+		width: 100%;
+		}
+
+		.title2 {
+		-webkit-box-align: center;
+		box-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		display: -webkit-box;
+		display: -moz-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		margin: auto;
+		max-width: 100%;
+		min-width: 0;
+		width: 690px;
+		}
+
+		.titleButton1 {
+		-webkit-user-select: none;
+		-webkit-transition: background .3s;
+		transition: background .3s;
+		border: 0;
+		-webkit-border-radius: 50%;
+		border-radius: 50%;
+		cursor: pointer;
+		display: inline-block;
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		height: 48px;
+		outline: none;
+		overflow: hidden;
+		position: relative;
+		text-align: center;
+		width: 48px;
+		z-index: 0;
+		}
+		.titleButton1:hover { background-color: rgba(0,0,0,.2); }
+		.titleButton2 {
+		color: rgba(0,0,0,0.54);
+		fill: rgba(0,0,0,0.54);
+		margin: 12px;
+		}
+
+		.titleButton3 {
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		height: 24px;
+		width: 24px;
+		line-height: 24px;
+		}
+
+		.titleText {
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 2rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-wrap: normal;
+		color: #202124;
+		-webkit-box-flex: 1;
+		box-flex: 1;
+		-webkit-flex-grow: 1;
+		flex-grow: 1;
+		margin: 0;
+		padding: 0;
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+		-webkit-transition-property: font-size;
+		transition-property: font-size;
+		vertical-align: middle;
+		}
+
+		.hline {
+		border-top: 1px solid #dadce0;
+		bottom: -10px;
+		height: 10px;
+		overflow: hidden;
+		position: absolute;
+		width: 100%;
+		}
+
+		.hline1 {
+		height: 10px;
+		position: absolute;
+		top: -10px;
+		-webkit-transition: box-shadow .25s;
+		transition: box-shadow .25s;
+		width: 100%;
+		}
+
+		.titleSpace { height: 56px; }
+
+	</ui:style>
+
+	<g:HTMLPanel styleName='{style.title}'>
+		<div class='{style.title1}'>
+			<div class='{style.title2}'>
+				<div class='{style.titleButton1}'>
+					<div class='{style.titleButton2}'>
+						<g:HTMLPanel styleName='{style.titleButton3}' ui:field='backButton'>
+							<m:MaterialIcon iconType="ARROW_BACK"/>
+						</g:HTMLPanel>
+					</div>
+				</div>
+				<h1 class='{style.titleText}' ui:field='title' />
+			</div>
+			<div class='{style.hline}' />
+		</div>
+		<div class='{style.titleSpace}' />
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -1,0 +1,33 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true">
+@external card-action row material-label material-icons;
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+.container .card-slot .card-action button {font-size: 1.2rem; opacity: 1;}
+.container .card-slot .card-action .row {margin-bottom: 0px;}
+.container .card-slot .material-label {margin: 10px 20px;}
+.container .ui-field {margin: 30px 40px 0 40px; min-width: 320px;}
+</ui:style>
+
+<g:HTMLPanel styleName='{style.container}'>
+ <g:HTMLPanel ui:field="slot"/>
+ <m:MaterialCard styleName='{style.card-slot}'>
+  <m:MaterialCardContent>
+   <m:MaterialCardTitle text="加入临时账户" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+   <m:MaterialLabel text="未经基本授权。"/>
+   <m:MaterialLabel text="加入deploy账户，以进行后续的操作。"/>
+   <m:MaterialLabel text="该临时账户的密码在后台生成，请查找后台日志获取密码。"/>
+   <m:MaterialLabel text="成功完成deploy临时账户的创建后，请用该账户登录，一旦登录账户，临时账户被及时销毁。"/>
+   <m:MaterialLabel text="请在登录有效期间创建新的账户，并指定相应的角色。"/>
+  </m:MaterialCardContent>
+  <m:MaterialCardAction>
+   <m:MaterialRow>
+   <m:MaterialButton ui:field="btnAccountCommit" margin="8" text="确定加入" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" iconPosition="RIGHT"/>
+   </m:MaterialRow>
+  </m:MaterialCardAction>
+ </m:MaterialCard>
+</g:HTMLPanel>
+</ui:UiBinder>

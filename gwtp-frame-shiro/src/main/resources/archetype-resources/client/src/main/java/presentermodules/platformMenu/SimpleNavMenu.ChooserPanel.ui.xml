@@ -1,0 +1,15 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:m='urn:import:gwt.material.design.client.ui'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" src='style.gss'/>
+ 
+<g:HTMLPanel styleName="{style.container-chooser}">
+<g:FlowPanel ui:field='navChooserDetail' styleName='{style.chooser-menu-items}'/>
+<div class='{style.chooser-bottom}'>
+ <div ui:field='labelCopyright' class='{style.copyright}'/>
+</div>
+ <div style="display: none;">
+  <i ui:field='iconMenu' class="material-icons {style.menu-icon}">dehaze</i>
+ </div>
+</g:HTMLPanel>
+</ui:UiBinder>

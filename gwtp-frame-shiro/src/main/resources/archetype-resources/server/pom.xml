@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+#set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${rootArtifactId}</artifactId>
+    <version>${version}</version>
+  </parent>
+
+  <artifactId>${artifactId}</artifactId>
+  <packaging>war</packaging>
+
+  <properties>
+    <webappDirectory>${dollar}{project.build.directory}/${dollar}{project.build.finalName}</webappDirectory>
+    <shiro.version>1.7.1</shiro.version>
+    <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
+    <commons-logging.version>1.2</commons-logging.version>
+    <hsqldb-version>2.5.1</hsqldb-version>
+    <oltu.version>1.0.2</oltu.version>
+    <smallrye.version>1.10.0</smallrye.version>
+  </properties>
+
+  <dependencies>
+   <dependency>
+     <groupId>${dollar}{project.groupId}</groupId>
+     <artifactId>${rootArtifactId}-shared</artifactId>
+     <version>${dollar}{project.version}</version>
+   </dependency>
+   <dependency>
+     <groupId>com.google.inject</groupId>
+     <artifactId>guice</artifactId>
+   </dependency>
+   <dependency>
+    <groupId>com.google.inject.extensions</groupId>
+    <artifactId>guice-servlet</artifactId>
+   </dependency>
+   <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <scope>provided</scope>
+   </dependency>
+
+<!-- 
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-jndi</artifactId>
+    </dependency>
+ -->
+
+<!-- 
+    <dependency>
+     <groupId>org.hibernate</groupId>
+     <artifactId>hibernate-validator</artifactId>
+     <version>${dollar}{hibernate-validator.version}</version>
+    </dependency>    
+ -->
+    <dependency>
+     <groupId>org.apache.shiro</groupId>
+     <artifactId>shiro-guice</artifactId>
+     <version>${dollar}{shiro.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>org.apache.shiro</groupId>
+     <artifactId>shiro-web</artifactId>
+     <version>${dollar}{shiro.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-logging</groupId>
+     <artifactId>commons-logging</artifactId>
+     <version>${dollar}{commons-logging.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>org.slf4j</groupId>
+     <artifactId>slf4j-simple</artifactId>
+    </dependency>
+    <dependency>
+     <groupId>org.gwtproject</groupId>
+     <artifactId>gwt-servlet</artifactId>
+    </dependency>
+    <dependency>
+     <groupId>com.gwtplatform</groupId>
+     <artifactId>gwtp-dispatch-rpc-server-guice</artifactId>
+    </dependency>
+   <dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>${dollar}{hsqldb-version}</version>
+   </dependency>
+   <!-- oltu -->
+   <dependency>
+    <groupId>org.apache.oltu.commons</groupId>
+    <artifactId>org.apache.oltu.commons.json</artifactId>
+    <version>1.0.0</version>
+   </dependency>
+
+   <dependency>
+    <groupId>org.apache.oltu.commons</groupId>
+    <artifactId>org.apache.oltu.commons.encodedtoken</artifactId>
+    <version>1.0.0</version>
+   </dependency>
+
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.common</artifactId>
+    <version>${dollar}{oltu.version}</version>
+   </dependency>
+
+<!-- 
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+    <version>${dollar}{oltu.version}</version>
+   </dependency>
+ -->
+
+   <dependency>
+    <groupId>org.apache.oltu.oauth2</groupId>
+    <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+    <version>${dollar}{oltu.version}</version>
+    </dependency>
+
+    <dependency>
+     <groupId>org.apache.oltu.oauth2</groupId>
+     <artifactId>org.apache.oltu.oauth2.client</artifactId>
+     <version>${dollar}{oltu.version}</version>
+    </dependency>
+
+
+    <dependency>
+     <groupId>org.apache.oltu.oauth2</groupId>
+     <artifactId>org.apache.oltu.oauth2.jwt</artifactId>
+     <version>1.0.3</version>
+   </dependency>
+
+   <dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-core</artifactId>
+   </dependency>
+
+<!-- 
+   <dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-agroal</artifactId>
+   </dependency>
+ -->
+   <dependency>
+    <groupId>io.smallrye.config</groupId>
+    <artifactId>smallrye-config</artifactId>
+    <version>${dollar}{smallrye.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- Generate compiled stuff in the folder used for developing mode -->
+    <!-- but eclipse need separate src/test output directory -->
+    <!-- <outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory> -->
+    <!-- hacker we missed compile phase for generated-sources, so compile it at testCompile phase -->
+    <testOutputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</testOutputDirectory>	 
+    <testSourceDirectory>${dollar}{project.build.directory}/generated-sources/annotations</testSourceDirectory>	 
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <configuration>
+            <skip>false</skip>
+            <scan>1</scan>
+            <webApp>
+              <!-- <extraClasspath>${basedir}/../risetek.usbtools-shared/target/classes/</extraClasspath> -->
+            </webApp>
+            <contextXml>${dollar}{basedir}/src/main/jettyconf/context.xml</contextXml>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <outputDirectory>${dollar}{project.build.directory}/generated-sources/annotations</outputDirectory>
+              <processors>
+                <processor>${package}.server.bindery.generator.ModuleMavenProcesser</processor>
+              </processors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <packagingExcludes>
+            <!-- XXX: GWTP invoke gwt-user which do not used by server side -->
+            WEB-INF/lib/gwt-user-*.jar,
+            <!-- XXX: Guice had pack it, why? -->
+            WEB-INF/lib/guice-multibindings-*.jar,
+            <!-- XXX: Shiro-core had pack it, why? -->
+            WEB-INF/lib/shiro-cache-*.jar,
+            WEB-INF/lib/shiro-event-*.jar,
+            WEB-INF/lib/shiro-config-*.jar,
+            WEB-INF/lib/shiro-lang-*.jar,
+            WEB-INF/lib/shiro-crypto-*.jar,
+            META-INF/**,
+          </packagingExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <!-- XXX: We want to exclude ${rootArtifactId}-client from 'env-dev' profile, Maven forces us to make a 'env-prod' profile -->
+      <id>env-prod</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>${dollar}{project.groupId}</groupId>
+          <artifactId>${rootArtifactId}-client</artifactId>
+          <version>${dollar}{project.version}</version>
+          <type>war</type>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <configuration>
+                <webApp>
+                  <descriptor>${dollar}{basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
+                  <resourceBases>
+                    <resourceBase>${dollar}{basedir}/src/main/webapp</resourceBase>
+                    <resourceBase>${dollar}{webappDirectory}</resourceBase>
+                  </resourceBases>
+                </webApp>
+                <systemProperties>
+                 <systemProperty>
+                   <name>log4j.configuration</name>
+                   <value>${basedir}/src/main/webapp/WEB-INF/log4j.properties</value>
+                 </systemProperty>
+                </systemProperties>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+</project>

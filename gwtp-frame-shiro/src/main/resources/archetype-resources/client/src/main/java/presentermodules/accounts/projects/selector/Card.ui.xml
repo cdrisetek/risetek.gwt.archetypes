@@ -1,0 +1,45 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true" src="../../selector.gss">
+.card-name {
+margin: 2px;
+width: mult(CELLWIDTH, 2);
+min-width: CELLWIDTH;
+word-wrap: normal;
+overflow: hidden;
+}
+
+.card-name::before {
+content: "\9879\76ee:";
+font-weight:bold;
+margin-right: 10px;
+font-size: 1.2em;
+}
+.card-note {
+width: 100%;
+min-width: mult(CELLWIDTH, 2);
+margin: 2px;
+word-wrap: normal;
+overflow: hidden;
+text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+}
+
+.card-note::before {
+content: "\5907\6ce8:";
+font-weight:bold;
+font-size: 1.2em;
+margin-right: 10px;
+}
+
+</ui:style>
+
+<g:HTMLPanel styleName="{style.card-container}">
+<div class="{style.card-body} rt-bx-shadow">
+ <div class="{style.card-content}">
+  <g:HTML styleName="{style.card-name} rt-color-before" ui:field="name" />
+  <g:HTML styleName="{style.card-note} rt-color-before" ui:field="note" />
+ </div>
+</div>
+</g:HTMLPanel>
+</ui:UiBinder>

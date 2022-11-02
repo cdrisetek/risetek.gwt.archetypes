@@ -1,0 +1,34 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:ma='urn:import:gwt.material.design.addins.client'
+ xmlns:m='urn:import:gwt.material.design.client.ui'>
+<ui:style gss="true" src="../style.gss"/>
+
+<m:MaterialCard styleName='{style.card-slot}'>
+ <m:MaterialCardContent>
+  <m:MaterialCardTitle text="设置" textColor='BLUE' iconType="PEOPLE" iconPosition="RIGHT"/>
+  <m:MaterialLabel text="用户需要拥有账户才能使用，账户拥有的权限由角色授予，您可以创建一个账户，并邀请用户使用。"/>
+  <m:MaterialTextBox ui:field="boxName" placeholder="项目" iconType="PERSON" type="TEXT" readOnly="true"
+                     maxLength="30"/>
+  <m:MaterialLabel text="OAuth需要设定项目密钥用以确保项目安全，项目密钥长度不能小于8。"/>
+  <m:MaterialTextBox ui:field="boxSecret" placeholder="项目密钥" iconType="NOTE" type="TEXT"
+                     maxLength="30"/>
+
+  <m:MaterialLabel text="项目注释是可选的，请简短明确描述。注释包含在项目搜索的关键字中。"/>
+  <m:MaterialTextBox ui:field="boxNotes" placeholder="备注" iconType="NOTE" type="TEXT"
+                     maxLength="200"/>
+ </m:MaterialCardContent>
+ <m:MaterialRow>
+    <m:MaterialButton ui:field="btnEnable" margin="8" text="启用项目" waves="LIGHT" textColor="WHITE"
+                      iconType="SENTIMENT_SATISFIED" iconPosition="LEFT"/>
+    <m:MaterialButton ui:field="btnDisable" margin="8" text="停用项目" waves="LIGHT" textColor="WHITE"
+                      iconType="SENTIMENT_DISSATISFIED" iconPosition="LEFT"/>
+ </m:MaterialRow>
+ <m:MaterialCardAction>
+  <m:MaterialRow>
+  <m:MaterialButton ui:field="btnCommit" margin="8" text="确定更新" waves="LIGHT" textColor="WHITE"
+                    iconType="ARROW_FORWARD" float="RIGHT" size="LARGE" iconPosition="RIGHT"/>
+  </m:MaterialRow>
+ </m:MaterialCardAction>
+</m:MaterialCard>
+</ui:UiBinder>

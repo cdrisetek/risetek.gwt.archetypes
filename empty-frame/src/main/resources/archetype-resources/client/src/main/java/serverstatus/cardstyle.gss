@@ -1,0 +1,26 @@
+/**
+ * This is a demo for GSS
+**/
+
+@def DISPLAY_SIZE             900px;
+@def BLUE_BG                  #42b4ff;
+
+.cards {
+  width:                       DISPLAY_SIZE;
+}
+
+.cards .card {
+  margin:                      10px;
+  background-color:            #dfdfdf;
+  border:                      BLUE_BG 1px solid;
+  border-radius:               5px;
+  width:                       divide(sub(DISPLAY_SIZE, 100px), 2);
+  display:                     inline-block;
+  text-align:                  left;
+}
+
+.cards .card .title {
+  font-weight:                  bold;
+  padding:                      5px;
+  background-color:             BLUE_BG;
+}
