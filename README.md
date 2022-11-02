@@ -9,7 +9,7 @@
 * empty-frame: requestFactory
 * empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
 * dagger-guice-rf-activities
-* gwtp-frame-shiro: [GWTP and Shiro combination](https://github.com/cdrisetek/risetek.archetypes/blob/porting/gwtp.frame.shiro.md)
+* gwtp-frame-shiro: [GWTP and Shiro combination](https://github.com/cdrisetek/risetek.archetypes/blob/master/gwtp.frame.shiro.md)
 
 ## 使用方法
 > 由于没有发布到maven官方库中，因此需要**下载并构造本maven包到本地repo中**。

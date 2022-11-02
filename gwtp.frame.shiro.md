@@ -50,6 +50,15 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * DevOpsTask提供了一种跟踪，记录服务端初始化的办法。
 * 特别地，如果服务端没有提供合适的账户进行后续的作业，可以进入/services页面处理。
 
+### Accounts
+> 基于Shiro的功能，本项目支持账户/项目管理。特别情况下，本项目可以构造成一个OAuth服务，用于管理账户/项目，并提供给其它服务。  
+> 为了达到这个目的，几个基本性质必须得到满足：
+
+- Accounts必须是本项目（Host project）的用户
+- Accounts可以分配成为其它项目的用户，并通过Roles设置来赋予操作权限。对Roles操作权限的诠释基于那个项目的设计，与Host project无关，Host project仅仅提供Roles信息。
+- 小型的项目可以没有Projects支持，直接删除client/presentermodules/accounts/project目录就可以了。但是数据库中仍然保留对多项目的支持，这部分开销不大。
+- 小型的项目甚至可以不需要accounts管理，直接删除client/presentermodules/accounts/就可以了。但是为了支持操作权限，需要与别的OAuth服务配合。除了删除client下与accounts相关的代码，服务端服务程序和相关的数据库管理也可以删除。
+
 ## 部署
 ### 用Docker进行部署
 * 如果用Docker进行部署，部署服务器需要安装docker.io和docker-compose
