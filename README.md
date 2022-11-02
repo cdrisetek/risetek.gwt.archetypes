@@ -8,7 +8,7 @@
 * empty-webapp: GWT基本界面，以及RPC实现的Greeting服务
 * empty-frame: requestFactory
 * empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
-* dagger-guice-rf-activities
+* dagger-guice-rf-activities：[A combination of dagger, Guice and GWT requestFactory, activities](https://github.com/cdrisetek/risetek.archetypes/blob/master/dagger-guice-rf-activities.md)
 * gwtp-frame-shiro: [GWTP and Shiro combination](https://github.com/cdrisetek/risetek.archetypes/blob/master/gwtp.frame.shiro.md)
 
 ## 使用方法
@@ -18,12 +18,12 @@ git clone https://github.com/cdrisetek/risetek.archetypes.git
 cd risetek.archetypes && mvn clean install
 ```
 ## 使用Eclipse IDE作为开发工具
-> 在eclipse下import-> Maven -> Existing Maven Projects，可以同时将三个项目纳入eclipse集成开发环境中。<br/>
-> 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project；<br/>
-> **有些情况下，存在依赖的package就是本项目提供的，那么需要先行使用mvn install来安装这个package**。<br/>
-> 如果server代码修改后，jetty没有重新开始（restart）,请检查Eclispe的设置，Project->Build Automatically应该为选中。<br/>
+- 由于client和server依赖于shared模块，因此新项目需要首先执行mvn install，以提供模块之间的依赖关系。
+- 在eclipse下import-> Maven -> Existing Maven Projects，可以同时将三个项目纳入eclipse开发环境中。
+- 也可以在生成的项目目录下执行：mvn eclipse:eclipse构造eclipse项目文件.project。
+- 如果server代码修改后，jetty没有重新开始（restart）,请检查Eclispe的设置，Project->Build Automatically应该为选中。
 
-### 调试
+## 调试
 * 在一个终端（窗口）中运行: 
 ```
 mvn gwt:codeserver -pl client -am
@@ -55,38 +55,8 @@ if (-not $?) {throw "Failed to build package."}
 Start-Process powershell.exe -WorkingDirectory $curDir -ArgumentList "mvn -q jetty:run -Dhsqlmem -pl server -am -Penv-dev"
 Start-Process powershell.exe -WorkingDirectory $curDir -ArgumentList "mvn gwt:codeserver -pl client -am"
 ```
-## 注意
+## 提示
 > -DarchetypeCatalog=local参数限制在本地搜寻archetypeGroupId，因此不会把时间浪费在不存在的网络资源搜寻上。
-
-## dagger-guice-rf-activities
-(A combination of dagger, Guice and GWT requestFactory, activities)
-
-> 由于GWTP使用的是GIN，因此没有在dagger上下功夫。
-
-构造dagger-guice-rf-activities项目，需要输入自定义module名称，比如risetek.demo
-```
-mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.archetypes \
-  -DarchetypeVersion=HEAD-SNAPSHOT -DgroupId=com.risetek -DarchetypeArtifactId=dagger-guice-rf-activities
-```
-#### 增添新的requestFactory服务
-#### server
-* 实现Response对应的数据结构（Entity）
-* 实现返回Response的服务
-
-##### shared
-* ${module}Factory中增加对应的服务上下文: RequestContext.
-* ResponseProxy对应于服务端（server）代码中的Entity
-* 实现RequestContext的extends，里面包含服务名，并返回Request<T>，<T>与ResponseProxy相关
-
-#### 几个特殊文件的作用
-* (client) AuthAwareRequestTransport.java
-* (server) AjaxAuthenticationFilter.java
-* User.java CurrentUser.java & ServerUser.java
-
-#### 增添新的Place
-* 实现一个Place的扩展
-* ${module}PlaceHistortMapper需要更新，在@WithTokenizers中引入新增的Place对应的class
-* MainActivityMapper需要增加处理该Place活动的代码
 
 ## modular-webapp
 构造项目，自定义module名称，比如demo
