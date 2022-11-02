@@ -1,7 +1,8 @@
 # dagger-guice-rf-activities
-> 由于GWTP使用的是GIN，因此没有在dagger上下功夫。
-
 > (A combination of dagger, Guice and GWT requestFactory, activities)
+
+> Dagger是一个全静态，编译时依赖注入的框架，编译性能上更有优势。  
+> 由于GWTP使用的是GIN，因此没有在dagger上下功夫。
 
 ## 构造dagger-guice-rf-activities项目
 > 需要输入自定义module名称，比如risetek.demo
