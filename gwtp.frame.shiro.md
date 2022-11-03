@@ -39,6 +39,21 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * 实现了一个无止境的卡片布局容器，InfinityCardList只能实现一列的卡片布局方式。
 * Card需要按照CSS响应式设计方式，当width发生变化的时候，通过变更height来适应外部Panel的width变化。这种单个Card的height变化造成的List布局变化会由InfinityCardList通过调整TOP值消化。
 
+#### CardWidget 抽象类
+> 该抽象类用于耦合数据和布局间的关系。并提供点击/选择卡片时的事件接口。
+
+#### CardPresenterWidget and CardInfinityView
+> CardPresenterWidget 提供了与搜索关键字提供方的结合方式，也提供了卡片点击（selected）后，与消费方的结合方式。
+> CardInfinityView 实现了卡片的列表式布局，上下移动，以及数据的吸取等。
+
+#### Search support
+> 通过为CardPresenterWidget提供Supplier接口函数，提供其子类获得搜索字的能力。
+```
+    cardPresenter.searchKeyProvider = () -> {
+        return getView().getSearchKey();
+    };
+```
+
 ### Client handler Exception from Server
 > Action是GWTP用来联系前后端的
 * 服务端执行Action产生的ActionException需要通过ActionExceptionMapper转换成可序列化的ActionException才能通过RPC过程传递到客户端。

@@ -4,12 +4,12 @@
 > 构造本项目的目的只是希望有自己需要的组合
 
 ## Supported archtypes
-* modular-webapp：[GWT基本界面，以及RPC实现的Greeting服务](https://github.com/cdrisetek/risetek.archetypes/blob/master/modular-webapp.md)
-* empty-webapp: [GWT基本界面，以及RPC实现的Greeting服务](https://github.com/cdrisetek/risetek.archetypes/blob/master/empty-webapp.md)
+* modular-webapp：[GWT基本界面，以及RPC实现的Greeting服务](modular-webapp.md)
+* empty-webapp: [GWT基本界面，以及RPC实现的Greeting服务](empty-webapp.md)
 * empty-frame: requestFactory
 * empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
-* dagger-guice-rf-activities：[A combination of dagger, Guice and GWT requestFactory, activities](https://github.com/cdrisetek/risetek.archetypes/blob/master/dagger-guice-rf-activities.md)
-* gwtp-frame-shiro: [GWTP and Shiro combination](https://github.com/cdrisetek/risetek.archetypes/blob/master/gwtp.frame.shiro.md)
+* dagger-guice-rf-activities：[A combination of dagger, Guice and GWT requestFactory, activities](dagger-guice-rf-activities.md)
+* gwtp-frame-shiro: [GWTP and Shiro combination](gwtp.frame.shiro.md)
 
 ## 使用方法
 > 由于没有发布到maven官方库中，因此需要**下载并构造本maven包到本地repo中**。
