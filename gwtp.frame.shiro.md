@@ -46,8 +46,43 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 > CardPresenterWidget 提供了与搜索关键字提供方的结合方式，也提供了卡片点击（selected）后，与消费方的结合方式。
 > CardInfinityView 实现了卡片的列表式布局，上下移动，以及数据的吸取等。
 
-#### Search support
-> 通过为CardPresenterWidget提供Supplier接口函数，提供其子类获得搜索字的能力。
+### UI:SheetField
+> 设计表单的编辑功能，除了布局的考虑，很大工作量在Field的有效性验证，输入信息的顺序安排等事务上，SheetField为规范并简化这个设计做了一些尝试性的工作。
+
+设计思路是将各个Filed串联起来，以处理输入顺序问题。每个Filed的输入都需要在其前序Filed有了有效输入信息后才可用，输入的焦点(Focus)因此不能随意变更。这种方式牺牲了自由度，但是为Filed的跳转提供了便利，由此在很多情况下，Tab键和RETURN键都可以实现将输入焦点转移到下一个需要输入的Field上。  
+每个Filed可以加入一个或多个有效性验证的函数，并通过构造Filed时候提供类型的办法，为常用格式（比如：email， password等）的Filed创建提供了帮助。  
+SheetField采用Builder设计模式，减少编写时候的困难。以下是创建用户账号的例子：
+```
+            // Build SheetField chain.
+            new SheetField.Builder(boxAccount).asHeader().set(isStop -> {
+                getUiHandlers().checkValidate(boxAccount.getValue(), (state) -> {
+                    setValidateState(state);
+                    if(state == AccountValidate.CHECKING)
+                        return;
+                    if(state == AccountValidate.VALIDATE)
+                        isStop.accept(false);
+                    else {
+                        btnCommit.setEnabled(false);
+                        isStop.accept(true);
+                    }});
+            }).checkKeyPress().build()
+            .nextField(boxPassword).checkOnFocus().minLength(4).build()
+            .nextField(boxPassword2).checkOnFocus().set(isStop -> {
+                if(!boxPassword.getValue().equals(boxPassword2.getValue())) {
+                    boxPassword2.setFocus(true);
+                    isStop.accept(true);
+                } else {
+                    btnCommit.setEnabled(true);
+                    isStop.accept(false);
+                }
+            }).build()
+            .nextField(boxEmail).checkOnFocus().type(TYPE.EMAIL).build()
+            .nextField(boxTelphone).checkOnFocus().type(TYPE.TELPHONE).build()
+            .nextField(boxNotes).checkOnFocus().build()
+            .nextField(btnCommit).build();
+```
+#### Search input support
+> 数据搜索需要提供搜索关键字，为了减少输入搜索关键字的输入界面与消费者的耦合度，通过为CardPresenterWidget提供Supplier接口函数，提供其子类获得搜索字的能力。
 ```
     cardPresenter.searchKeyProvider = () -> {
         return getView().getSearchKey();
@@ -55,7 +90,9 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 ```
 
 ### Client handler Exception from Server
-> Action是GWTP用来联系前后端的
+> 这部分的设计目的是为了提供一个友好的错误提示和处理能力  
+> Action是GWTP前后端通讯的基础。ActionException是服务后端出现异常后抛出来的，这个异常信息需要透过某种方式传递到客户端，并转换成客户端能使用的格式。
+
 * 服务端执行Action产生的ActionException需要通过ActionExceptionMapper转换成可序列化的ActionException才能通过RPC过程传递到客户端。
 * 客户端调用Action执行服务端程序如果出现异常，会回调onFailuer函数，ServerExceptionHandler帮助对这些服务端异常的通常处理，比如onFailure得到的服务端异常类型是ActionAuthenticationException，那么就前往UnauthorizedPlace，通常这是一个Login界面。
 * 可序列化的ActionException在xxx.share.exception包中。
@@ -65,14 +102,24 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 * DevOpsTask提供了一种跟踪，记录服务端初始化的办法。
 * 特别地，如果服务端没有提供合适的账户进行后续的作业，可以进入/services页面处理。
 
-### Accounts
-> 基于Shiro的功能，本项目支持账户/项目管理。特别情况下，本项目可以构造成一个OAuth服务，用于管理账户/项目，并提供给其它服务。  
+### Shiro/Accounts
+> 基于Shiro的功能，本项目支持账户/项目管理。本项目可以构造成一个OAuth服务，用于管理账户/项目，并提供给其它服务。  
 > 为了达到这个目的，几个基本性质必须得到满足：
 
-- Accounts必须是本项目（Host project）的用户
-- Accounts可以分配成为其它项目的用户，并通过Roles设置来赋予操作权限。对Roles操作权限的诠释基于那个项目的设计，与Host project无关，Host project仅仅提供Roles信息。
+- 所有Accounts都是是本项目（Host project）的用户，并拥有基本的项目角色/权限，还能分配本项目的其它角色。
+- Accounts可以指派成为其它项目的用户，并通过Roles设置来赋予操作权限。对Roles操作权限的诠释基于那个项目的设计，与Host project无关，Host project仅仅提供Roles名称信息。
 - 小型的项目可以没有Projects支持，直接删除client/presentermodules/accounts/project目录就可以了。但是数据库中仍然保留对多项目的支持，这部分开销不大。
-- 小型的项目甚至可以不需要accounts管理，直接删除client/presentermodules/accounts/就可以了。但是为了支持操作权限，需要与别的OAuth服务配合。除了删除client下与accounts相关的代码，服务端服务程序和相关的数据库管理也可以删除。
+- 小型的项目甚至可以不需要accounts管理，直接删除client/presentermodules/accounts/就可以了。但是为了支持操作权限，需要与别的OAuth服务配合。如果使用其它服务提供OAuth，服务端服务程序和相关的数据库管理也可以删除。
+
+### Hibernate ORM
+> [Hibernate ORM](https://hibernate.org/orm/) is an Object/Relational Mapping (ORM) framework  
+> 引入该框架的目的是更好地适应不同的数据库服务。
+
+服务端通过 bind(SessionFactory.class).toProvider(HibernateSessionFactoryProvider.class); Hibernate ORM提供了会话管理。
+
+### SmallRye Config
+> SmallRye Config is a library that provides a way to configure applications  
+> 部署初期，没有建立任何账号，本项目依赖SmallRye提供的配置方式，临时提供管理账号。
 
 ## 部署
 ### 用Docker进行部署
