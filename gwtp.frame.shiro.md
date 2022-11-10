@@ -50,6 +50,19 @@ mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=com.risetek.a
 > CardPresenterWidget 提供了与搜索关键字提供方的结合方式，也提供了卡片点击（selected）后，与消费方的结合方式。
 > CardInfinityView 实现了卡片的列表式布局，上下移动，以及数据的吸取等。
 
+### **Client**:Menu
+> Dock Menu：固定在workspace区域，提供脱离于workspace布局区的Function Panel以容纳其它应用需求呈现   
+> Function Menu：呈现在Dock Menu的Function Panel区  
+
+Dock Menu依附于workspace Layout的Header区域作为起点。dock menu用Icon标志其功用，用tips加以提示，用跟随该Icon位置的Function Panel提供可进一步开发的功能。因此，实现上，位于Header区域的Dock Menu拥有三个Layer，一个用于放置IconButton，一个用于显示tips，一个用于提供Function Panel。  
+在UI布局上，除了Icon需要占据全局布局的位置，tips panel和function panel都浮动（脱离）于workspace，并具有优先的index。  
+
+#### Simple Navigation menu
+应用Function Panel区实现简单的引导各个Modules呈现的Dock Menu
+
+#### Simple Login menu
+基础的引导用户登录系统，并提供已登录账户信息的Dock Menu实现
+
 ### **Client**:UI:SheetField
 > 设计表单的编辑功能，除了布局的考虑，很大工作量在Field的有效性验证，输入信息的顺序安排等事务上，SheetField为规范并简化这个设计做了一些尝试性的工作。
 
