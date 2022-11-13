@@ -23,7 +23,7 @@
       <version>${dollar}{project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-servlet</artifactId>
     </dependency>
     <dependency>
@@ -34,8 +34,13 @@
   </dependencies>
 
   <build>
-	<!-- Generate compiled stuff in the folder used for developing mode -->
-	<outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory>
+    <!-- Generate compiled stuff in the folder used for developing mode -->
+    <!-- but eclipse need separate src/test output directory -->
+    <!-- <outputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</outputDirectory> -->
+    <!-- hacker we missed compile phase for generated-sources, so compile it at testCompile phase -->
+    <testOutputDirectory>${dollar}{webappDirectory}/WEB-INF/classes</testOutputDirectory>	 
+    <testSourceDirectory>${dollar}{project.build.directory}/generated-sources/annotations</testSourceDirectory>	 
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -43,16 +48,29 @@
           <artifactId>jetty-maven-plugin</artifactId>
           <configuration>
             <skip>false</skip>
-            <scanIntervalSeconds>1</scanIntervalSeconds>
+            <scan>1</scan>
             <webApp>
-              <extraClasspath>${dollar}{basedir}/../${rootArtifactId}-shared/target/classes/</extraClasspath>
+              <!-- <extraClasspath>${basedir}/../risetek.usbtools-shared/target/classes/</extraClasspath> -->
             </webApp>
             <contextXml>${dollar}{basedir}/src/main/jettyconf/context.xml</contextXml>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
-  </build>
+
+    <plugins>
+        <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <packagingExcludes>
+                <!-- XXX: GWTP invoke gwt-user which do not used by server side -->
+                WEB-INF/lib/gwt-user-*.jar,
+                META-INF/**,
+              </packagingExcludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
 
   <profiles>
     <profile>

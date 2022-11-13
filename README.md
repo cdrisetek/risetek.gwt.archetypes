@@ -5,9 +5,9 @@
 
 ## Supported archtypes
 * modular-webapp：[GWT基本界面，以及RPC实现的Greeting服务](modular-webapp.md)
-* empty-webapp: [GWT基本界面，以及RPC实现的Greeting服务](empty-webapp.md)
-* empty-frame: requestFactory
-* empty-frame-shiro: requestFactory, login/logout Place and Apache shiro
+* empty-webapp: [GWT基本界面，GIN，以及RPC实现的Greeting服务](empty-webapp.md)
+* empty-frame: dagger and requestFactory
+* empty-frame-shiro: dagger、requestFactory， login/logout Place and Apache shiro
 * dagger-guice-rf-activities：[A combination of dagger, Guice and GWT requestFactory, activities](dagger-guice-rf-activities.md)
 * gwtp-frame-shiro: [GWTP and Shiro combination](gwtp.frame.shiro.md)
 

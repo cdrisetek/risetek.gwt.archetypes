@@ -2,7 +2,6 @@
 #set( $dollar = '$' )
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
   <version>${version}</version>
@@ -11,18 +10,17 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gin.version>3.0.0</gin.version>
-    <gwt.version>2.9.0</gwt.version>
-    <gwt-maven.version>1.0.0</gwt-maven.version>
-    <jdk.version>1.8</jdk.version>
-    <jetty.version>9.4.45.v20220203</jetty.version>
+    <gwt.version>2.10.0</gwt.version>
+    <gwt-maven.version>1.0.1</gwt-maven.version>
+    <jdk.version>11</jdk.version>
+    <jetty.version>10.0.8</jetty.version>
     <maven-compiler.version>3.10.1</maven-compiler.version>
     <maven-source.version>3.2.0</maven-source.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>org.gwtproject</groupId>
         <artifactId>gwt</artifactId>
         <version>${dollar}{gwt.version}</version>
         <type>pom</type>
@@ -74,7 +72,7 @@
           <extensions>true</extensions>
           <configuration>
             <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
-            <sourceLevel>1.8</sourceLevel>
+            <sourceLevel>${dollar}{jdk.version}</sourceLevel>
             <failOnError>true</failOnError>
             <codeserverArgs>
               <arg>-bindAddress</arg>
