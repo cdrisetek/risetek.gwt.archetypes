@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.risetek.archetypes</groupId>
+    <artifactId>gwt-maven-archetypes</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>gwt-standalone</artifactId>
+  <version>HEAD-SNAPSHOT</version>
+  <packaging>maven-archetype</packaging>
+
+  <name>GWT Client Standalone Modular Archetype</name>
+  <description>The GWT Client standalone.</description>
+</project>
