@@ -177,7 +177,7 @@ server {
 * 我们需要用上/.database目录，这是用于存放数据库文件的目录
 * 如果声明了系统属性hsqlmem，那么hsqldb将运行在内存数据库模式下，重启服务意味着数据会丢失。代码可以查看HibernateSessionFactoryProvider.java。
 * /config目录，是用于提供给microprofile额外（用户自定义）配置文件的目录。
-* 如果出现忘记管理账户的情况，也可以通过临时加入deploy.properties文件的方式加以挽救。该文件可以位于/config目录下，也可以在本项目目录下。
+* 如果出现忘记管理账户的情况，也可以通过临时加入deploy.properties文件的方式加以挽救。该文件位于/config目录下。
 * 在没有创建账户的情况下，也需要配置文件 deploy.properties 的介入。部署账户登录后，请及时创建有效的管理账户，然后删除deploy文件，以保障安全。
 
 ```
