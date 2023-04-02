@@ -11,7 +11,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import ${package}.place.root.RevealMenuEventHandler.RevealMenuEvent;
+import ${package}.presentermodules.platformMenu.PagePresenter;
 
 /**
  * 'RevealType.Root' make this Container on the bottom.
@@ -35,18 +35,16 @@ public class RootPresenter extends Presenter<RootPresenter.MyView, RootPresenter
     public interface MyProxy extends Proxy<RootPresenter> {}
 
     @Inject
-    public RootPresenter(EventBus eventBus, MyView view, MyProxy proxy, 
-    		DispatchAsync dispatcher, PlaceManager placeManager) {
+    public RootPresenter(final EventBus eventBus,
+            final MyView view, MyProxy proxy, 
+            // NOTE: how to implement field bind?
+            final PagePresenter menu,
+            final DispatchAsync dispatcher, PlaceManager placeManager) {
         super(eventBus, view, proxy, RevealType.Root);
+        menu.forceReveal();
         getView().setUiHandlers(this);
         getView().bindMainSlot(SLOT_MainContent);
         getView().bindMenuSlot(SLOT_MenuContent);
         getView().bindLeftSlot(SLOT_LeftContent);
     }
-
-	@Override
-	public void onReveal() {
-		// To reveal menu module.
-        fireEvent(new RevealMenuEvent());
-	}
 }

@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-<ui:style gss="true" src="../../selector.gss">
+<ui:style gss="true" src="../../../../ui/infinitycard/selector.gss">
 .card-name {
 margin: 2px;
 width: mult(CELLWIDTH, 2);

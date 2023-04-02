@@ -9,6 +9,7 @@ public interface PlainMenuLoader {
 	public class PlainMenuContent implements Comparable<PlainMenuContent> {
 		public String title;
 		public String token;
+		public String iconName;
 		public Icon icon;
 
 		int order;

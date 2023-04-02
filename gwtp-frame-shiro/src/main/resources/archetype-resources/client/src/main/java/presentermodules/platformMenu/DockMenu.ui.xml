@@ -1,0 +1,114 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+<ui:style gss="true">
+.mat-icon-button {
+flex-shrink: 0;
+box-sizing: border-box;
+position: relative;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+outline: none;
+border: none;
+display: inline-block;
+white-space: nowrap;
+text-decoration: none;
+vertical-align: baseline;
+text-align: center;
+overflow: visible;
+background: transparent;
+font-size: 14px;
+font-weight: 500;
+margin: 0;
+padding: 0;
+min-width: 0;
+width: 40px;
+height: 40px;
+line-height: 40px;
+border-radius: 50%;
+color: #fff;
+}
+
+.mat-icon-button:hover {background: rgba(255,255,255,.2);}
+
+.mat-icon {display: inline-block; line-height: 0; vertical-align: middle;
+ background-repeat: no-repeat; fill: currentColor; height: 24px; width: 24px;}
+
+.cdk-overlay-pane {
+position: absolute;
+pointer-events: auto;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+z-index: 1000;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+max-width: 100%;
+max-height: 100%;
+top: 48px;
+}
+
+.overlay-position-box {
+position: absolute;
+z-index: 1000;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+-webkit-flex-direction: column;
+flex-direction: column;
+min-width: 1px;
+min-height: 1px;
+height: 100%; width: 100%;
+}
+
+.overlay-position-box.tips-adjust {top: 0px; left: 0px;}
+.overlay-position-box.chooser-adjust {justify-content: flex-start;}
+
+.chooser-menu {
+background-color: #fff;
+border: 1.1px solid rgba(0,0,0,.12);
+line-height: normal;
+letter-spacing: normal;
+box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+cfcTooltipOverlay {
+font-size: .8rem;
+font-weight: 400;
+letter-spacing: normal;
+line-height: 16px;
+display: block;
+border-radius: 4px;
+margin: 8px;
+word-wrap: break-word;
+color: #fff;
+background: #757575;
+max-width: 320px;
+padding: 4px 8px;
+}
+</ui:style>
+ 
+<g:HTMLPanel>
+ <g:HTMLPanel ui:field="panelIcon">
+  <g:Button ui:field="btnIcon" styleName="{style.mat-icon-button}">
+   <div ui:field="iconBox" class="{style.mat-icon}" aria-haspopup="true"/>
+  </g:Button>
+ </g:HTMLPanel>
+ <g:HTMLPanel ui:field="boundingboxMenu" styleName="{style.overlay-position-box} {style.chooser-adjust}">
+  <div ui:field="panelMenu" class="{style.cdk-overlay-pane}">
+   <g:HTMLPanel ui:field="functionPanel" styleName="{style.chooser-menu}"/>
+  </div>
+ </g:HTMLPanel>
+ <g:HTMLPanel ui:field="boundingboxTips" styleName="{style.overlay-position-box} {style.tips-adjust}">
+  <div ui:field="tipPanel" class="{style.cdk-overlay-pane}">
+   <cfctooltipoverlay ui:field="tooltip" role="tooltip"/>
+  </div>
+ </g:HTMLPanel>
+ </g:HTMLPanel>
+</ui:UiBinder>

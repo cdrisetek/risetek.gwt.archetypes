@@ -18,8 +18,6 @@ public class PageView extends ViewWithUiHandlers<MyUiHandlers> implements RootPr
     @Inject
     public PageView(Binder binder) {
     	initWidget(binder.createAndBindUi(this));
-		asWidget().getElement().setAttribute("layout", "column");
-        mainContainer.getElement().setAttribute("layout", "row");
     }
 
 	@Override

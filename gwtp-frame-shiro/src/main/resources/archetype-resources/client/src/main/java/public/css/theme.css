@@ -16,3 +16,7 @@
 .rt-icon-s24 {display: inline-block; background-repeat: no-repeat; fill: currentColor; height: 24px; width: 24px;}
 /* panel center cell 5 */
 .rt-pl-ct-5 {width: var(--rt-cellwidth-5); margin: 0 auto;}
+
+/* workplace layout */
+.rt-place { width: 100%; height: 100%; box-sizing: border-box; }
+.rt-place-center { max-width: var(--rt-cellwidth-5); min-width: var(--rt-cellwidth-2); margin: 0 auto; }

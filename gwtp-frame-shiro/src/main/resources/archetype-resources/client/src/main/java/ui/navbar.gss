@@ -1,0 +1,7 @@
+/* common layout for navigator */
+@def CELL_WIDTH 160px;
+.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
+
+@external search-result;
+/* hacker, hidden draw down list */.searcher .search-result {display: none;}
+

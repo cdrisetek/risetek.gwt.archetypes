@@ -49,6 +49,9 @@ public class BuilderStampGenerator extends Generator {
 						git_commit_date = fmt.format(new Date(commit.getCommitTime() * 1000L));
 						break;
 					}
+				} else {
+                    logger.log(TreeLogger.WARN, "This project have no commits yet. Please make it correct.", null);
+					break;
 				}
 			} catch (Exception e) {
                 try{

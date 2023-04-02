@@ -90,6 +90,7 @@
       <plugin>
         <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <moduleName>${package}.${module}</moduleName>
           <moduleShortName>${module-short-name}</moduleShortName>

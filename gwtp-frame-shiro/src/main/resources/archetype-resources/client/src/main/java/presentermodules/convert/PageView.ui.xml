@@ -20,11 +20,6 @@
     box-shadow: 0 2px 2px rgba(0,0,0,0.22);
 }
 
-.frame {
-	width: 100%;
-	margin: 0 auto;
-}
-
 .sourceTargetRow {
     width:              SOURCE_TARGET_CONTAINER_WIDTH;
     height:    200px;
@@ -102,7 +97,7 @@
 
 </ui:style>
 
- <g:FlowPanel ui:field="container" styleName="{style.frame}">
+ <g:FlowPanel ui:field="container" styleName="rt-place">
   <g:FlowPanel styleName="{style.pageContentWrap}">
    <g:FlowPanel styleName="{style.mainHeader}">
     <g:FlowPanel styleName="{style.sourceTargetRow}">

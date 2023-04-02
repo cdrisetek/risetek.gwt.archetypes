@@ -9,11 +9,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
+import ${package}.presentermodules.home.cards.AbstractHomeCardPresenter;
 import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
@@ -22,7 +21,7 @@ import ${package}.share.container.StateEntity;
 import ${package}.share.dispatch.GetResults;
 import ${package}.utils.ServerExceptionHandler;
 
-public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
+public class HomeCardPresenter extends AbstractHomeCardPresenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
 	public interface MyView extends IHomeCardView, HasUiHandlers<MyUiHandlers> {
 	}
@@ -67,10 +66,14 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		});
 	}
 
-	@ProxyEvent
 	@Override
-	public void onRevealHomeCard(RevealHomeCardEvent event) {
+	public boolean update() {
 		updateStateInfoCard();
-		event.getConsumer().accept(this, 1 /* order */);
+		return true;
+	}
+
+	@Override
+	public Integer getOrder() {
+		return 8000;
 	}
 }

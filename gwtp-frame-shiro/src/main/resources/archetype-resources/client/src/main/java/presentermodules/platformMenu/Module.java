@@ -14,8 +14,8 @@ public class Module extends AbstractPresenterModule {
         		PageView.class,
                 PagePresenter.MyProxy.class);
         
-        bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("LoginMenu")).to(SimpleLoginMenu.class).in(Singleton.class);
-        bind(AbstractPlatformBarMenu.class).annotatedWith(Names.named("NavgatorMenu")).to(SimpleNavMenu.class).in(Singleton.class);
+        bind(AbstractDockMenu.class).annotatedWith(Names.named("LoginMenu")).to(SimpleLoginMenu.class).in(Singleton.class);
+        bind(AbstractDockMenu.class).annotatedWith(Names.named("NavgatorMenu")).to(SimpleNavMenu.class).in(Singleton.class);
         // bind(NavMenu.class).in(Singleton.class);
     }
 }

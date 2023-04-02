@@ -3,7 +3,7 @@
  xmlns:m='urn:import:gwt.material.design.client.ui'>
 <ui:style gss="true" src="../style.gss"/>
 
-<g:HTMLPanel styleName='{style.container}'>
+<g:HTMLPanel styleName='rt-place rt-place-center'>
  <m:MaterialNavBar backgroundColor='TRANSPARENT' shadow='0' width='100%'>
   <m:MaterialLink ui:field='btnGoback' textColor='BLUE' iconType="ARROW_BACK"/>
   <m:MaterialNavBrand textColor='BLUE' text="项目" />

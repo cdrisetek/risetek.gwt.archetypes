@@ -1,6 +1,5 @@
 package ${package}.presentermodules.devops;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -24,20 +23,5 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	@UiHandler("btnGoback")
 	public void onGobackClick(ClickEvent e) {
 		getUiHandlers().onGoBackPlace();
-	}
-
-	@Override
-	public void append(String name, Element icon) {
-		Element div = Document.get().createElement("li");
-		div.appendChild(icon);
-		Element span = Document.get().createElement("span");
-		span.setInnerText(name);
-		div.appendChild(span);
-		panelSlot.appendChild(div);
-	}
-
-	@Override
-	public void append(String name, Widget icon) {
-		append(name, icon.getElement());
 	}
 }

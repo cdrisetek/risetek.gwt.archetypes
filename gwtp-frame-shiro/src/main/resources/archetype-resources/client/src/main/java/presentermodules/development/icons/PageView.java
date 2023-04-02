@@ -40,4 +40,9 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePresenter
 	public void append(String name, Widget icon) {
 		append(name, icon.getElement());
 	}
+
+	@Override
+	public void append(Widget icon) {
+		append(icon.getClass().getSimpleName(), icon);
+	}
 }

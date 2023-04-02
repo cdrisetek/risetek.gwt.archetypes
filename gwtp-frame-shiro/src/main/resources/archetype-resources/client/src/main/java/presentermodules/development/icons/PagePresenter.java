@@ -30,6 +30,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
 		void append(String name, Element icon);
 		void append(String name, Widget icon);
+		void append(Widget icon);
 	}
 
 	@ProxyCodeSplit
@@ -47,7 +48,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
 
-		getView().append("ArrowRight", new ArrowRight());
+		getView().append(new ArrowRight());
 		getView().append("ArrowLeft", new ArrowLeft());
 		getView().append("Login", new Login());
 		getView().append("Modify", new Modify());

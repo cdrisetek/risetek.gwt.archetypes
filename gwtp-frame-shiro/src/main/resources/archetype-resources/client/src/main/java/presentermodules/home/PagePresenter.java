@@ -1,23 +1,25 @@
 package ${package}.presentermodules.home;
 
-import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
+import com.google.gwt.core.client.Scheduler;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.presenter.slots.Slot;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import ${package}.NameTokens;
 import ${package}.bindery.PlainMenu;
 import ${package}.entry.SubjectChangeEvent;
 import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
 import ${package}.place.root.RootPresenter;
+import ${package}.presentermodules.home.cards.AbstractHomeCardPresenter;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 import ${package}.utils.Icons;
 
@@ -26,11 +28,8 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		                   implements MyUiHandlers, SubjectChangeHandler {
 	
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		void bindSlot(Slot<?> slot, int index);
-		int getCloumnSize();
+		void layoutHomeCards(List<AbstractHomeCardPresenter<?,?>> sortedList);
 	}
-
-	private final ArrayList<Slot<PresenterWidget<?>>> list = new ArrayList<>();
 
 	@ProxyStandard
 	@NameToken(NameTokens.home)
@@ -42,23 +41,35 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		getView().setUiHandlers(this);
+		// When subject changed, home-card may be change too.
 		eventBus.addHandler(SubjectChangeEvent.getType(), this);
-
-		for(int i=0; i<getView().getCloumnSize(); i++) {
-			Slot<PresenterWidget<?>> slot = new Slot<>();
-			getView().bindSlot(slot, i);
-			list.add(slot);
-		}
+		// Reveal all HomeCard with ProxyEvent
+		// every homeCard instance call back with it Presenter and order,
+		// so we have chance to collection those cards for update view later.
 		fireRevealHomeCardEvent();
+		
+		// update cards and set to view container with order.
+		onSubjectChange();
 	}
 
+	List<AbstractHomeCardPresenter<?, ?>> cards = new Vector<>();
+
 	private void fireRevealHomeCardEvent() {
-		fireEvent(new RevealHomeCardEvent((p, o) -> addToSlot(list.get(o % 3), p)));
+		fireEvent(new RevealHomeCardEvent((p) -> cards.add(p)));
+	}
+	
+	@Override
+	public void layoutCards() {
+		// Scheduler a work when fired event all completes.
+		Scheduler.get().scheduleDeferred(()-> {
+			List<AbstractHomeCardPresenter<?,?>> list = cards.stream().filter(c -> c.update()).collect(Collectors.toList());
+			Collections.sort(list);
+			getView().layoutHomeCards(list);
+		});
 	}
 	
 	@Override
 	public void onSubjectChange() {
-		list.forEach(s -> clearSlot(s));
-		fireRevealHomeCardEvent();
+		Scheduler.get().scheduleDeferred(() -> layoutCards());
 	}
 }

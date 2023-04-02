@@ -1,7 +1,5 @@
 package ${package}.presentermodules.devops;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -16,19 +14,11 @@ import ${package}.NameTokens;
 import ${package}.bindery.PlainMenu;
 import ${package}.place.root.RootPresenter;
 import ${package}.utils.Icons;
-import ${package}.utils.Icons.ArrowLeft;
-import ${package}.utils.Icons.ArrowRight;
-import ${package}.utils.Icons.Convert;
-import ${package}.utils.Icons.Home;
-import ${package}.utils.Icons.Login;
-import ${package}.utils.Icons.Modify;
 
 @PlainMenu(order = 1020, title = "DevOps", token = TokenNames.devops, iconClass = Icons.Modify.class)
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy> implements MyUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
-		void append(String name, Element icon);
-		void append(String name, Widget icon);
 	}
 
 	@ProxyCodeSplit
@@ -45,25 +35,7 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 		super(eventBus, view, proxy, RootPresenter.SLOT_MainContent);
 		this.placeManager = placeManager;
 		getView().setUiHandlers(this);
-
-		getView().append("ArrowRight", new ArrowRight());
-		getView().append("ArrowLeft", new ArrowLeft());
-		getView().append("Login", new Login());
-		getView().append("Modify", new Modify());
-		getView().append("Convert", new Convert());
-		getView().append("Home", new Home());
-		getView().append("matIcon", Icons.matIcon());
-		getView().append("helpIcon", Icons.helpIcon());
-
-		getView().append("serverIcon", Icons.serverIcon());
-		getView().append("aboutIcon", Icons.aboutIcon());
-		getView().append("eyeSlashIcon", Icons.eyeSlashIcon());
-		getView().append("eyeIcon", Icons.eyeIcon());
-		getView().append("compassIcon", Icons.compassIcon());
-		getView().append("helpIcon", Icons.helpIcon());
-		getView().append("helpIcon", Icons.helpIcon());
-		getView().append("helpIcon", Icons.helpIcon());
-}
+	}
 
 	private final PlaceRequest backPlace = new PlaceRequest.Builder().nameToken(NameTokens.home).build();
 	@Override

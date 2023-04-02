@@ -2,7 +2,6 @@ package ${package}.presentermodules.platformMenu;
 
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,14 +21,14 @@ import ${package}.entry.SubjectChangeEvent;
 import ${package}.entry.SubjectChangeEvent.SubjectChangeHandler;
 
 @Singleton
-public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectChangeHandler {
+public class SimpleLoginMenu extends AbstractDockMenu implements SubjectChangeHandler {
 	private final Subject subject;
-	private final ChooserPanel chooserPanel;
+	private final FunctionPanel chooserPanel;
 
 	@Inject
 	public SimpleLoginMenu(final Binder binder,
 			final Subject subject,
-			final ChooserPanel chooserPanel,
+			final FunctionPanel chooserPanel,
 			EventBus eventBus) {
 		super(binder);
 		
@@ -38,7 +37,7 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectC
 
 		eventBus.addHandler(SubjectChangeEvent.getType(), this);
 		this.chooserPanel = chooserPanel;
-		panelChoosers.add(chooserPanel.asWidget());
+		functionPanel.add(chooserPanel.asWidget());
 	}
 	
 	@Override
@@ -47,11 +46,11 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectC
 		chooserPanel.setUiHandlers(getUiHandlers());
 		// TODO: adjust by button.
 		int rightPosition = Window.getClientWidth() - btnIcon.getAbsoluteLeft() - btnIcon.getOffsetWidth();
-		setChooserBoxRight(rightPosition);
+		setFunctionPanelPositionRight(rightPosition);
 	}
 	
 	@Override
-	public Panel getChooserPanel() {
+	public Panel getFunctionPanel() {
 		if(subject.isLogin())
 			return boundingboxMenu;
 
@@ -76,13 +75,13 @@ public class SimpleLoginMenu extends AbstractPlatformBarMenu implements SubjectC
 			GWT.log("should show logout icon");
 	}
 
-	static class ChooserPanel extends ViewWithUiHandlers<MyUiHandlers> {
-		interface AccountBinder extends UiBinder<Widget, ChooserPanel> {}
+	static class FunctionPanel extends ViewWithUiHandlers<MyUiHandlers> {
+		interface AccountBinder extends UiBinder<Widget, FunctionPanel> {}
 		private final Subject subject;
 		@UiField Label labelPrincipal;
 		@UiField Element iconMenu;
 		@Inject
-		public ChooserPanel(final AccountBinder binder,
+		public FunctionPanel(final AccountBinder binder,
 				final Subject subject
 				) {
 			initWidget(binder.createAndBindUi(this));

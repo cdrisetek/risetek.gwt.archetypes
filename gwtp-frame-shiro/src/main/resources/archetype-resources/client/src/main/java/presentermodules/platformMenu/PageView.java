@@ -42,8 +42,8 @@ public class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePr
 	};
 
 	@Override
-	public void showChooser(AbstractPlatformBarMenu menu) {
-		Panel panel = menu.getChooserPanel();
+	public void showChooser(AbstractDockMenu menu) {
+		Panel panel = menu.getFunctionPanel();
 		if(null == panel)
 			return;
 
@@ -52,16 +52,16 @@ public class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePr
 	}
 
 	@Override
-	public void showTip(AbstractPlatformBarMenu menu) {
+	public void showTip(AbstractDockMenu menu) {
 		Panel tipPanel = menu.getTipPanel();
     	overlayContainer.add(tipPanel);
 	}
 
-	private void installMenu(String style, AbstractPlatformBarMenu... menus) {
+	private void installMenu(String style, AbstractDockMenu... menus) {
     	FlowPanel container = new FlowPanel();
     	container.setStyleName(style);
 
-    	for(AbstractPlatformBarMenu menu:menus) {
+    	for(AbstractDockMenu menu:menus) {
 	    	menu.setUiHandlers(getUiHandlers());
 	    	container.add(menu.getIconPanel());
     	}
@@ -69,17 +69,17 @@ public class PageView extends ViewWithUiHandlers<MyUiHandlers> implements PagePr
 	}
 	
 	@Override
-	public void installRightMenu(AbstractPlatformBarMenu... menus) {
+	public void installRightMenu(AbstractDockMenu... menus) {
 		installMenu(style.barRight(), menus);
 	}
 
 	@Override
-	public void installMiddleMenu(AbstractPlatformBarMenu... menus) {
+	public void installMiddleMenu(AbstractDockMenu... menus) {
 		installMenu(style.barMiddle(), menus);
 	}
 
 	@Override
-	public void installLeftMenu(AbstractPlatformBarMenu... menus) {
+	public void installLeftMenu(AbstractDockMenu... menus) {
 		installMenu(style.barLeft(), menus);
 	}
 }

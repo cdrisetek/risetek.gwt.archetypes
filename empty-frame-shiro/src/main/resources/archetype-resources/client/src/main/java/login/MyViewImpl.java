@@ -3,7 +3,7 @@ package ${package}.login;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.risetek.login.LoginWidget.LoginSubmitHandle;
+import ${package}.login.LoginWidget.LoginSubmitHandle;
 
 class MyViewImpl implements LoginView {
 	private Presenter presenter;

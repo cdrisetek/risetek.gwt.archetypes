@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 import ${package}.NameTokens;
 import ${package}.utils.ServerExceptionHandler;
+import ${package}.websocketevents.EventsBus;
 
 public class ClientModule extends AbstractPresenterModule {
     @Override
@@ -26,6 +27,7 @@ public class ClientModule extends AbstractPresenterModule {
         bind(ServerExceptionHandler.class).asEagerSingleton();
     	bind(MyBootstrapper.class).asEagerSingleton();
         bind(Subject.class).asEagerSingleton();
+        bind(EventsBus.class).asEagerSingleton();
         bind(LoggedInGatekeeper.class);
     }
 }

@@ -141,12 +141,14 @@ public class HsqldbAccountManagement implements IAccountManagement {
 		transaction.begin();
 		AccountEntity account = session.bySimpleNaturalId(AccountEntity.class).load(principal);
 		transaction.commit();
+		if(null == account)
+			return null;
 		return account.password;
 	}
 
 	@Override
 	public void setCredential(Object principal, Object credential) throws ActionException {
-		System.out.println("setCredential");
+		System.out.println("setCredential class:" + credential.getClass() + " value:" + credential);
 
 		Session session = sessionFactory.getCurrentSession();
 		Transaction transaction = session.getTransaction();

@@ -1,6 +1,5 @@
 @external gwt-Button gwt-HTML gwt-Label card-action material-label row material-label material-icons;
 @def CELL_WIDTH 160px;
-.container {width: mult(CELL_WIDTH, 5); margin: 0 auto;}
 .card-slot .material-label {margin: 10px 20px;}
 .card-slot .card-action {background: rgba(160,160,160,0.05);}
 .card-slot .card-action {border-bottom: 1px solid rgba(160,160,160,0.2); background: rgba(160,160,160,0.05);}

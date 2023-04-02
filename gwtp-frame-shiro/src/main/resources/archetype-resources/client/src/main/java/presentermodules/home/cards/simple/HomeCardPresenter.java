@@ -9,17 +9,16 @@ import javax.inject.Inject;
 import com.google.gwt.core.client.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import ${package}.bindery.IBuilderStamp;
+import ${package}.presentermodules.home.cards.AbstractHomeCardPresenter;
 import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 
-public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
+public class HomeCardPresenter extends AbstractHomeCardPresenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
 	public interface MyView extends IHomeCardView, HasUiHandlers<MyUiHandlers> {
 	}
@@ -38,36 +37,39 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 	private final static IBuilderStamp stamp = GWT.create(IBuilderStamp.class);
 	
 	private void updateLoginInfoCard() {
-		getView().clear();
-
 		List<InfoItem> items = new ArrayList<>();
 		InfoItem item;
-        if(null != stamp.getCommitID()) {
-            item = new InfoItem();
-            item.infoText = "Git commit ID";
-            item.infoTextSecondary = Arrays.asList(stamp.getCommitID());
-            items.add(item);
-        }
-
-        if(null != stamp.getCommitDate()) {
-            item = new InfoItem();
-            item.infoText = "Git Commit Date Time";
-            item.infoTextSecondary = Arrays.asList(stamp.getCommitDate());
-            items.add(item);
-        }
-
-        item = new InfoItem();
+		item = new InfoItem();
 		item.infoText = "Build Date Time";
 		item.infoTextSecondary = Arrays.asList(stamp.getBuilderStamp());
 		items.add(item);
 
+		if(null != stamp.getCommitID()) {
+			item = new InfoItem();
+			item.infoText = "Git commit ID";
+			item.infoTextSecondary = Arrays.asList(stamp.getCommitID());
+			items.add(item);
+		}
+
+		if(null != stamp.getCommitDate()) {
+			item = new InfoItem();
+			item.infoText = "Git Commit Date Time";
+			item.infoTextSecondary = Arrays.asList(stamp.getCommitDate());
+			items.add(item);
+		}
+
 		getView().updateInfoItems(items);
 	}
 	
-	@ProxyEvent
 	@Override
-	public void onRevealHomeCard(RevealHomeCardEvent event) {
+	public boolean update() {
+		getView().clear();
 		updateLoginInfoCard();
-		event.getConsumer().accept(this, 0 /* order */);
+		return true;
+	}
+
+	@Override
+	public Integer getOrder() {
+		return 9000;
 	}
 }

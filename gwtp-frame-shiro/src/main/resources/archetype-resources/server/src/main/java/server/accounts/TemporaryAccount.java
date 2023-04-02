@@ -65,7 +65,7 @@ public class TemporaryAccount {
 			if (null == password)
 				return null;
 
-			logger.info(" Deploy account generated");
+			logger.info(" Warning: Deploy account generated, you should remove this account when you create new.");
 			return new TemporaryAccount(account, authorizing.encryptRealmPassword(password), authorizing);
 		}
 	}

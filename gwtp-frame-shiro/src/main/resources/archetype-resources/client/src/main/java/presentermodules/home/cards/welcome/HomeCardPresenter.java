@@ -9,22 +9,21 @@ import javax.inject.Inject;
 
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ${package}.NameTokens;
 import ${package}.entry.Subject;
+import ${package}.presentermodules.home.cards.AbstractHomeCardPresenter;
 import ${package}.presentermodules.home.cards.IHomeCardView;
 import ${package}.presentermodules.home.cards.InfoItem;
 import ${package}.presentermodules.home.cards.RevealHomeCardEvent;
 import ${package}.share.accounts.hosts.HostProjectRBAC;
 import ${package}.share.templates.Project;
 
-public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
+public class HomeCardPresenter extends AbstractHomeCardPresenter<HomeCardPresenter.MyView, HomeCardPresenter.MyProxy>
 		implements MyUiHandlers, RevealHomeCardEvent.HomeCardRevealHandler {
 	public interface MyView extends IHomeCardView, HasUiHandlers<MyUiHandlers> {
 	}
@@ -48,7 +47,8 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 
 	private final PlaceRequest securityPlaceRequest = new PlaceRequest.Builder().nameToken(NameTokens.security).build();
 
-	private void updateLoginInfoCard() {
+	@Override
+	public boolean update() {
 		getView().clear();
 
 		List<InfoItem> items = new ArrayList<>();
@@ -91,12 +91,11 @@ public class HomeCardPresenter extends Presenter<HomeCardPresenter.MyView, HomeC
 		}
 
 		getView().updateInfoItems(items);
+		return true;
 	}
 
-	@ProxyEvent
 	@Override
-	public void onRevealHomeCard(RevealHomeCardEvent event) {
-		updateLoginInfoCard();
-		event.getConsumer().accept(this, 2 /* order */);
+	public Integer getOrder() {
+		return 2;
 	}
 }

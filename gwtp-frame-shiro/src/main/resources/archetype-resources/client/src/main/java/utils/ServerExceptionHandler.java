@@ -29,8 +29,8 @@ public class ServerExceptionHandler {
 	public void handler(Throwable caught) {
 		if(caught instanceof ServiceException) {
 			ServiceException e = (ServiceException)caught;
-			placeManager.revealErrorPlace(NameTokens.error);
 			GWT.log("Server Exception:\r\n" + e.getMessage());
+			placeManager.revealErrorPlace(NameTokens.error);
 		} else if(caught instanceof StatusCodeException) {
 			StatusCodeException e = (StatusCodeException)caught;
 			if(e.getStatusCode() == 500) { // http Server Error.

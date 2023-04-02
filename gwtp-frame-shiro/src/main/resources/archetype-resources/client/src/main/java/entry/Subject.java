@@ -137,8 +137,6 @@ public final class Subject {
 	 * TODO: When Server side throw UnAuthorization Exception, this function be called to synchronize subject.
 	 */
 	public boolean isLogin() {
-		GWT.log("is login?" + subjectPrincipal);
-		GWT.log("is login?" + subjectRoles);
 		return (null != subjectPrincipal) && (null != subjectRoles);
 	}
 	

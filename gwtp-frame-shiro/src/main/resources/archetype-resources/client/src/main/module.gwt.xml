@@ -40,6 +40,9 @@
   <generate-with class="${package}.bindery.generator.PlainMenuGenerator">
     <when-type-assignable class="${package}.bindery.PlainMenuLoader"/>
   </generate-with>
+  <generate-with class="${package}.bindery.generator.WebSocketEventSerializerGenerator">
+   <when-type-assignable class="${package}.websocketevents.EventSerializer" />
+  </generate-with>
 
   <set-property name="user.agent" value="gecko1_8,safari" />
 </module>

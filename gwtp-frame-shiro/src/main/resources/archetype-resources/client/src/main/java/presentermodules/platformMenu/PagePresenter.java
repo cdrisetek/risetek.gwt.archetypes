@@ -8,23 +8,21 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import ${package}.place.root.RevealMenuEventHandler;
 import ${package}.place.root.RootPresenter;
 
 public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter.MyProxy>
-	implements MyUiHandlers, RevealMenuEventHandler {
+	implements MyUiHandlers {
     public interface MyView extends View, HasUiHandlers<MyUiHandlers> {
     	void clearMenuPanel();
-    	void installRightMenu(AbstractPlatformBarMenu... menus);
-    	void installMiddleMenu(AbstractPlatformBarMenu... menus);
-    	void installLeftMenu(AbstractPlatformBarMenu... menus);
-    	void showTip(AbstractPlatformBarMenu menu);
-    	void showChooser(AbstractPlatformBarMenu menu);
+    	void installRightMenu(AbstractDockMenu... menus);
+    	void installMiddleMenu(AbstractDockMenu... menus);
+    	void installLeftMenu(AbstractDockMenu... menus);
+    	void showTip(AbstractDockMenu menu);
+    	void showChooser(AbstractDockMenu menu);
     }
 
     private final PlaceManager placeManager;
@@ -52,11 +50,11 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	 */
 	@Inject
 	@Named("LoginMenu")
-	AbstractPlatformBarMenu accountMenu;
+	AbstractDockMenu accountMenu;
 
 	@Inject
 	@Named("NavgatorMenu")
-	AbstractPlatformBarMenu navMenu;
+	AbstractDockMenu navMenu;
 
 	@Override
 	protected void onBind() {
@@ -65,15 +63,6 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
         getView().installMiddleMenu();
         
         getView().installRightMenu(accountMenu);
-	}
-	
-	@ProxyEvent
-	@Override
-	public void onRevealDefaultLinkColumn(RevealMenuEvent event) {
-		if(isVisible())
-			return;
-
-		forceReveal();
 	}
 
 	@Override
@@ -84,12 +73,12 @@ public class PagePresenter extends Presenter<PagePresenter.MyView, PagePresenter
 	}
 	
 	@Override
-	public void showTip(AbstractPlatformBarMenu menu) {
+	public void showTip(AbstractDockMenu menu) {
 		getView().showTip(menu);
 	}
 
 	@Override
-	public void onIconClick(AbstractPlatformBarMenu menu) {
+	public void onIconClick(AbstractDockMenu menu) {
 		getView().showChooser(menu);
 	}
 
