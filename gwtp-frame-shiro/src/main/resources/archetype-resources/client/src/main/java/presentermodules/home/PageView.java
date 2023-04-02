@@ -25,7 +25,8 @@ class PageView extends ViewWithUiHandlers<MyUiHandlers> implements
 	
 	// TODO: where to set homeCard column width?
 	private int calculateColumnSize() {
-		return resizePanel.getOffsetWidth() / 400 /* column width in px */;
+		int cols = resizePanel.getOffsetWidth() / 400 /* column width in px */; 
+		return cols > 0 ? cols:1;
 	}
 
 	interface Binder extends UiBinder<Widget, PageView> {}
