@@ -7,7 +7,6 @@
 mvn archetype:generate -DarchetypeCatalog=local \
  -DarchetypeGroupId=com.risetek.archetypes \
  -DarchetypeVersion=HEAD-SNAPSHOT \
- -DgroupId=com.risetek \
  -DarchetypeArtifactId=gwt-standalone \
  -DgroupId=com.risetek
 ```

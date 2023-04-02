@@ -68,6 +68,10 @@ Dock Menu依附于workspace Layout的Header区域作为起点。dock menu用Icon
 
 设计思路是将各个Filed串联起来，以处理输入顺序问题。每个Filed的输入都需要在其前序Filed有了有效输入信息后才可用，输入的焦点(Focus)因此不能随意变更。这种方式牺牲了自由度，但是为Filed的跳转提供了便利，由此在很多情况下，Tab键和RETURN键都可以实现将输入焦点转移到下一个需要输入的Field上。  
 每个Filed可以加入一个或多个有效性验证的函数，并通过构造Filed时候提供类型的办法，为常用格式（比如：email， password等）的Filed创建提供了帮助。  
+> asHeader，checkOnFocus，从headerField逐一检查能否留住焦点  
+
+
+> set  
 SheetField采用Builder设计模式，减少编写时候的困难。以下是创建用户账号的例子：
 ```
             // Build SheetField chain.
